@@ -5,6 +5,9 @@
 /win32
 /lib
 
+.kdev4/
+build/
+*.kdev4
 *.suo
 *.user
 *.userosscache
@@ -25,6 +28,7 @@
 *.filters
 *.db
 *.cmake
+*~
 
 bin/
 .vs/
