@@ -23,6 +23,8 @@
 
 typedef uint64_t guid_t;
 
+class Scene;
+
 enum class ActorKind {
     Character,
     Beam,
@@ -45,18 +47,23 @@ public:
     );
     Actor(const Actor& other);
     
-    ActorKind GetKind();
-    guid_t GetGUID();
-    ActorShape GetShape();
-    float GetSize();
-    glm::vec2 GetPosition();
-    float GetRotation();
+    ActorKind GetKind() const;
+    guid_t GetGUID() const;
+    ActorShape GetShape() const;
+    float GetSize() const;
+    glm::vec2 GetPosition() const;
+    float GetRotation() const;
+    bool GetDestroy() const;
     
     void SetKind(const ActorKind kind);
     void SetShape(const ActorShape shape);
     void SetSize(const float size);
     void SetPosition(const glm::vec2 position);
     void SetRotation(const float rotation);
+    
+    void Destroy();
+    
+    virtual void Register(Scene& scene) = 0;
     
 private:
     ActorKind kind;
@@ -65,4 +72,5 @@ private:
     float size;
     glm::vec2 position;
     float rotation;
+    bool destroy;
 };

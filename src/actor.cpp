@@ -29,7 +29,7 @@ Actor::Actor(
     float size,
     glm::vec2 position,
     float rotation
-) : kind(kind), shape(shape), size(size), position(position), rotation(rotation)
+) : kind(kind), shape(shape), size(size), position(position), rotation(rotation), destroy(false)
 {
     assert(size != 0);
     
@@ -47,32 +47,32 @@ Actor::Actor(const Actor& other)
     this->rotation = other.rotation;
 }
 
-ActorKind Actor::GetKind()
+ActorKind Actor::GetKind() const
 {
     return this->kind;
 }
 
-guid_t Actor::GetGUID()
+guid_t Actor::GetGUID() const
 {
     return this->guid;
 }
 
-ActorShape Actor::GetShape()
+ActorShape Actor::GetShape() const
 {
     return this->shape;
 }
 
-float Actor::GetSize()
+float Actor::GetSize() const
 {
     return this->size;
 }
 
-glm::vec2 Actor::GetPosition()
+glm::vec2 Actor::GetPosition() const
 {
     return this->position;
 }
 
-float Actor::GetRotation()
+float Actor::GetRotation() const
 {
     return this->rotation;
 }
@@ -100,4 +100,14 @@ void Actor::SetPosition(const glm::vec2 position)
 void Actor::SetRotation(const float rotation)
 {
     this->rotation = rotation;
+}
+
+void Actor::Destroy()
+{
+    this->destroy = true;
+}
+
+bool Actor::GetDestroy() const
+{
+    return this->destroy;
 }
