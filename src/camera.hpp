@@ -34,11 +34,15 @@ public:
     
     void SetFieldOfView(const float fov);
     void SetAspectRatio(const float ar);
+    void SetNear(const float near);
+    void SetFar(const float far);
     void SetTranslation(const glm::vec3 translation);
     void SetRotation(const glm::quat rotation);
     
     float GetFieldOfView() const;
     float GetAspectRatio() const;
+    float GetNear() const;
+    float GetFar() const;
     glm::vec3 GetTranslation() const;
     glm::quat GetRotation() const;
     
@@ -49,6 +53,8 @@ public:
 private:
     float aspectRatio;
     float fieldOfView;
+    float near;
+    float far;
     glm::vec3 translation;
     glm::quat rotation;
     glm::mat4 viewProjection;

@@ -42,6 +42,16 @@ void Camera::SetAspectRatio(const float ar)
     this->aspectRatio = ar;
 }
 
+void Camera::SetNear(const float near)
+{
+    this->near = near;
+}
+
+void Camera::SetFar(const float far)
+{
+    this->far = far;
+}
+
 void Camera::SetTranslation(const glm::vec3 translation)
 {
     this->translation = translation;
@@ -59,6 +69,16 @@ float Camera::GetFieldOfView() const
 float Camera::GetAspectRatio() const
 {
     return this->aspectRatio;
+}
+
+float Camera::GetNear() const
+{
+    return this->near;
+}
+
+float Camera::GetFar() const
+{
+    return this->far;
 }
 
 glm::vec3 Camera::GetTranslation() const
@@ -88,8 +108,8 @@ void Camera::Update()
     glm::mat4 projection = glm::perspective(
         this->fieldOfView,
         this->aspectRatio,
-        0.1f,
-        10.0f
+        this->near,
+        this->far
     );
     
     this->viewProjection = view * projection;
