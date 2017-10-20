@@ -1,7 +1,7 @@
 #pragma once
 
 #include <unordered_map>
-class GLFWwindow;
+struct GLFWwindow;
 
 namespace Input {
 
