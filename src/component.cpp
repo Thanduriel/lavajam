@@ -19,7 +19,7 @@
 
 #include "component.hpp"
 
-Component::Component(Actor* actor, bool isActive = true) :
+Component::Component(Actor* actor, bool isActive) :
     actor(actor), isActive(isActive)
 {}
 
