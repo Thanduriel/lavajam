@@ -18,5 +18,6 @@ namespace Input {
             m_instance= new KeyManager();
             m_instance->m_window=win;      
         }
+        return m_instance;
     }
 }
