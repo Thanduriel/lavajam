@@ -35,3 +35,4 @@ bin/
 
 CMakeCache.txt
 CMakeFiles/
+.vscode/
