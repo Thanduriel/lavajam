@@ -166,9 +166,11 @@ namespace Graphic {
 		std::vector<VkExtensionProperties> extensions(extensionCount);
 		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
 
-		std::cout << "available extensions:" << std::endl;
-		for (auto& ext : extensions)
-			std::cout << ext.extensionName << "[v." << ext.specVersion << "]" << std::endl;
+		#ifndef NDEBUG
+			std::cout << "available extensions:" << std::endl;
+			for (auto& ext : extensions)
+				std::cout << ext.extensionName << "[v." << ext.specVersion << "]" << std::endl;
+		#endif
 
 		if (_required)
 		{
@@ -261,7 +263,9 @@ namespace Graphic {
 			bool swapChainAdequate;
 			SwapChainSupportDetails swapChainSupport = QuerySwapChainSupport(_device);
 			swapChainAdequate = !swapChainSupport.formats.empty() && !swapChainSupport.presentModes.empty();
-
+			#ifndef NDEBUG
+				std::cout << "Found GPU: "<< deviceProperties.deviceName << std::endl;
+			#endif
 			return deviceFeatures.geometryShader
 				&& GetQueueFamilies(_device).IsComplete()
 				&& swapChainAdequate;

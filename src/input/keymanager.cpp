@@ -13,7 +13,9 @@ namespace Input {
 
     void KeyManager::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
         m_pressedKeys.insert_or_assign(key,action);
+        #ifndef NDEBUG
             std::cout << "keycode:" <<  key << " " << action << std::endl;
+        #endif
     }
     KeyManager::KeyManager(GLFWwindow* win)
     {
