@@ -1,9 +1,8 @@
 #include "game.hpp"
-#include "component.hpp"
 
 #include <iostream>
 
-int main()
+int main() 
 {
 	Game game;
 	game.Run();

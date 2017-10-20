@@ -7,19 +7,37 @@
 
 namespace Graphic {
 
+	class Effect;
+
 	class Device
 	{
 	public:
-		static void Init();
+		static void Init(int _resolutionX, int _resolutionY);
 		static void Exit();
 
 		static GLFWwindow* GetWindow();
+
+		static VkDevice GetVkDevice() { return m_logicalDevice; }
+		static int GetResolutionX() { return m_resolutionX; }
+		static int GetResolutionY() { return m_resolutionY; }
+
+		// set the pipeline
+		static void SetEffect(const Effect& _effect);
+
+		// draw current pipline
+		static void Draw();
 	private:
 		static std::vector<const char*> GetRequiredExtensions();
 		static void CheckExtensions(unsigned _count = 0, const char** const  _required = nullptr);
 		static void CheckValidationLayers(unsigned _count, const char*const*  _layers);
 		static void PickPhysicalDevice();
 		static void CreateLogicalDevice();
+		static VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+		static void CreateSwapChain();
+		static void CreateImageViews();
+		static void CreateCommandPool();
+		static void CreateCommandBuffers(const Effect& _effect);
+		static void CreateSemaphores();
 
 		struct QueueFamilyIndices
 		{
@@ -50,6 +68,9 @@ namespace Graphic {
 			const char* msg,
 			void* userData);
 
+		static int m_resolutionX;
+		static int m_resolutionY;
+
 		static GLFWwindow* m_window;
 		static VkInstance m_instance;
 		static VkPhysicalDevice m_physicalDevice;
@@ -60,5 +81,20 @@ namespace Graphic {
 		// queues
 		static VkQueue m_graphicsQueue;
 		static VkQueue m_presentQueue;
+
+		//frame buffers
+		static VkSwapchainKHR m_swapChain;
+		static std::vector<VkImage> m_swapChainImages;
+		static VkFormat m_swapChainImageFormat;
+		static VkExtent2D m_swapChainExtent;
+		static std::vector<VkImageView> m_swapChainImageViews;
+
+		static VkCommandPool m_commandPool;
+		static std::vector<VkCommandBuffer> m_commandBuffers;
+
+		static VkSemaphore m_imageAvailableSemaphore;
+		static VkSemaphore m_renderFinishedSemaphore;
+
+		friend class Effect;
 	};
 }
