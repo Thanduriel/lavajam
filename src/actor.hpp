@@ -39,26 +39,30 @@ public:
     Actor(
         ActorKind kind,
         ActorShape shape,
-        double size,
-        glm::vec2 position
+        float size,
+        glm::vec2 position,
+        float rotation
     );
     Actor(const Actor& other);
     
     ActorKind GetKind();
     guid_t GetGUID();
     ActorShape GetShape();
-    double GetSize();
+    float GetSize();
     glm::vec2 GetPosition();
+    float GetRotation();
     
     void SetKind(ActorKind& kind);
     void SetShape(ActorShape& shape);
-    void SetSize(double& size);
+    void SetSize(float& size);
     void SetPosition(glm::vec2& position);
+    void SetRotation(float& rotation);
     
 private:
     ActorKind kind;
     guid_t guid;
     ActorShape shape;
-    double size;
+    float size;
     glm::vec2 position;
+    float rotation;
 };
