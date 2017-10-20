@@ -52,11 +52,11 @@ public:
     glm::vec2 GetPosition();
     float GetRotation();
     
-    void SetKind(ActorKind& kind);
-    void SetShape(ActorShape& shape);
-    void SetSize(float& size);
-    void SetPosition(glm::vec2& position);
-    void SetRotation(float& rotation);
+    void SetKind(const ActorKind kind);
+    void SetShape(const ActorShape shape);
+    void SetSize(const float size);
+    void SetPosition(const glm::vec2 position);
+    void SetRotation(const float rotation);
     
 private:
     ActorKind kind;

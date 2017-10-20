@@ -77,27 +77,27 @@ float Actor::GetRotation()
     return this->rotation;
 }
 
-void Actor::SetKind(ActorKind& kind)
+void Actor::SetKind(const ActorKind kind)
 {
     this->kind = kind;
 }
 
-void Actor::SetShape(ActorShape& shape)
+void Actor::SetShape(const ActorShape shape)
 {
     this->shape = shape;
 }
 
-void Actor::SetSize(float& size)
+void Actor::SetSize(const float size)
 {
     this->size = size;
 }
 
-void Actor::SetPosition(glm::vec2& position)
+void Actor::SetPosition(const glm::vec2 position)
 {
     this->position = position;
 }
 
-void Actor::SetRotation(float& rotation)
+void Actor::SetRotation(const float rotation)
 {
     this->rotation = rotation;
 }
