@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include "keymanager.hpp"
+#include <iostream>
 
 namespace Input {
 
@@ -12,12 +13,12 @@ namespace Input {
 
     void KeyManager::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
         m_pressedKeys.insert_or_assign(key,action);
+            std::cout << "keycode:" <<  key << " " << action << std::endl;
     }
-    KeyManager* KeyManager::instance(GLFWwindow* win){
-        if(!m_instance){
-            m_instance= new KeyManager();
-            m_instance->m_window=win;      
-        }
-        return m_instance;
-    }
+    KeyManager::KeyManager(GLFWwindow* win)
+    {
+        m_window=win;
+        glfwSetKeyCallback(win, key_callback);
+    };
+
 }
