@@ -241,6 +241,15 @@ namespace Graphic {
 		std::vector<VkPhysicalDevice> devices(deviceCount);
 		vkEnumeratePhysicalDevices(m_instance, &deviceCount, devices.data());
 
+		//prefer discrete GPUs
+		std::sort(devices.begin(), devices.end(), [](const VkPhysicalDevice a,const VkPhysicalDevice b){
+			VkPhysicalDeviceProperties devicePropertiesA;
+			VkPhysicalDeviceProperties devicePropertiesB;			
+			vkGetPhysicalDeviceProperties(a, &devicePropertiesA);
+			vkGetPhysicalDeviceProperties(b, &devicePropertiesB);			
+			return (devicePropertiesA.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU && devicePropertiesA.deviceType != devicePropertiesB.deviceType);
+		});
+
 		// look for suitable
 		auto it = std::find_if(devices.begin(), devices.end(), [](const VkPhysicalDevice _device) 
 		{
@@ -253,8 +262,7 @@ namespace Graphic {
 			SwapChainSupportDetails swapChainSupport = QuerySwapChainSupport(_device);
 			swapChainAdequate = !swapChainSupport.formats.empty() && !swapChainSupport.presentModes.empty();
 
-			return deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU
-				&& deviceFeatures.geometryShader
+			return deviceFeatures.geometryShader
 				&& GetQueueFamilies(_device).IsComplete()
 				&& swapChainAdequate;
 		});
