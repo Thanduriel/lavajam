@@ -3,15 +3,12 @@
 #include "graphic/effect.hpp"
 #include "input/keymanager.hpp"
 
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
-
 using namespace Graphic;
 
 Game::Game()
 {
 	Device::Init(1366, 768);
-	Input::KeyManager(Device::GetWindow());
+	Input::KeyManager::Init(Device::GetWindow());
 }
 
 Game::~Game()
