@@ -19,8 +19,6 @@
 
 #include "actor.hpp"
 
-#include <ctime>
-#include <cstdlib>
 #include <cassert>
 
 Actor::Actor(
@@ -34,8 +32,7 @@ Actor::Actor(
     assert(size != 0);
     
     // generate guid
-    std::srand(std::time(0));
-    this->guid = std::rand();
+    this->guid = (guid_t) this;
 }
 
 Actor::Actor(const Actor& other)

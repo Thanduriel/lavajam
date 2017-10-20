@@ -93,6 +93,8 @@ void Scene::Update(float deltaTime)
         });
     this->actors.erase(idx, this->actors.end());
     
+    this->camera.Update();
+    
     for (auto const& component : this->components)
     {
         component->Process(deltaTime);
