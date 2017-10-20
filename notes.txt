@@ -1,0 +1,45 @@
+Actor abstract:
+
+- Position
+- Size
+- Shape
+- GUID
+- Kind
+
+- Components...
+
+AbilityActor:
+
+CharacterActor:
+
+Scene:
+
+- Actors...
+- Camera
+- Prevoius/Next
+
+Camera:
+
+- Rotation
+- Translation
+- FOV
+- near-far-plane
+- aspect-ratio
+
+InputManager:
+
+- TBD
+
+Components:
+
+- TriangleDrawComponent
+- PhysicsComponent
+- MovementComponent
+- ControllerComponent
+
+Component abstract:
+
+- Actor
+- IsActive
+
+
