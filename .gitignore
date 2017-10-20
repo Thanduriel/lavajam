@@ -36,3 +36,6 @@ bin/
 CMakeCache.txt
 CMakeFiles/
 .vscode/
+
+CMakeSettings.json
+CppProperties.json
