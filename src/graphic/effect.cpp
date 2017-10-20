@@ -217,7 +217,7 @@ namespace Graphic {
 		vkDestroyPipelineLayout(Device::GetVkDevice(), m_pipelineLayout, nullptr);
 		vkDestroyRenderPass(Device::GetVkDevice(), m_renderPass, nullptr);
 
-		vkDestroyShaderModule(Device::GetVkDevice(), m_geometryShader, nullptr);
+		vkDestroyShaderModule(Device::GetVkDevice(), m_vertexShader, nullptr);
 		vkDestroyShaderModule(Device::GetVkDevice(), m_fragmentShader, nullptr);
 	}
 
