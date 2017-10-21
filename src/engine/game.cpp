@@ -28,7 +28,7 @@ Game::Game() : m_defaultScene(Camera(
 	Input::KeyManager::Init(Device::GetWindow());
     
     glm::vec4 blue(0.129411765f, 0.588235294f, 0.952941176f, 1);
-    Actor* character = new CharacterActor(0.1f, blue, 0, glm::vec2(0, 0), 0.0f, glm::vec2(0, 0));
+    Actor* character = new CharacterActor(0.05f, blue, 0, glm::vec2(0, 0), 0.0f, glm::vec2(0, 0));
     this->m_defaultScene.AddActor(*character);
     
     glm::vec4 lime(0.796078431f, 0.862745098f, 0.011764706f, 1);
@@ -39,7 +39,7 @@ Game::Game() : m_defaultScene(Camera(
         float y = std::rand() / (float) RAND_MAX * 2.0f - 1.0f;
         float r = std::rand() / (float) RAND_MAX * 2 * M_PI;
 
-        Actor* ai = new AiActor(0.05f, lime, 0, glm::vec2(x, -y), r, glm::vec2(0, 0));
+        Actor* ai = new AiActor(0.025f, lime, 0, glm::vec2(x, -y), r, glm::vec2(0, 0));
         this->m_defaultScene.AddActor(*ai);
     }
 }
