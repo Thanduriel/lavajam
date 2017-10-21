@@ -66,6 +66,11 @@ void Actor::SetRotation(const float rotation)
     this->m_rotation = rotation;
 }
 
+void Actor::AddRotation(const float rotationDelta)
+{
+    this->m_rotation += rotationDelta;
+}
+
 void Actor::SetVelocity(const glm::vec2 velocity)
 {
     this->m_velocity = velocity;
