@@ -129,7 +129,7 @@ void Scene::Update(float deltaTime)
         {
             if ((*it_me)->Collide(**it_other, v))
             {
-				v *= 2 * deltaTime / (1.f / (*it_me)->GetActor()->GetVelocity().length());
+				v *= 5 * deltaTime * (*it_me)->GetActor()->GetVelocity().length();
                 (*it_me)->GetActor()->AddVelocity(v);
                 (*it_other)->GetActor()->AddVelocity(-v);
             }

@@ -20,6 +20,8 @@
 #include "engine/actor.hpp"
 #include "glm.hpp"
 
+#include <iostream>
+
 Actor::Actor(
     glm::vec2 position,
     float rotation,
