@@ -18,7 +18,7 @@ Game::Game() : defaultScene(Camera(
 	Device::Init(1366, 768);
 	Input::KeyManager::Init(Device::GetWindow());
     
-    Actor* character = new CharacterActor(glm::vec2(0, 0), 0.0f);
+    Actor* character = new CharacterActor(glm::vec2(0, 0), 0.0f, glm::vec2(0, 0));
     this->defaultScene.AddActor(*character);
 }
 

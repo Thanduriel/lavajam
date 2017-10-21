@@ -25,52 +25,35 @@ typedef uint64_t guid_t;
 
 class Scene;
 
-enum class ActorKind {
-    Character,
-    Beam,
-};
-
-enum class ActorShape {
-    Triangle,
-    Rectangle,
-};
-
 class Actor
 {
 public:
     Actor(
-        ActorKind kind,
-        ActorShape shape,
-        float size,
         glm::vec2 position,
-        float rotation
+        float rotation,
+        glm::vec2 velocity
     );
     Actor(const Actor& other);
     
-    ActorKind GetKind() const;
     guid_t GetGUID() const;
-    ActorShape GetShape() const;
-    float GetSize() const;
     glm::vec2 GetPosition() const;
     float GetRotation() const;
+    glm::vec2 GetVelocity() const;
     bool GetDestroy() const;
     
-    void SetKind(const ActorKind kind);
-    void SetShape(const ActorShape shape);
-    void SetSize(const float size);
     void SetPosition(const glm::vec2 position);
     void SetRotation(const float rotation);
+    void SetVelocity(const glm::vec2 velocity);
     
     void Destroy();
+    void Update();
     
     virtual void Register(Scene& scene) = 0;
     
 private:
-    ActorKind m_kind;
     guid_t m_guid;
-    ActorShape m_shape;
-    float m_size;
     glm::vec2 m_position;
     float m_rotation;
+    glm::vec2 m_velocity;
     bool m_destroy;
 };

@@ -19,49 +19,26 @@
 
 #include "engine/actor.hpp"
 
-#include <cassert>
-
 Actor::Actor(
-    ActorKind kind,
-    ActorShape shape,
-    float size,
     glm::vec2 position,
-    float rotation
-) : m_kind(kind), m_shape(shape), m_size(size), m_position(position), m_rotation(rotation), m_destroy(false)
+    float rotation,
+    glm::vec2 velocity
+) : m_position(position), m_rotation(rotation), m_velocity(velocity), m_destroy(false)
 {
-    assert(size != 0);
-    
     // generate guid
     this->m_guid = (guid_t) this;
 }
 
 Actor::Actor(const Actor& other)
 {
-    this->m_kind = other.m_kind;
-    this->m_shape = other.m_shape;
-    this->m_size = other.m_size;
     this->m_position = other.m_position;
     this->m_rotation = other.m_rotation;
-}
-
-ActorKind Actor::GetKind() const
-{
-    return this->m_kind;
+    this->m_velocity = other.m_velocity;
 }
 
 guid_t Actor::GetGUID() const
 {
     return this->m_guid;
-}
-
-ActorShape Actor::GetShape() const
-{
-    return this->m_shape;
-}
-
-float Actor::GetSize() const
-{
-    return this->m_size;
 }
 
 glm::vec2 Actor::GetPosition() const
@@ -74,19 +51,9 @@ float Actor::GetRotation() const
     return this->m_rotation;
 }
 
-void Actor::SetKind(const ActorKind kind)
+glm::vec2 Actor::GetVelocity() const
 {
-    this->m_kind = kind;
-}
-
-void Actor::SetShape(const ActorShape shape)
-{
-    this->m_shape = shape;
-}
-
-void Actor::SetSize(const float size)
-{
-    this->m_size = size;
+    return this->m_velocity;
 }
 
 void Actor::SetPosition(const glm::vec2 position)
@@ -99,9 +66,19 @@ void Actor::SetRotation(const float rotation)
     this->m_rotation = rotation;
 }
 
+void Actor::SetVelocity(const glm::vec2 velocity)
+{
+    this->m_velocity = velocity;
+}
+
 void Actor::Destroy()
 {
     this->m_destroy = true;
+}
+
+void Actor::Update()
+{
+    this->m_velocity *= 0.5;
 }
 
 bool Actor::GetDestroy() const

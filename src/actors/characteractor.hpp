@@ -29,7 +29,8 @@ class CharacterActor :
 public:
     CharacterActor(
         glm::vec2 position,
-        float rotation
+        float rotation,
+        glm::vec2 velocity
     );
     
     void Register(Scene & scene) override;

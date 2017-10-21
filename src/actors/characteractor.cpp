@@ -22,13 +22,12 @@
 
 CharacterActor::CharacterActor(
     glm::vec2 position,
-    float rotation
+    float rotation,
+    glm::vec2 velocity
 ) : Actor(
-    ActorKind::Character,
-    ActorShape::Triangle,
-    1.0f,
     position,
-    rotation
+    rotation,
+    velocity
 ), physics(this)
 {}
 
