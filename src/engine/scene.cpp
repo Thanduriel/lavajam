@@ -80,7 +80,7 @@ void Scene::AddComponent(PhysicsComponent& component)
 
 void Scene::Update(float deltaTime)
 {
-    std::cout << "Updating scene [delta-time: " << deltaTime << "]" << std::endl;
+//    std::cout << "Updating scene [delta-time: " << deltaTime << "]" << std::endl;
     
     auto cidx = std::remove_if(
         this->components.begin(),

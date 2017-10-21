@@ -263,6 +263,11 @@ namespace Graphic {
 		if (vkAllocateCommandBuffers(Device::m_logicalDevice, &allocInfo, m_commandBuffers.data()) != VK_SUCCESS)
 			throw std::runtime_error("failed to allocate command buffers!");
 
+		BuildCommandBuffers(_vertexBuffer);
+	}
+
+	void Effect::BuildCommandBuffers(const BasicVertexBuffer& _vertexBuffer) const
+	{
 		for (size_t i = 0; i < m_commandBuffers.size(); i++)
 		{
 			VkCommandBufferBeginInfo beginInfo = {};
@@ -270,6 +275,7 @@ namespace Graphic {
 			beginInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
 			beginInfo.pInheritanceInfo = nullptr; // Optional
 
+			vkResetCommandBuffer(m_commandBuffers[i], 0);
 			vkBeginCommandBuffer(m_commandBuffers[i], &beginInfo);
 
 			VkRenderPassBeginInfo renderPassInfo = {};
@@ -292,7 +298,7 @@ namespace Graphic {
 			VkDeviceSize offsets[] = { 0 };
 			vkCmdBindVertexBuffers(m_commandBuffers[i], 0, 1, vertexBuffers, offsets);
 
-			vkCmdDraw(m_commandBuffers[i], 6, 1, 0, 0);
+			vkCmdDraw(m_commandBuffers[i], _vertexBuffer.m_numVertices, 1, 0, 0);
 			vkCmdEndRenderPass(m_commandBuffers[i]);
 
 			if (vkEndCommandBuffer(m_commandBuffers[i]) != VK_SUCCESS)

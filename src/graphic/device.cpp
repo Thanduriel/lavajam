@@ -180,8 +180,10 @@ namespace Graphic {
 	}
 
 	// **************************************************************** //
-	void Device::Draw()
+	void Device::Draw(const BasicVertexBuffer& _vertexBuffer)
 	{
+		m_currentEffect->BuildCommandBuffers(_vertexBuffer);
+
 		uint32_t imageIndex;
 		vkAcquireNextImageKHR(m_logicalDevice, m_swapChain, std::numeric_limits<uint64_t>::max(), m_imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
 
@@ -590,7 +592,7 @@ namespace Graphic {
 		VkCommandPoolCreateInfo poolInfo = {};
 		poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 		poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily;
-		poolInfo.flags = 0; // Optional
+		poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT; // Optional
 
 		if (vkCreateCommandPool(m_logicalDevice, &poolInfo, nullptr, &m_commandPool) != VK_SUCCESS)
 			throw std::runtime_error("failed to create command pool!");

@@ -39,14 +39,22 @@ struct Vertex
 	float rotation;
 };
 
+void AddTriangle(VertexBuffer<Vertex>& _vertexBuffer, glm::vec2 _position)
+{
+	const float TRI_SIZE = 0.1f;
+	using namespace glm;
+	Vertex v{ _position + vec2(0.f,-TRI_SIZE), vec3(1.f,1.f,1.f), 0.f };
+	_vertexBuffer.Add(v);
+	v.position = _position + vec2(TRI_SIZE, TRI_SIZE);
+	_vertexBuffer.Add(v);
+	v.position = _position + vec2(-TRI_SIZE, TRI_SIZE);
+	_vertexBuffer.Add(v);
+}
+
 const std::vector<Vertex> vertices = {
 	{ { 0.0f, -0.5f },{ 1.0f, 0.0f, 0.0f },0.f },
 	{ { 0.5f, 0.5f },{ 0.0f, 1.0f, 0.0f },0.f },
-	{ { -0.5f, 0.5f },{ 0.0f, 0.0f, 1.0f },0.f },
-
-	{ { 0.2f, -0.6f },{ 1.0f, 1.0f, 0.0f },0.f },
-	{ { 0.7f, 0.4f },{ 0.0f, 1.0f, 0.0f },0.f },
-	{ { -0.3f, 0.4f },{ 1.0f, 0.0f, 1.0f },0.f }
+	{ { -0.5f, 0.5f },{ 0.0f, 0.0f, 1.0f },0.f }
 };
 
 void Game::Run()
@@ -57,10 +65,6 @@ void Game::Run()
 	vertexBuffer.Add(vertices[0]);
 	vertexBuffer.Add(vertices[1]);
 	vertexBuffer.Add(vertices[2]);
-
-	vertexBuffer.Add(vertices[3]);
-	vertexBuffer.Add(vertices[4]);
-	vertexBuffer.Add(vertices[5]);
 	vertexBuffer.Upload();
 	Effect effect("shaders/vert.spv", "shaders/frag.spv", vertexBuffer);
 	Device::SetEffect(effect);
@@ -73,7 +77,14 @@ void Game::Run()
         float deltaTime = (float) (currentTime - lastTime);
         lastTime = currentTime;
         this->defaultScene.Update(deltaTime);
-		Device::Draw();
+
+		static float shift = 0.f;
+		shift += deltaTime * 0.2f;
+	//	AddTriangle(vertexBuffer, glm::vec2(shift));
+	//	vertexBuffer.Upload();
+	//	_sleep(20);
+
+		Device::Draw(vertexBuffer);
 		Input::KeyManager::pollEvents();
 	}
 }

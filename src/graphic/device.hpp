@@ -26,7 +26,7 @@ namespace Graphic {
 		static void SetEffect(const Effect& _effect);
 
 		// draw current pipline
-		static void Draw();
+		static void Draw(const BasicVertexBuffer& _vertexBuffer);
 
 		// looks for a suitable memory type supported by the choosen physical device
 		static uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);

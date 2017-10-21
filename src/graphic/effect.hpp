@@ -18,7 +18,7 @@ namespace Graphic {
 	private:
 		VkShaderModule LoadShader(const std::string_view& _name);
 		void CreateCommandBuffers(const BasicVertexBuffer& _vertexBuffer);
-	//	void BuildCommandBuffers(const BasicVertexbuffer&)
+		void BuildCommandBuffers(const BasicVertexBuffer& _vertexBuffer) const;
 
 		VkShaderModule m_vertexShader;
 		VkShaderModule m_geometryShader;

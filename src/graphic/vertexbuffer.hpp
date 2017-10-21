@@ -42,6 +42,7 @@ namespace Graphic {
 		std::vector<VkVertexInputAttributeDescription> m_vertexAttributes;
 		VkBuffer m_vertexBuffer;
 		VkDeviceMemory m_vertexBufferMemory;
+		uint32_t m_numVertices;
 
 		friend class Effect;
 	};
@@ -93,6 +94,10 @@ namespace Graphic {
 			vkBindBufferMemory(Device::GetVkDevice(), m_vertexBuffer, m_vertexBufferMemory, 0);
 		}
 
+		VertexBuffer() = delete;
+		VertexBuffer(const VertexBuffer<T>&) = delete;
+		VertexBuffer(VertexBuffer<T>&&) = delete;
+
 		~VertexBuffer()
 		{
 			vkDestroyBuffer(Device::GetVkDevice(), m_vertexBuffer, nullptr);
@@ -103,6 +108,8 @@ namespace Graphic {
 		void Add(const T& _element) { m_vertices.push_back(_element); }
 		void Upload()
 		{
+			m_numVertices = (uint32_t)m_vertices.size();
+
 			void* data;
 			size_t s = (size_t)m_vertices.size() * sizeof(T);
 			vkMapMemory(Device::GetVkDevice(), m_vertexBufferMemory, 0, s, 0, &data);
