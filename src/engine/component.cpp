@@ -23,7 +23,7 @@ Component::Component(Actor* actor, bool isActive) :
     m_actor(actor), m_isActive(isActive)
 {}
 
-const Actor* Component::GetActor() const
+Actor* Component::GetActor() const
 {
     return this->m_actor;
 }

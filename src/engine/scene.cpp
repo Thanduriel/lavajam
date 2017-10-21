@@ -116,10 +116,16 @@ void Scene::Update(float deltaTime)
         component->Process(deltaTime);
     }
     
-    for (auto const& physicsComponent : this->physicsComponents)
+    glm::vec2 v;
+    for (auto it_me = this->physicsComponents.begin(); it_me != this->physicsComponents.end(); it_me++)
     {
-        physicsComponent->Process(deltaTime);
-        
-        // TBD do collisions and set position/rotation
+        for (auto it_other = it_me + 1; it_other != this->physicsComponents.end(); it_other++)
+        {
+            if ((*it_me)->Collide(**it_other, v))
+            {
+                (*it_me)->GetActor()->AddVelocity(v);
+                (*it_other)->GetActor()->AddVelocity(-v);
+            }
+        }
     }
 }

@@ -83,6 +83,7 @@ void Actor::Destroy()
 
 void Actor::Update()
 {
+    this->m_position += this->m_velocity;
     this->m_velocity *= 0.5;
 }
 
