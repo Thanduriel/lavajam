@@ -4,4 +4,5 @@
     cd shaders
     glslangValidator -V triangle.vert
     glslangValidator -V triangle.frag
+    glslangValidator -V triangle.geom
 )
