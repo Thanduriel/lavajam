@@ -134,6 +134,13 @@ void Scene::Update(float deltaTime)
                 (*it_other)->GetActor()->AddVelocity(-v);
             }
         }
+
+		auto me_pos = (*it_me)->GetActor()->GetPosition();
+		glm::vec2 border_vec = {0,0};
+		if (me_pos.x < -1 || me_pos.x > 1) border_vec.x -= (*it_me)->GetActor()->GetVelocity().x * 2;
+		if (me_pos.y < -1 || me_pos.y > 1) border_vec.y -= (*it_me)->GetActor()->GetVelocity().y * 2;
+
+		(*it_me)->GetActor()->AddVelocity(border_vec);
     }
     
     for (auto const& component : this->m_components)
