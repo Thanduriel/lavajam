@@ -56,7 +56,7 @@ bool PhysicsComponent::Collide(PhysicsComponent& component, glm::vec2& velocityD
             glm::vec2 center = component.GetActor()->GetPosition();
             float radius = component.GetSize();
             glm::vec2 my_center = this->m_actor->GetPosition();
-            float my_radius = this->m_size / 2.0f;
+            float my_radius = this->m_size * 1.5f;
             
             bool collides = glm::distance(center, my_center) <= my_radius + radius;
             if (collides)

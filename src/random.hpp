@@ -12,19 +12,19 @@ namespace Generators {
 	class BaseGen : public Impl
 	{
 	public:
-		typedef decltype(Impl::m_seed) result_type;
+		typedef uint32_t result_type;
 		static constexpr result_type default_seed = 0x14bfc13U;
 
 		explicit BaseGen(result_type _seed = default_seed)
 		{
-			m_seed = _seed;
-			init();
+			this->m_seed = _seed;
+			this->init();
 		}
 
 		void seed(result_type _seed)
 		{
-			m_seed = _seed;
-			init();
+			this->m_seed = _seed;
+			this->init();
 		}
 
 		static constexpr result_type(min)()
@@ -54,7 +54,7 @@ namespace Generators {
 	protected:
 		void init()
 		{
-			m_state = m_seed;
+			this->m_state = this->m_seed;
 		}
 		uint32_t m_seed;
 	private:
@@ -146,7 +146,7 @@ namespace Generators {
 		// a random 3d direction
 		glm::vec3 Direction()
 		{
-			float phi = 2 * glm::pi* Uniform();
+			float phi = 2 * glm::pi<float>() * Uniform();
 			float cosTheta = 2.0f * Uniform() - 1.0f;
 			float sinTheta = sqrt((1.0f - cosTheta) * (1.0f + cosTheta));
 			return glm::vec3(sinTheta * sin(phi), sinTheta * cos(phi), cosTheta);
