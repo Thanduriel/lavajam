@@ -17,32 +17,36 @@
  * 
  */
 
-#pragma once
-
 #include "glm.hpp"
-#include "engine/actor.hpp"
-#include "components/physicscomponent.hpp"
-#include "components/drawcomponent.hpp"
 #include "components/aicontrollercomponent.hpp"
 
-class AiActor :
-    public Actor
+AiControllerComponent::AiControllerComponent(
+    Actor* actor, Actor* target, bool isActive
+) : Component(actor, isActive), m_target(target)
+{}
+
+void AiControllerComponent::Process(float deltaTime)
 {
-public:
-    AiActor(
-        Actor* target,
-        float size,
-        glm::vec4 color,
-        size_t layer,
-        glm::vec2 position,
-        float rotation,
-        glm::vec2 velocity
-    );
+    auto target = this->GetTarget();
+    auto me = this->m_actor;
+    auto target_pos = target->GetPosition();
+    auto my_pos = me->GetPosition();
+    auto dir = glm::normalize(target_pos - my_pos) * deltaTime / 5.0f;
+    auto new_v = me->GetVelocity() + dir;
+    auto angle = glm::orientedAngle(glm::vec2(0, -1), glm::normalize(new_v));
+    auto old_rot = me->GetRotation();
+    auto new_rot = (angle - old_rot) * deltaTime * 5;
     
-    void Register(Scene& scene) override;
-    
-private:
-    PhysicsComponent m_physics;
-    DrawComponent m_draw;
-    AiControllerComponent m_ai;
-};
+    me->AddRotation(new_rot);
+    me->SetVelocity(new_v);
+}
+
+const Actor* AiControllerComponent::GetTarget() const
+{
+    return this->m_target;
+}
+
+void AiControllerComponent::SetTarget(Actor* target)
+{
+    this->m_target = target;
+}

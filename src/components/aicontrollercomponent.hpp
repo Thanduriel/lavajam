@@ -17,27 +17,22 @@
  * 
  */
 
-#include "actors/aiactor.hpp"
-#include "components/physicscomponent.hpp"
-#include "engine/scene.hpp"
+#pragma once
 
-AiActor::AiActor(
-    Actor* target,
-    float size,
-    glm::vec4 color,
-    size_t layer,
-    glm::vec2 position,
-    float rotation,
-    glm::vec2 velocity
-) : Actor(position, rotation, velocity),
-    m_physics(this, PhysicsShape::Triangle, size, ActorKind::Character),
-    m_draw(this, DrawShape::Triangle, size, color, layer),
-    m_ai(this, target)
-{}
+#include "engine/actor.hpp"
+#include "engine/component.hpp"
 
-void AiActor::Register(Scene& scene)
+class AiControllerComponent :
+    public Component
 {
-    scene.AddComponent(this->m_physics);
-    scene.AddComponent(this->m_draw);
-    scene.AddComponent(this->m_ai);
-}
+public:
+    AiControllerComponent(Actor* actor, Actor* target, bool isActive = true);
+    
+    void Process(float deltaTime) override;
+    
+    const Actor* GetTarget() const;
+    void SetTarget(Actor* target);
+    
+private:
+    Actor* m_target;
+};
