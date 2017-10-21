@@ -19,9 +19,6 @@
 
 #include "engine/camera.hpp"
 
-#define GLM_ENABLE_EXPERIMENTAL
-#include "glm/gtx/transform.hpp"
-
 Camera::Camera(
     float fov,
     float aspectRatio,

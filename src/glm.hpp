@@ -17,26 +17,6 @@
  * 
  */
 
-#pragma once
-
-#include "glm.hpp"
-#include "engine/actor.hpp"
-#include "components/physicscomponent.hpp"
-#include "components/drawcomponent.hpp"
-
-class CharacterActor :
-    public Actor
-{
-public:
-    CharacterActor(
-        glm::vec2 position,
-        float rotation,
-        glm::vec2 velocity
-    );
-    
-    void Register(Scene & scene) override;
-
-private:
-    PhysicsComponent physics;
-    DrawComponent draw;
-};
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/glm.hpp"
+#include "glm/ext.hpp"

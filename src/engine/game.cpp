@@ -4,7 +4,7 @@
 #include "engine/camera.hpp"
 #include "engine/game.hpp"
 #include "actors/characteractor.hpp"
-#include "glm/glm.hpp"
+#include "glm.hpp"
 
 using namespace Graphic;
 

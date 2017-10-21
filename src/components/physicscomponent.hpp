@@ -19,9 +19,9 @@
 
 #pragma once
 
+#include "glm.hpp"
 #include "engine/actor.hpp"
 #include "engine/component.hpp"
-#include "glm/glm.hpp"
 
 enum class PhysicsShape {
     Triangle,

@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "glm/glm.hpp"
+#include "glm.hpp"
 
 typedef uint64_t guid_t;
 
