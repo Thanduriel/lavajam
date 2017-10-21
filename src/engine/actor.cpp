@@ -90,7 +90,7 @@ void Actor::Destroy()
 void Actor::Update()
 {
     this->m_position += glm::rotate(this->m_velocity, this->m_rotation);
-    this->m_velocity *= 0.99;
+    this->m_velocity *= 0.999;
 }
 
 bool Actor::GetDestroy() const
