@@ -122,16 +122,17 @@ void Scene::Update(float deltaTime)
     
     VertexBuffer->Clear();
     
-    glm::vec2 v;
+    glm::vec2 own_velocity_delta, other_velocity_delta;
     for (auto it_me = this->m_physicsComponents.begin(); it_me != this->m_physicsComponents.end(); it_me++)
     {
         for (auto it_other = it_me + 1; it_other != this->m_physicsComponents.end(); it_other++)
         {
-            if ((*it_me)->Collide(**it_other, v))
+            if ((*it_me)->Collide(**it_other, own_velocity_delta, other_velocity_delta))
             {
-				v *= deltaTime * glm::length((*it_me)->GetActor()->GetVelocity());
-                (*it_me)->GetActor()->AddVelocity(v);
-                (*it_other)->GetActor()->AddVelocity(-v);
+				own_velocity_delta *= deltaTime * glm::length((*it_me)->GetActor()->GetVelocity());
+				other_velocity_delta *= deltaTime * glm::length((*it_me)->GetActor()->GetVelocity());
+                (*it_me)->GetActor()->AddVelocity(own_velocity_delta);
+                (*it_other)->GetActor()->AddVelocity(other_velocity_delta);
             }
         }
 

@@ -41,7 +41,7 @@ void PhysicsComponent::Process(float deltaTime)
     // nothing to do here
 }
 
-bool PhysicsComponent::Collide(PhysicsComponent& component, glm::vec2& velocityDelta) const
+bool PhysicsComponent::Collide(PhysicsComponent& component, glm::vec2& ownVelocityDelta, glm::vec2& otherVelocityDelta) const
 {
     switch(this->m_shape)
     {
@@ -52,17 +52,25 @@ bool PhysicsComponent::Collide(PhysicsComponent& component, glm::vec2& velocityD
                 // we don't know
                 return false;
             }
-            
-            glm::vec2 center = component.GetActor()->GetPosition();
-            float radius = component.GetSize();
-            glm::vec2 my_center = this->m_actor->GetPosition();
-            float my_radius = this->m_size * 1.5f;
-            
-            bool collides = glm::distance(center, my_center) <= my_radius + radius;
+
+	        const glm::vec2 center = component.GetActor()->GetPosition();
+	        const glm::vec2 my_center = this->m_actor->GetPosition();
+
+	        const bool collides = glm::distance(center, my_center) <= this->m_size + component.GetSize();
             if (collides)
             {
-				auto direction = my_center - center;
-				if (direction.x != 0 || direction.y != 0) velocityDelta = glm::normalize(direction) / glm::length(direction);
+				ownVelocityDelta = { 0,0 };
+	            const auto direction = my_center - center;
+				if (direction.x != 0 || direction.y != 0)
+				{
+					ownVelocityDelta = glm::normalize(direction) / glm::length(direction);
+				}
+
+				otherVelocityDelta = -ownVelocityDelta;
+	            const float ratio = this->GetMass() / component.GetMass();
+				ownVelocityDelta /= ratio;
+				otherVelocityDelta *= ratio;
+
                 return true;
             }
             else
@@ -93,6 +101,18 @@ ActorKind PhysicsComponent::GetKind() const
 {
     return this->m_kind;
 }
+
+float PhysicsComponent::GetMass() const
+{
+	switch (this->m_kind) 
+	{ 
+		case ActorKind::Ai: return 1.f;
+		case ActorKind::Character: return 1.5f;
+		case ActorKind::Bullet: return 10.f;
+		default: ;
+	}
+}
+
 
 void PhysicsComponent::SetShape(PhysicsShape shape)
 {
