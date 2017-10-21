@@ -1,7 +1,8 @@
 #pragma once
 
 #include <initializer_list>
-#include <vulkan/vulkan.hpp>
+#include <array>
+#include <vulkan/vulkan.h>
 #include "glm/glm.hpp"
 #include "device.hpp"
 
