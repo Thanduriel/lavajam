@@ -39,3 +39,5 @@ CMakeFiles/
 
 CMakeSettings.json
 CppProperties.json
+
+*.spv
