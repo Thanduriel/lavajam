@@ -20,6 +20,8 @@
 #include "glm.hpp"
 #include "components/physicscomponent.hpp"
 
+#include <cassert>
+
 PhysicsComponent::PhysicsComponent(
     Actor* actor,
     PhysicsShape shape,
@@ -39,57 +41,33 @@ void PhysicsComponent::Process(float deltaTime)
     // nothing to do here
 }
 
-bool PhysicsComponent::CollidesWithPoint(glm::vec2 point) const
+bool PhysicsComponent::Collide(PhysicsComponent& component, glm::vec2& velocityDelta) const
 {
     switch(this->m_shape)
     {
         case PhysicsShape::Triangle:
         {
-            glm::vec2 v1(-0.5f, 0);
-            glm::vec2 v2(0, 1);
-            glm::vec2 v3(0.5f, 0);
-            bool b1, b2, b3;
+            if (component.GetShape() != PhysicsShape::Triangle)
+            {
+                // we don't know
+                return false;
+            }
             
-            v1 *= this->m_size;
-            v2 *= this->m_size;
-            v3 *= this->m_size;
-
-            b1 = sign(point, v1, v2) < 0.0f;
-            b2 = sign(point, v2, v3) < 0.0f;
-            b3 = sign(point, v3, v1) < 0.0f;
-
-            return ((b1 == b2) && (b2 == b3));
-        }   
-        default:
-        {
-            // we don't know
-            return false;
-        }
-    }
-}
-
-bool PhysicsComponent::CollidesWithLine(glm::vec2 start, glm::vec2 end) const
-{
-    switch(this->m_shape)
-    {
-        case PhysicsShape::Triangle:
-        {
-            glm::vec3 orig(start, 0);
-            glm::vec3 dir(end, 0);
-            glm::vec3 v1(-0.5f, 0, 0);
-            glm::vec3 v2(0, 1, 0);
-            glm::vec3 v3(0.5f, 0, 0);
-            glm::vec3 out(0);
+            glm::vec2 center = component.GetActor()->GetPosition();
+            float radius = component.GetSize();
+            glm::vec2 my_center = this->m_actor->GetPosition();
+            float my_radius = this->m_size / 2.0f;
             
-            v1 *= this->m_size;
-            v2 *= this->m_size;
-            v3 *= this->m_size;
-            
-            return glm::intersectLineTriangle(
-                orig, dir,
-                v1, v2, v3,
-                out
-            );
+            bool collides = glm::distance(center, my_center) <= my_radius + radius;
+            if (collides)
+            {
+                velocityDelta = glm::normalize(my_center - center);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         
         default:
@@ -98,4 +76,34 @@ bool PhysicsComponent::CollidesWithLine(glm::vec2 start, glm::vec2 end) const
             return false;
         }
     }
+}
+
+PhysicsShape PhysicsComponent::GetShape() const
+{
+    return this->m_shape;
+}
+
+float PhysicsComponent::GetSize() const
+{
+    return this->m_size;
+}
+
+ActorKind PhysicsComponent::GetKind() const
+{
+    return this->m_kind;
+}
+
+void PhysicsComponent::SetShape(PhysicsShape shape)
+{
+    this->m_shape = shape;
+}
+
+void PhysicsComponent::SetSize(float size)
+{
+    this->m_size = size;
+}
+
+void PhysicsComponent::SetKind(ActorKind kind)
+{
+    this->m_kind = kind;
 }

@@ -35,8 +35,15 @@ public:
     
     void Process(float deltaTime) override;
     
-    bool CollidesWithPoint(glm::vec2 point) const;
-    bool CollidesWithLine(glm::vec2 start, glm::vec2 end) const;
+    bool Collide(PhysicsComponent& component, glm::vec2& velocityDelta) const;
+    
+    PhysicsShape GetShape() const;
+    float GetSize() const;
+    ActorKind GetKind() const;
+    
+    void SetShape(PhysicsShape shape);
+    void SetSize(float size);
+    void SetKind(ActorKind kind);
     
 private:
     PhysicsShape m_shape;
