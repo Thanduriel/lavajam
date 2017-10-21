@@ -1,12 +1,10 @@
 Actor abstract:
 
 - Position
-- Size
-- Shape
+- Rotation
+- Velocity
+- Update()
 - GUID
-- Kind
-
-- Components...
 
 AbilityActor:
 
@@ -17,6 +15,7 @@ Scene:
 - Actors...
 - Camera
 - Prevoius/Next
+- collect physics components and set position/rotation of actors
 
 Camera:
 
@@ -30,15 +29,24 @@ InputManager:
 
 - TBD
 
-Components:
+abstract Component:
+ - IsActive
+ - Actor&
+ - virtual Process
 
-- TriangleDrawComponent
-- PhysicsComponent
-- MovementComponent
-- ControllerComponent
+PhysicsComponent:
+ - Shape
+ - Size
+ - Kind
+ - CollidesWithPoint()
+ - CollidesWithLine()
 
-Component abstract:
+ControllerComponent:
+ - Process(..)
 
-- Actor
-- IsActive
-
+DrawComponent:
+ - Shape
+ - Size
+ - Color
+ - Layer
+ - Process(..)
