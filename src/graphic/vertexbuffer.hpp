@@ -106,7 +106,11 @@ namespace Graphic {
 		}
 
 		void Clear() { m_vertices.clear(); }
-		void Add(const T& _element) { m_vertices.push_back(_element); }
+		void Add(const T& _element) 
+		{ 
+			assert(m_vertices.size() < MaxNumEl && "The allocated vertex buffer is to small."); 
+			m_vertices.push_back(_element); 
+		}
 		void Upload()
 		{
 			m_numVertices = (uint32_t)m_vertices.size();
