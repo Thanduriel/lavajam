@@ -27,84 +27,84 @@ Actor::Actor(
     float size,
     glm::vec2 position,
     float rotation
-) : kind(kind), shape(shape), size(size), position(position), rotation(rotation), destroy(false)
+) : m_kind(kind), m_shape(shape), m_size(size), m_position(position), m_rotation(rotation), m_destroy(false)
 {
     assert(size != 0);
     
     // generate guid
-    this->guid = (guid_t) this;
+    this->m_guid = (guid_t) this;
 }
 
 Actor::Actor(const Actor& other)
 {
-    this->kind = other.kind;
-    this->shape = other.shape;
-    this->size = other.size;
-    this->position = other.position;
-    this->rotation = other.rotation;
+    this->m_kind = other.m_kind;
+    this->m_shape = other.m_shape;
+    this->m_size = other.m_size;
+    this->m_position = other.m_position;
+    this->m_rotation = other.m_rotation;
 }
 
 ActorKind Actor::GetKind() const
 {
-    return this->kind;
+    return this->m_kind;
 }
 
 guid_t Actor::GetGUID() const
 {
-    return this->guid;
+    return this->m_guid;
 }
 
 ActorShape Actor::GetShape() const
 {
-    return this->shape;
+    return this->m_shape;
 }
 
 float Actor::GetSize() const
 {
-    return this->size;
+    return this->m_size;
 }
 
 glm::vec2 Actor::GetPosition() const
 {
-    return this->position;
+    return this->m_position;
 }
 
 float Actor::GetRotation() const
 {
-    return this->rotation;
+    return this->m_rotation;
 }
 
 void Actor::SetKind(const ActorKind kind)
 {
-    this->kind = kind;
+    this->m_kind = kind;
 }
 
 void Actor::SetShape(const ActorShape shape)
 {
-    this->shape = shape;
+    this->m_shape = shape;
 }
 
 void Actor::SetSize(const float size)
 {
-    this->size = size;
+    this->m_size = size;
 }
 
 void Actor::SetPosition(const glm::vec2 position)
 {
-    this->position = position;
+    this->m_position = position;
 }
 
 void Actor::SetRotation(const float rotation)
 {
-    this->rotation = rotation;
+    this->m_rotation = rotation;
 }
 
 void Actor::Destroy()
 {
-    this->destroy = true;
+    this->m_destroy = true;
 }
 
 bool Actor::GetDestroy() const
 {
-    return this->destroy;
+    return this->m_destroy;
 }

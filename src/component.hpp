@@ -35,6 +35,6 @@ public:
     virtual void Process(float deltaTime) = 0;
 
 private:
-    Actor* actor;
-    bool isActive;
+    Actor* m_actor;
+    bool m_isActive;
 };

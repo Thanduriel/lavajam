@@ -66,11 +66,11 @@ public:
     virtual void Register(Scene& scene) = 0;
     
 private:
-    ActorKind kind;
-    guid_t guid;
-    ActorShape shape;
-    float size;
-    glm::vec2 position;
-    float rotation;
-    bool destroy;
+    ActorKind m_kind;
+    guid_t m_guid;
+    ActorShape m_shape;
+    float m_size;
+    glm::vec2 m_position;
+    float m_rotation;
+    bool m_destroy;
 };

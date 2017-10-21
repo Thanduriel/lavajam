@@ -20,25 +20,25 @@
 #include "component.hpp"
 
 Component::Component(Actor* actor, bool isActive) :
-    actor(actor), isActive(isActive)
+    m_actor(actor), m_isActive(isActive)
 {}
 
 const Actor* Component::GetActor()
 {
-    return this->actor;
+    return this->m_actor;
 }
 
 bool Component::IsActive()
 {
-    return this->isActive;
+    return this->m_isActive;
 }
 
 void Component::SetActor(Actor* actor)
 {
-    this->actor = actor;
+    this->m_actor = actor;
 }
 
 void Component::SetActive(bool isActive)
 {
-    this->isActive = isActive;
+    this->m_isActive = isActive;
 }
