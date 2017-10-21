@@ -49,6 +49,7 @@ public:
     void SetPosition(const glm::vec2 position);
     void SetRotation(const float rotation);
     void SetVelocity(const glm::vec2 velocity);
+    void AddVelocity(const glm::vec2 velocityDelta);
     
     void Destroy();
     void Update();
