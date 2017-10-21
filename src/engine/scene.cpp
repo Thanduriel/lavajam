@@ -17,9 +17,10 @@
  * 
  */
 
-#include "scene.hpp"
+#include "engine/scene.hpp"
 
 #include <algorithm>
+#include <iostream>
 
 Scene::Scene(Camera camera, Scene* previous, Scene* next) :
     camera(camera), previous(previous), next(next)
@@ -75,6 +76,8 @@ void Scene::AddComponent(Component& component)
 
 void Scene::Update(float deltaTime)
 {
+    std::cout << "Updating scene [delta-time: " << deltaTime << "]" << std::endl;
+    
     auto cidx = std::remove_if(
         this->components.begin(),
         this->components.end(),

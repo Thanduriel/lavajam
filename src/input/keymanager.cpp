@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 
 #include <algorithm>
-#include "keymanager.hpp"
+#include "input/keymanager.hpp"
 #include <iostream>
 
 namespace Input {

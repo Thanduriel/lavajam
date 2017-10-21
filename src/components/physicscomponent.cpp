@@ -17,7 +17,7 @@
 *
 */
 
-#include "physicscomponent.hpp"
+#include "components/physicscomponent.hpp"
 
 PhysicsComponent::PhysicsComponent(Actor* actor, bool isActive) : Component(actor, isActive)
 {}

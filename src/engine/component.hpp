@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "actor.hpp"
+#include "engine/actor.hpp"
 
 class Component
 {

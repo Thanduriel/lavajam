@@ -1,8 +1,8 @@
 #include <fstream>
 #include <vector>
 
-#include "device.hpp"
-#include "effect.hpp"
+#include "graphic/device.hpp"
+#include "graphic/effect.hpp"
 
 namespace Graphic {
 	Effect::Effect(const std::string_view& _vertexShader, const std::string_view& _fragmentShader)

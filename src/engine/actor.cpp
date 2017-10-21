@@ -17,7 +17,7 @@
  * 
  */
 
-#include "actor.hpp"
+#include "engine/actor.hpp"
 
 #include <cassert>
 

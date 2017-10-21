@@ -1,5 +1,5 @@
-#include "device.hpp"
-#include "effect.hpp"
+#include "graphic/device.hpp"
+#include "graphic/effect.hpp"
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>

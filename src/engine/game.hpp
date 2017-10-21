@@ -1,5 +1,7 @@
 #pragma once
 
+#include "engine/scene.hpp"
+
 class Game 
 {
 public:
@@ -9,4 +11,5 @@ public:
 	void Run();
 
 private:
+    Scene defaultScene;
 };

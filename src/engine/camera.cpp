@@ -17,7 +17,7 @@
  * 
  */
 
-#include "camera.hpp"
+#include "engine/camera.hpp"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/transform.hpp"

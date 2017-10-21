@@ -17,7 +17,7 @@
  * 
  */
 
-#include "component.hpp"
+#include "engine/component.hpp"
 
 Component::Component(Actor* actor, bool isActive) :
     m_actor(actor), m_isActive(isActive)

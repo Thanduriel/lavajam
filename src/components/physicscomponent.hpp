@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "../engine/component.hpp"
+#include "engine/component.hpp"
 
 class PhysicsComponent :
 	public Component

@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include "actor.hpp"
-#include "camera.hpp"
-#include "component.hpp"
-#include "scene.hpp"
+#include "engine/actor.hpp"
+#include "engine/camera.hpp"
+#include "engine/component.hpp"
+#include "engine/scene.hpp"
 
 #include <vector>
 #include <memory>
