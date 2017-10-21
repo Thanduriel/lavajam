@@ -23,6 +23,7 @@
 #include "engine/actor.hpp"
 #include "components/physicscomponent.hpp"
 #include "components/drawcomponent.hpp"
+#include "components/controllercomponent.hpp"
 
 class CharacterActor :
     public Actor
@@ -39,4 +40,5 @@ public:
 private:
     PhysicsComponent physics;
     DrawComponent draw;
+    ControllerComponent controller;
 };

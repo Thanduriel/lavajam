@@ -1,11 +1,8 @@
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
-
 #include "controllercomponent.hpp"
 #include "input/keymanager.hpp"
-#include "glm/glm.hpp"
+#include "glm.hpp"
 
-ControllerComponent::ControllerComponent(Actor* actor,bool isActive, std::vector <int> keyMapping = {GLFW_KEY_W,GLFW_KEY_A,GLFW_KEY_S,GLFW_KEY_D,GLFW_KEY_SPACE}):
+ControllerComponent::ControllerComponent(Actor* actor, bool isActive, std::vector <int> keyMapping):
 Component(actor, isActive),m_keyMapping(keyMapping){};
 
 void ControllerComponent::Process(float deltaTime)

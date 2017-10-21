@@ -21,13 +21,16 @@
 
 #include "engine/actor.hpp"
 #include "engine/component.hpp"
+
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
 #include <vector>
 
 class ControllerComponent :
     public Component
 {
 public:
-    ControllerComponent(Actor* actor,bool isActive, std::vector <int> keyMapping);
+    ControllerComponent(Actor* actor,bool isActive = true, std::vector <int> keyMapping = {GLFW_KEY_W,GLFW_KEY_A,GLFW_KEY_S,GLFW_KEY_D,GLFW_KEY_SPACE});
     
     void Process(float deltaTime) override;
 
