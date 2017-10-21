@@ -1,8 +1,9 @@
-#include "engine/game.hpp"
 #include "graphic/device.hpp"
 #include "graphic/effect.hpp"
 #include "input/keymanager.hpp"
 #include "engine/camera.hpp"
+#include "engine/game.hpp"
+#include "actors/characteractor.hpp"
 #include "glm/glm.hpp"
 
 using namespace Graphic;
@@ -16,6 +17,9 @@ Game::Game() : defaultScene(Camera(
 {
 	Device::Init(1366, 768);
 	Input::KeyManager::Init(Device::GetWindow());
+    
+    Actor* character = new CharacterActor(glm::vec2(0, 0), 0.0f);
+    this->defaultScene.AddActor(*character);
 }
 
 Game::~Game()

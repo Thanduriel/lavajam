@@ -26,5 +26,6 @@ class PhysicsComponent :
 {
 public:
 	PhysicsComponent(Actor* actor, bool isActive = true);
-	~PhysicsComponent();
+    
+    void Process(float deltaTime) override;
 };

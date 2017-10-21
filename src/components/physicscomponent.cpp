@@ -22,5 +22,5 @@
 PhysicsComponent::PhysicsComponent(Actor* actor, bool isActive) : Component(actor, isActive)
 {}
 
-PhysicsComponent::~PhysicsComponent()
+void PhysicsComponent::Process(float deltaTime)
 {}
