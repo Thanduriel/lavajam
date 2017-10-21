@@ -29,10 +29,12 @@ CharacterActor::CharacterActor(
     position,
     rotation,
     velocity
-), physics(this, PhysicsShape::Triangle, 1.0f, ActorKind::Character)
+), physics(this, PhysicsShape::Triangle, 1.0f, ActorKind::Character),
+    draw(this, DrawShape::Triangle, 1.0f, glm::vec4(1, 1, 0, 1), 0)
 {}
 
 void CharacterActor::Register(Scene& scene)
 {
     scene.AddComponent(this->physics);
+    scene.AddComponent(this->draw);
 }

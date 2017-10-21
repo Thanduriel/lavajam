@@ -17,26 +17,19 @@
  * 
  */
 
-#pragma once
+#include "drawcomponent.hpp"
 
-#include "engine/actor.hpp"
-#include "glm/glm.hpp"
-#include "components/physicscomponent.hpp"
-#include "components/drawcomponent.hpp"
+DrawComponent::DrawComponent(
+    Actor* actor,
+    DrawShape shape,
+    float size,
+    glm::vec4 color,
+    size_t layer,
+    bool isActive
+) : Component(actor, isActive), m_shape(shape), m_size(size), m_color(color), m_layer(layer)
+{}
 
-class CharacterActor :
-    public Actor
+void DrawComponent::Process(float deltaTime)
 {
-public:
-    CharacterActor(
-        glm::vec2 position,
-        float rotation,
-        glm::vec2 velocity
-    );
-    
-    void Register(Scene & scene) override;
-
-private:
-    PhysicsComponent physics;
-    DrawComponent draw;
-};
+    // TBD
+}

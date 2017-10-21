@@ -20,23 +20,23 @@
 #pragma once
 
 #include "engine/actor.hpp"
-#include "glm/glm.hpp"
-#include "components/physicscomponent.hpp"
-#include "components/drawcomponent.hpp"
+#include "engine/component.hpp"
 
-class CharacterActor :
-    public Actor
+enum class DrawShape {
+    Triangle,
+};
+
+class DrawComponent :
+    public Component
 {
 public:
-    CharacterActor(
-        glm::vec2 position,
-        float rotation,
-        glm::vec2 velocity
-    );
+    DrawComponent(Actor* actor, DrawShape shape, float size, glm::vec4 color, size_t layer, bool isActive = true);
     
-    void Register(Scene & scene) override;
+    void Process(float deltaTime) override;
 
 private:
-    PhysicsComponent physics;
-    DrawComponent draw;
+    DrawShape m_shape;
+    float m_size;
+    glm::vec4 m_color;
+    size_t m_layer;
 };
