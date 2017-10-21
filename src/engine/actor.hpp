@@ -26,8 +26,9 @@ typedef uint64_t guid_t;
 class Scene;
 
 enum class ActorKind {
-    Wall,
+    Ai,
     Character,
+	Bullet
 };
 
 class Actor

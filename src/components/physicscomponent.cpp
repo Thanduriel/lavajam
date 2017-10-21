@@ -61,7 +61,8 @@ bool PhysicsComponent::Collide(PhysicsComponent& component, glm::vec2& velocityD
             bool collides = glm::distance(center, my_center) <= my_radius + radius;
             if (collides)
             {
-                velocityDelta = glm::normalize(my_center - center);
+				auto direction = my_center - center;
+				if (direction.x != 0 || direction.y != 0) velocityDelta = glm::normalize(direction) / glm::length(direction);
                 return true;
             }
             else
