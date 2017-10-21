@@ -21,9 +21,24 @@
 
 #include "engine/actor.hpp"
 #include "engine/component.hpp"
+#include "graphic/vertexbuffer.hpp"
+#include "graphic/effect.hpp"
 
 enum class DrawShape {
     Triangle,
+};
+
+struct Vertex
+{
+	glm::vec2 position;
+	glm::vec3 color;
+	float rotation;
+};
+
+struct GraphicContext
+{
+    Graphic::VertexBuffer<Vertex>& VertexBuffer;
+    Graphic::Effect& Effect;
 };
 
 class DrawComponent :
@@ -33,6 +48,20 @@ public:
     DrawComponent(Actor* actor, DrawShape shape, float size, glm::vec4 color, size_t layer, bool isActive = true);
     
     void Process(float deltaTime) override;
+    
+    DrawShape GetShape() const;
+    float GetSize() const;
+    glm::vec4 GetColor() const;
+    size_t GetLayer() const;
+    
+    void SetShape(DrawShape shape);
+    void SetSize(float size);
+    void SetColor(glm::vec4 color);
+    void SetLayer(size_t layer);
+    
+    static GraphicContext& GetContext();
+    static void InitializeContext();
+    static void DrawContext();
 
 private:
     DrawShape m_shape;

@@ -18,6 +18,7 @@
  */
 
 #include "engine/scene.hpp"
+#include "components/drawcomponent.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -80,7 +81,7 @@ void Scene::AddComponent(PhysicsComponent& component)
 
 void Scene::Update(float deltaTime)
 {
-//    std::cout << "Updating scene [delta-time: " << deltaTime << "]" << std::endl;
+    //std::cout << "Updating scene [delta-time: " << deltaTime << "]" << std::endl;
     
     auto cidx = std::remove_if(
         this->components.begin(),
@@ -111,10 +112,13 @@ void Scene::Update(float deltaTime)
     
     this->camera.Update();
     
-    for (auto const& component : this->components)
+    for (const auto& actor: this->actors)
     {
-        component->Process(deltaTime);
+        actor->Update();
     }
+    
+    GraphicContext& ctx = DrawComponent::GetContext();
+    ctx.VertexBuffer.Clear();
     
     glm::vec2 v;
     for (auto it_me = this->physicsComponents.begin(); it_me != this->physicsComponents.end(); it_me++)
@@ -128,4 +132,11 @@ void Scene::Update(float deltaTime)
             }
         }
     }
+    
+    for (auto const& component : this->components)
+    {
+        component->Process(deltaTime);
+    }
+    
+    DrawComponent::DrawContext();
 }

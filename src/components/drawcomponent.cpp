@@ -17,7 +17,8 @@
  * 
  */
 
-#include "drawcomponent.hpp"
+#include "components/drawcomponent.hpp"
+#include "glm.hpp"
 
 DrawComponent::DrawComponent(
     Actor* actor,
@@ -29,7 +30,81 @@ DrawComponent::DrawComponent(
 ) : Component(actor, isActive), m_shape(shape), m_size(size), m_color(color), m_layer(layer)
 {}
 
+GraphicContext& DrawComponent::GetContext()
+{
+    using namespace Graphic;
+    static VertexBuffer<Vertex> vertexBuffer({ VertexFormat::VEC2, VertexFormat::VEC3, VertexFormat::FLOAT });
+    static Effect effect("shaders/vert.spv", "shaders/frag.spv", vertexBuffer);
+    static GraphicContext ctx({ vertexBuffer, effect });
+    return ctx;
+}
+
+void DrawComponent::InitializeContext()
+{
+    GraphicContext& ctx = DrawComponent::GetContext();
+    Graphic::Device::SetEffect(ctx.Effect);
+}
+
+void DrawComponent::DrawContext()
+{
+    GraphicContext& ctx = DrawComponent::GetContext();
+    ctx.VertexBuffer.Upload();
+    Graphic::Device::Draw(ctx.VertexBuffer);
+}
+
 void DrawComponent::Process(float deltaTime)
 {
-    // TBD
+    GraphicContext& ctx = DrawComponent::GetContext();
+    
+	Vertex v {
+        this->m_actor->GetPosition() + glm::vec2(0.f, -this->m_size),
+        this->m_color,
+        this->m_actor->GetRotation()
+    };
+    
+	ctx.VertexBuffer.Add(v);
+	v.position = this->m_actor->GetPosition() + glm::vec2(this->m_size/2, this->m_size);
+	ctx.VertexBuffer.Add(v);
+	v.position = this->m_actor->GetPosition() + glm::vec2(-this->m_size/2, this->m_size);
+	ctx.VertexBuffer.Add(v);
+}
+
+DrawShape DrawComponent::GetShape() const
+{
+    return this->m_shape;
+}
+
+float DrawComponent::GetSize() const
+{
+    return this->m_size;
+}
+
+glm::vec4 DrawComponent::GetColor() const
+{
+    return this->m_color;
+}
+
+size_t DrawComponent::GetLayer() const
+{
+    return this->m_layer;
+}
+
+void DrawComponent::SetShape(DrawShape shape)
+{
+    this->m_shape = shape;
+}
+
+void DrawComponent::SetSize(float size)
+{
+    this->m_size = size;
+}
+
+void DrawComponent::SetColor(glm::vec4 color)
+{
+    this->m_color = color;
+}
+
+void DrawComponent::SetLayer(size_t layer)
+{
+    this->m_layer = layer;
 }

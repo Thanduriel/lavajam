@@ -4,6 +4,7 @@
 #include "engine/camera.hpp"
 #include "engine/game.hpp"
 #include "actors/characteractor.hpp"
+#include "components/drawcomponent.hpp"
 #include "glm.hpp"
 
 #include <iostream>
@@ -23,7 +24,8 @@ Game::Game() : defaultScene(Camera(
 	Device::Init(1366, 768);
 	Input::KeyManager::Init(Device::GetWindow());
     
-    Actor* character = new CharacterActor(glm::vec2(0, 0), 0.0f, glm::vec2(0, 0));
+    glm::vec4 blue(0.129411765f, 0.588235294f, 0.952941176f, 1);
+    Actor* character = new CharacterActor(0.1f, blue, 0, glm::vec2(0, 0), 0.0f, glm::vec2(0, 0));
     this->defaultScene.AddActor(*character);
 }
 
@@ -32,42 +34,9 @@ Game::~Game()
 	Device::Exit();
 }
 
-struct Vertex
-{
-	glm::vec2 position;
-	glm::vec3 color;
-	float rotation;
-};
-
-void AddTriangle(VertexBuffer<Vertex>& _vertexBuffer, glm::vec2 _position)
-{
-	const float TRI_SIZE = 0.1f;
-	using namespace glm;
-	Vertex v{ _position + vec2(0.f,-TRI_SIZE), vec3(1.f,1.f,1.f), 0.f };
-	_vertexBuffer.Add(v);
-	v.position = _position + vec2(TRI_SIZE, TRI_SIZE);
-	_vertexBuffer.Add(v);
-	v.position = _position + vec2(-TRI_SIZE, TRI_SIZE);
-	_vertexBuffer.Add(v);
-}
-
-const std::vector<Vertex> vertices = {
-	{ { 0.0f, -0.5f },{ 1.0f, 0.0f, 0.0f },0.f },
-	{ { 0.5f, 0.5f },{ 0.0f, 1.0f, 0.0f },0.f },
-	{ { -0.5f, 0.5f },{ 0.0f, 0.0f, 1.0f },0.f }
-};
-
 void Game::Run()
 {
-	VertexBuffer<Vertex> vertexBuffer({ VertexFormat::VEC2, VertexFormat::VEC3, VertexFormat::FLOAT });
-
-	using namespace glm;
-	vertexBuffer.Add(vertices[0]);
-	vertexBuffer.Add(vertices[1]);
-	vertexBuffer.Add(vertices[2]);
-	vertexBuffer.Upload();
-	Effect effect("shaders/vert.spv", "shaders/frag.spv", vertexBuffer);
-	Device::SetEffect(effect);
+    DrawComponent::InitializeContext();
     
     double lastTime = 0;
 
@@ -80,11 +49,7 @@ void Game::Run()
 
 		static float shift = 0.f;
 		shift += deltaTime * 0.2f;
-	//	AddTriangle(vertexBuffer, glm::vec2(shift));
-	//	vertexBuffer.Upload();
-	//	_sleep(20);
-
-		Device::Draw(vertexBuffer);
+        
 		Input::KeyManager::pollEvents();
 	}
 }

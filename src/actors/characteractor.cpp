@@ -22,6 +22,9 @@
 #include "actors/characteractor.hpp"
 
 CharacterActor::CharacterActor(
+    float size,
+    glm::vec4 color,
+    size_t layer,
     glm::vec2 position,
     float rotation,
     glm::vec2 velocity
@@ -29,8 +32,8 @@ CharacterActor::CharacterActor(
     position,
     rotation,
     velocity
-), physics(this, PhysicsShape::Triangle, 1.0f, ActorKind::Character),
-    draw(this, DrawShape::Triangle, 1.0f, glm::vec4(1, 1, 0, 1), 0),
+), physics(this, PhysicsShape::Triangle, size, ActorKind::Character),
+    draw(this, DrawShape::Triangle, size, color, layer),
     controller(this)
 {}
 

@@ -30,6 +30,9 @@ class CharacterActor :
 {
 public:
     CharacterActor(
+        float size,
+        glm::vec4 color,
+        size_t layer,
         glm::vec2 position,
         float rotation,
         glm::vec2 velocity
