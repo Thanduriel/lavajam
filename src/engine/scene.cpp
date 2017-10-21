@@ -157,9 +157,10 @@ void Scene::Initialize()
     VertexBuffer = new Graphic::VertexBuffer<Vertex>({
         Graphic::VertexFormat::VEC2,
         Graphic::VertexFormat::VEC3,
-        Graphic::VertexFormat::FLOAT
+        Graphic::VertexFormat::FLOAT,
+		Graphic::VertexFormat::FLOAT
     });
-    Effect = new Graphic::Effect("shaders/vert.spv", "shaders/frag.spv", *VertexBuffer);
+    Effect = new Graphic::Effect("shaders/vert.spv", "shaders/frag.spv", *VertexBuffer, "shaders/geom.spv");
 
     Graphic::Device::SetEffect(*Effect);
 }

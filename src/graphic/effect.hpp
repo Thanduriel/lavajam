@@ -13,7 +13,7 @@ namespace Graphic {
 	public:
 		// @_buffer Required for vertex description
 		Effect(const std::string_view& _vertexShader, const std::string_view& _fragmentShader,
-			const BasicVertexBuffer& _buffer, const std::string_view& _geometryShader = "");
+			const BasicVertexBuffer& _buffer, const std::string_view& _geometryShader);
 		~Effect();
 	private:
 		VkShaderModule LoadShader(const std::string_view& _name);

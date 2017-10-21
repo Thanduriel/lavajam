@@ -34,15 +34,12 @@ DrawComponent::DrawComponent(
 void DrawComponent::Process(float deltaTime)
 {
 	Vertex v {
-        this->m_actor->GetPosition() + glm::vec2(0.f, -this->m_size),
+        this->m_actor->GetPosition(),
         this->m_color,
-        this->m_actor->GetRotation()
+        this->m_actor->GetRotation(),
+		m_size
     };
     
-	VertexBuffer->Add(v);
-	v.position = this->m_actor->GetPosition() + glm::vec2(this->m_size/2, this->m_size);
-	VertexBuffer->Add(v);
-	v.position = this->m_actor->GetPosition() + glm::vec2(-this->m_size/2, this->m_size);
 	VertexBuffer->Add(v);
 }
 

@@ -39,6 +39,7 @@ struct Vertex
 	glm::vec2 position;
 	glm::vec3 color;
 	float rotation;
+	float size;
 };
 
 extern Graphic::VertexBuffer<Vertex>* VertexBuffer;
