@@ -18,6 +18,7 @@
  */
 
 #include "engine/actor.hpp"
+#include "glm.hpp"
 
 Actor::Actor(
     glm::vec2 position,
@@ -88,7 +89,7 @@ void Actor::Destroy()
 
 void Actor::Update()
 {
-    this->m_position += this->m_velocity;
+    this->m_position += glm::rotate(this->m_velocity, this->m_rotation);
     this->m_velocity *= 0.5;
 }
 
