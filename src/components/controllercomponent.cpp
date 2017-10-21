@@ -14,7 +14,7 @@ void ControllerComponent::Process(float deltaTime)
     if(Input::KeyManager::getKeyStates(m_keyMapping[1])!=Input::EKeyState::RELEASE) rotate-=deltaTime;
     if(Input::KeyManager::getKeyStates(m_keyMapping[3])!=Input::EKeyState::RELEASE) rotate+=deltaTime;
     m_actor->AddRotation(rotate * 5);
-    m_actor->AddVelocity(glm::rotate(glm::vec2(0, translate), m_actor->GetRotation()));   
+    m_actor->AddVelocity(glm::rotate(glm::vec2(0, translate / 2.f), m_actor->GetRotation()));   
     if(Input::KeyManager::getKeyStates(m_keyMapping[4])!=Input::EKeyState::RELEASE) {
         //shoot!
     }
