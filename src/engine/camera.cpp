@@ -24,73 +24,73 @@ Camera::Camera(
     float aspectRatio,
     glm::vec3 translation,
     glm::quat rotation
-) : fieldOfView(fov), aspectRatio(aspectRatio), translation(translation), rotation(rotation)
+) : m_fieldOfView(fov), m_aspectRatio(aspectRatio), m_translation(translation), m_rotation(rotation)
 {
-    this->viewProjection = glm::mat4(1.0f);
+    this->m_viewProjection = glm::mat4(1.0f);
 }
 
 void Camera::SetFieldOfView(const float fov)
 {
-    this->fieldOfView = fov;
+    this->m_fieldOfView = fov;
 }
 
 void Camera::SetAspectRatio(const float ar)
 {
-    this->aspectRatio = ar;
+    this->m_aspectRatio = ar;
 }
 
 void Camera::SetNear(const float near)
 {
-    this->near = near;
+    this->m_near = near;
 }
 
 void Camera::SetFar(const float far)
 {
-    this->far = far;
+    this->m_far = far;
 }
 
 void Camera::SetTranslation(const glm::vec3 translation)
 {
-    this->translation = translation;
+    this->m_translation = translation;
 }
 
 void Camera::SetRotation(const glm::quat rotation) {
-    this->rotation = rotation;
+    this->m_rotation = rotation;
 }
 
 float Camera::GetFieldOfView() const
 {
-    return this->fieldOfView;
+    return this->m_fieldOfView;
 }
 
 float Camera::GetAspectRatio() const
 {
-    return this->aspectRatio;
+    return this->m_aspectRatio;
 }
 
 float Camera::GetNear() const
 {
-    return this->near;
+    return this->m_near;
 }
 
 float Camera::GetFar() const
 {
-    return this->far;
+    return this->m_far;
 }
 
 glm::vec3 Camera::GetTranslation() const
 {
-    return this->translation;
+    return this->m_translation;
 }
 
 glm::quat Camera::GetRotation() const
 {
-    return this->rotation;
+    return this->m_rotation;
 }
 
 const glm::mat4& Camera::GetViewProjection() const
 {
-    return this->viewProjection;
+    return this->m_viewProjection;
 }
 
 void Camera::Update()
@@ -98,16 +98,16 @@ void Camera::Update()
     // calculate view-projection with glm
     
     glm::mat4 view =
-        glm::translate(glm::mat4(1.0f), this->translation) *
-        glm::mat4_cast(this->rotation);
+        glm::translate(glm::mat4(1.0f), this->m_translation) *
+        glm::mat4_cast(this->m_rotation);
     
     
     glm::mat4 projection = glm::perspective(
-        this->fieldOfView,
-        this->aspectRatio,
-        this->near,
-        this->far
+        this->m_fieldOfView,
+        this->m_aspectRatio,
+        this->m_near,
+        this->m_far
     );
     
-    this->viewProjection = view * projection;
+    this->m_viewProjection = view * projection;
 }

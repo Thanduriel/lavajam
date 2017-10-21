@@ -11,5 +11,5 @@ public:
 	void Run();
 
 private:
-    Scene defaultScene;
+    Scene m_defaultScene;
 };

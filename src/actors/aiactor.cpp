@@ -17,29 +17,24 @@
  * 
  */
 
-#include "engine/scene.hpp"
+#include "actors/aiactor.hpp"
 #include "components/physicscomponent.hpp"
-#include "actors/characteractor.hpp"
+#include "engine/scene.hpp"
 
-CharacterActor::CharacterActor(
+AiActor::AiActor(
     float size,
     glm::vec4 color,
     size_t layer,
     glm::vec2 position,
     float rotation,
     glm::vec2 velocity
-) : Actor(
-    position,
-    rotation,
-    velocity
-), m_physics(this, PhysicsShape::Triangle, size, ActorKind::Character),
-    m_draw(this, DrawShape::Triangle, size, color, layer),
-    m_controller(this)
+) : Actor(position, rotation, velocity),
+    m_physics(this, PhysicsShape::Triangle, size, ActorKind::Character),
+    m_draw(this, DrawShape::Triangle, size, color, layer)
 {}
 
-void CharacterActor::Register(Scene& scene)
+void AiActor::Register(Scene& scene)
 {
     scene.AddComponent(this->m_physics);
     scene.AddComponent(this->m_draw);
-    scene.AddComponent(this->m_controller);
 }

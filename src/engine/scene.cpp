@@ -27,59 +27,59 @@ Graphic::VertexBuffer<Vertex>* VertexBuffer;
 Graphic::Effect* Effect;
 
 Scene::Scene(Camera camera, Scene* previous, Scene* next) :
-    camera(camera), previous(previous), next(next)
+    m_camera(camera), m_previous(previous), m_next(next)
 {}
 
 const Camera& Scene::GetCamera() const
 {
-    return this->camera;
+    return this->m_camera;
 }
 
 const Scene* Scene::GetPrevious() const
 {
-    return this->previous;
+    return this->m_previous;
 }
 
 const Scene* Scene::GetNext() const
 {
-    return this->next;
+    return this->m_next;
 }
 
 const Actors& Scene::GetActors() const
 {
-    return this->actors;
+    return this->m_actors;
 }
 
 void Scene::AddActor(Actor& actor)
 {
     std::unique_ptr<Actor> actor_ptr(&actor);
-    this->actors.push_back(std::move(actor_ptr));
+    this->m_actors.push_back(std::move(actor_ptr));
     actor.Register(*this);
 }
 
 void Scene::SetCamera(Camera camera)
 {
-    this->camera = camera;
+    this->m_camera = camera;
 }
 
 void Scene::SetPrevious(Scene* scene)
 {
-    this->previous = scene;
+    this->m_previous = scene;
 }
 
 void Scene::SetNext(Scene* scene)
 {
-    this->next = scene;
+    this->m_next = scene;
 }
 
 void Scene::AddComponent(Component& component)
 {
-    this->components.push_back(&component);
+    this->m_components.push_back(&component);
 }
 
 void Scene::AddComponent(PhysicsComponent& component)
 {
-    this->physicsComponents.push_back(&component);
+    this->m_physicsComponents.push_back(&component);
 }
 
 void Scene::Update(float deltaTime)
@@ -87,35 +87,35 @@ void Scene::Update(float deltaTime)
     //std::cout << "Updating scene [delta-time: " << deltaTime << "]" << std::endl;
     
     auto cidx = std::remove_if(
-        this->components.begin(),
-        this->components.end(),
+        this->m_components.begin(),
+        this->m_components.end(),
         [](const Component* component)
         {
             return component->GetActor()->GetDestroy();
         });
-    this->components.erase(cidx, this->components.end());
+    this->m_components.erase(cidx, this->m_components.end());
     
     auto cpidx = std::remove_if(
-        this->physicsComponents.begin(),
-        this->physicsComponents.end(),
+        this->m_physicsComponents.begin(),
+        this->m_physicsComponents.end(),
         [](const PhysicsComponent* component)
         {
             return component->GetActor()->GetDestroy();
         });
-    this->physicsComponents.erase(cpidx, this->physicsComponents.end());
+    this->m_physicsComponents.erase(cpidx, this->m_physicsComponents.end());
     
     auto idx = std::remove_if(
-        this->actors.begin(),
-        this->actors.end(),
+        this->m_actors.begin(),
+        this->m_actors.end(),
         [](const std::unique_ptr<Actor>& actor)
         {
            return actor->GetDestroy(); 
         });
-    this->actors.erase(idx, this->actors.end());
+    this->m_actors.erase(idx, this->m_actors.end());
     
-    this->camera.Update();
+    this->m_camera.Update();
     
-    for (const auto& actor: this->actors)
+    for (const auto& actor: this->m_actors)
     {
         actor->Update();
     }
@@ -123,19 +123,20 @@ void Scene::Update(float deltaTime)
     VertexBuffer->Clear();
     
     glm::vec2 v;
-    for (auto it_me = this->physicsComponents.begin(); it_me != this->physicsComponents.end(); it_me++)
+    for (auto it_me = this->m_physicsComponents.begin(); it_me != this->m_physicsComponents.end(); it_me++)
     {
-        for (auto it_other = it_me + 1; it_other != this->physicsComponents.end(); it_other++)
+        for (auto it_other = it_me + 1; it_other != this->m_physicsComponents.end(); it_other++)
         {
             if ((*it_me)->Collide(**it_other, v))
             {
+                v /= 10000.0f;
                 (*it_me)->GetActor()->AddVelocity(v);
                 (*it_other)->GetActor()->AddVelocity(-v);
             }
         }
     }
     
-    for (auto const& component : this->components)
+    for (auto const& component : this->m_components)
     {
         component->Process(deltaTime);
     }

@@ -20,41 +20,26 @@
 #pragma once
 
 #include "glm.hpp"
+#include "engine/actor.hpp"
+#include "components/physicscomponent.hpp"
+#include "components/drawcomponent.hpp"
 
-class Camera
+class AiActor :
+    public Actor
 {
 public:
-    Camera(
-        float fov,
-        float aspectRatio,
-        glm::vec3 translation,
-        glm::quat rotation
+    AiActor(
+        float size,
+        glm::vec4 color,
+        size_t layer,
+        glm::vec2 position,
+        float rotation,
+        glm::vec2 velocity
     );
     
-    void SetFieldOfView(const float fov);
-    void SetAspectRatio(const float ar);
-    void SetNear(const float near);
-    void SetFar(const float far);
-    void SetTranslation(const glm::vec3 translation);
-    void SetRotation(const glm::quat rotation);
-    
-    float GetFieldOfView() const;
-    float GetAspectRatio() const;
-    float GetNear() const;
-    float GetFar() const;
-    glm::vec3 GetTranslation() const;
-    glm::quat GetRotation() const;
-    
-    const glm::mat4& GetViewProjection() const;
-    
-    void Update();
+    void Register(Scene& scene) override;
     
 private:
-    float m_aspectRatio;
-    float m_fieldOfView;
-    float m_near;
-    float m_far;
-    glm::vec3 m_translation;
-    glm::quat m_rotation;
-    glm::mat4 m_viewProjection;
+    PhysicsComponent m_physics;
+    DrawComponent m_draw;
 };

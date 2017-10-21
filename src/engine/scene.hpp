@@ -66,10 +66,10 @@ public:
     void Destroy();
     
 private:
-    Camera camera;
-    Scene* previous;
-    Scene* next;
-    Actors actors;
-    Components components;
-    PhysicsComponents physicsComponents;
+    Camera m_camera;
+    Scene* m_previous;
+    Scene* m_next;
+    Actors m_actors;
+    Components m_components;
+    PhysicsComponents m_physicsComponents;
 };

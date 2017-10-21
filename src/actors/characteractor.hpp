@@ -38,10 +38,10 @@ public:
         glm::vec2 velocity
     );
     
-    void Register(Scene & scene) override;
+    void Register(Scene& scene) override;
 
 private:
-    PhysicsComponent physics;
-    DrawComponent draw;
-    ControllerComponent controller;
+    PhysicsComponent m_physics;
+    DrawComponent m_draw;
+    ControllerComponent m_controller;
 };
