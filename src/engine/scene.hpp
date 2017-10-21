@@ -23,12 +23,14 @@
 #include "engine/camera.hpp"
 #include "engine/component.hpp"
 #include "engine/scene.hpp"
+#include "components/physicscomponent.hpp"
 
 #include <vector>
 #include <memory>
 
 typedef std::vector<std::unique_ptr<Actor>> Actors;
 typedef std::vector<Component*> Components;
+typedef std::vector<PhysicsComponent*> PhysicsComponents;
 
 class Scene
 {
@@ -45,6 +47,7 @@ public:
     void SetPrevious(Scene* scene);
     void SetNext(Scene* scene);
     void AddComponent(Component& component);
+    void AddComponent(PhysicsComponent& component);
     
     void Update(float deltaTime);
     
@@ -54,4 +57,5 @@ private:
     Scene* next;
     Actors actors;
     Components components;
+    PhysicsComponents physicsComponents;
 };

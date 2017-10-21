@@ -73,6 +73,11 @@ void Scene::AddComponent(Component& component)
     this->components.push_back(&component);
 }
 
+void Scene::AddComponent(PhysicsComponent& component)
+{
+    this->physicsComponents.push_back(&component);
+}
+
 void Scene::Update(float deltaTime)
 {
     std::cout << "Updating scene [delta-time: " << deltaTime << "]" << std::endl;
@@ -85,6 +90,15 @@ void Scene::Update(float deltaTime)
             return component->GetActor()->GetDestroy();
         });
     this->components.erase(cidx, this->components.end());
+    
+    auto cpidx = std::remove_if(
+        this->physicsComponents.begin(),
+        this->physicsComponents.end(),
+        [](const PhysicsComponent* component)
+        {
+            return component->GetActor()->GetDestroy();
+        });
+    this->physicsComponents.erase(cpidx, this->physicsComponents.end());
     
     auto idx = std::remove_if(
         this->actors.begin(),
@@ -100,5 +114,12 @@ void Scene::Update(float deltaTime)
     for (auto const& component : this->components)
     {
         component->Process(deltaTime);
+    }
+    
+    for (auto const& physicsComponent : this->physicsComponents)
+    {
+        physicsComponent->Process(deltaTime);
+        
+        // TBD do collisions and set position/rotation
     }
 }
