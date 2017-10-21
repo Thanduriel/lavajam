@@ -53,7 +53,7 @@ public:
     void AddVelocity(const glm::vec2 velocityDelta);
     
     void Destroy();
-    void Update();
+    void Update(float deltaTime);
     
     virtual void Register(Scene& scene) = 0;
     

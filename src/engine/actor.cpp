@@ -87,10 +87,10 @@ void Actor::Destroy()
     this->m_destroy = true;
 }
 
-void Actor::Update()
+void Actor::Update(float deltaTime)
 {
-    this->m_position += this->m_velocity;
-    this->m_velocity *= 0.999;
+    this->m_position += this->m_velocity * deltaTime;
+    this->m_velocity -= this->m_velocity * 0.3 * deltaTime;
 }
 
 bool Actor::GetDestroy() const

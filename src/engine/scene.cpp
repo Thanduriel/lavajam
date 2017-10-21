@@ -117,7 +117,7 @@ void Scene::Update(float deltaTime)
     
     for (const auto& actor: this->m_actors)
     {
-        actor->Update();
+        actor->Update(deltaTime);
     }
     
     VertexBuffer->Clear();
@@ -129,7 +129,7 @@ void Scene::Update(float deltaTime)
         {
             if ((*it_me)->Collide(**it_other, v))
             {
-                v /= 10000.0f;
+                v /= 100.0f;
                 (*it_me)->GetActor()->AddVelocity(v);
                 (*it_other)->GetActor()->AddVelocity(-v);
             }
