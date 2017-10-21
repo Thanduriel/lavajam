@@ -20,23 +20,17 @@
 #pragma once
 
 #include "engine/actor.hpp"
+#include "engine/component.hpp"
+#include <vector>
 
-class Component
+class ControllerComponent :
+    public Component
 {
 public:
-    Component(Actor* actor, bool isActive = true);
+    ControllerComponent(Actor* actor,bool isActive, std::vector <int> keyMapping);
     
-    const Actor* GetActor() const;
-    bool IsActive() const;
-    
-    void SetActor(Actor* actor);
-    void SetActive(bool isActive);
-    
-    virtual void Process(float deltaTime) = 0;
+    void Process(float deltaTime) override;
 
 private:
-    bool m_isActive;
-protected:
-    Actor* m_actor;
-    
+    std::vector <int> m_keyMapping;
 };
