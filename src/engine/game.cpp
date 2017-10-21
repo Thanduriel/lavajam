@@ -37,7 +37,7 @@ Game::Game() : m_defaultScene(Camera(
     {
         float x = std::rand() / (float) RAND_MAX * 2.0f - 1.0f;
         float y = std::rand() / (float) RAND_MAX * 2.0f - 1.0f;
-        float r = std::rand() / (float) RAND_MAX * 2 * M_PI;
+        float r = std::rand() / (float) RAND_MAX * 2 * glm::pi<float>();
 
         Actor* ai = new AiActor(0.025f, lime, 0, glm::vec2(x, -y), r, glm::vec2(0, 0));
         this->m_defaultScene.AddActor(*ai);
