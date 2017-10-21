@@ -24,6 +24,8 @@
 #include "engine/component.hpp"
 #include "engine/scene.hpp"
 #include "components/physicscomponent.hpp"
+#include "graphic/vertexbuffer.hpp"
+#include "graphic/effect.hpp"
 
 #include <vector>
 #include <memory>
@@ -31,6 +33,16 @@
 typedef std::vector<std::unique_ptr<Actor>> Actors;
 typedef std::vector<Component*> Components;
 typedef std::vector<PhysicsComponent*> PhysicsComponents;
+
+struct Vertex
+{
+	glm::vec2 position;
+	glm::vec3 color;
+	float rotation;
+};
+
+extern Graphic::VertexBuffer<Vertex>* VertexBuffer;
+extern Graphic::Effect* Effect;
 
 class Scene
 {
@@ -50,6 +62,8 @@ public:
     void AddComponent(PhysicsComponent& component);
     
     void Update(float deltaTime);
+    void Initialize();
+    void Destroy();
     
 private:
     Camera camera;

@@ -23,6 +23,9 @@
 #include <algorithm>
 #include <iostream>
 
+Graphic::VertexBuffer<Vertex>* VertexBuffer;
+Graphic::Effect* Effect;
+
 Scene::Scene(Camera camera, Scene* previous, Scene* next) :
     camera(camera), previous(previous), next(next)
 {}
@@ -117,8 +120,7 @@ void Scene::Update(float deltaTime)
         actor->Update();
     }
     
-    GraphicContext& ctx = DrawComponent::GetContext();
-    ctx.VertexBuffer.Clear();
+    VertexBuffer->Clear();
     
     glm::vec2 v;
     for (auto it_me = this->physicsComponents.begin(); it_me != this->physicsComponents.end(); it_me++)
@@ -138,5 +140,24 @@ void Scene::Update(float deltaTime)
         component->Process(deltaTime);
     }
     
-    DrawComponent::DrawContext();
+    VertexBuffer->Upload();
+    Graphic::Device::Draw(*VertexBuffer);
+}
+
+void Scene::Initialize()
+{
+    VertexBuffer = new Graphic::VertexBuffer<Vertex>({
+        Graphic::VertexFormat::VEC2,
+        Graphic::VertexFormat::VEC3,
+        Graphic::VertexFormat::FLOAT
+    });
+    Effect = new Graphic::Effect("shaders/vert.spv", "shaders/frag.spv", *VertexBuffer);
+
+    Graphic::Device::SetEffect(*Effect);
+}
+
+void Scene::Destroy()
+{
+    delete Effect;
+    delete VertexBuffer;
 }

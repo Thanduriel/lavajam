@@ -28,19 +28,6 @@ enum class DrawShape {
     Triangle,
 };
 
-struct Vertex
-{
-	glm::vec2 position;
-	glm::vec3 color;
-	float rotation;
-};
-
-struct GraphicContext
-{
-    Graphic::VertexBuffer<Vertex>& VertexBuffer;
-    Graphic::Effect& Effect;
-};
-
 class DrawComponent :
     public Component
 {
@@ -58,10 +45,6 @@ public:
     void SetSize(float size);
     void SetColor(glm::vec4 color);
     void SetLayer(size_t layer);
-    
-    static GraphicContext& GetContext();
-    static void InitializeContext();
-    static void DrawContext();
 
 private:
     DrawShape m_shape;

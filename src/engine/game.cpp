@@ -31,12 +31,13 @@ Game::Game() : defaultScene(Camera(
 
 Game::~Game()
 {
+    this->defaultScene.Destroy();
 	Device::Exit();
 }
 
 void Game::Run()
 {
-    DrawComponent::InitializeContext();
+    this->defaultScene.Initialize();
     
     double lastTime = 0;
 
