@@ -19,8 +19,28 @@
 
 #include "components/physicscomponent.hpp"
 
-PhysicsComponent::PhysicsComponent(Actor* actor, bool isActive) : Component(actor, isActive)
+PhysicsComponent::PhysicsComponent(
+    Actor* actor,
+    PhysicsShape shape,
+    float size,
+    ActorKind kind,
+    bool isActive
+) : Component(actor, isActive), m_shape(shape), m_size(size), m_kind(kind)
 {}
 
 void PhysicsComponent::Process(float deltaTime)
-{}
+{
+    // nothing to do here
+}
+
+bool PhysicsComponent::CollidesWithPoint(glm::vec2 point) const
+{
+    // TBD
+    return false;
+}
+
+bool PhysicsComponent::CollidesWithLine(glm::vec2 start, glm::vec2 end) const
+{
+    // TBD
+    return false;
+}

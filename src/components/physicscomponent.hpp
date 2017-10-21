@@ -19,13 +19,27 @@
 
 #pragma once
 
+#include "engine/actor.hpp"
 #include "engine/component.hpp"
+#include "glm/glm.hpp"
+
+enum class PhysicsShape {
+    Triangle,
+};
 
 class PhysicsComponent :
 	public Component
 {
 public:
-	PhysicsComponent(Actor* actor, bool isActive = true);
+	PhysicsComponent(Actor* actor, PhysicsShape shape, float size, ActorKind kind, bool isActive = true);
     
     void Process(float deltaTime) override;
+    
+    bool CollidesWithPoint(glm::vec2 point) const;
+    bool CollidesWithLine(glm::vec2 start, glm::vec2 end) const;
+    
+private:
+    PhysicsShape m_shape;
+    float m_size;
+    ActorKind m_kind;
 };

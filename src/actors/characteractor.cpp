@@ -18,6 +18,7 @@
  */
 
 #include "engine/scene.hpp"
+#include "components/physicscomponent.hpp"
 #include "actors/characteractor.hpp"
 
 CharacterActor::CharacterActor(
@@ -28,7 +29,7 @@ CharacterActor::CharacterActor(
     position,
     rotation,
     velocity
-), physics(this)
+), physics(this, PhysicsShape::Triangle, 1.0f, ActorKind::Character)
 {}
 
 void CharacterActor::Register(Scene& scene)
