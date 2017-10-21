@@ -17,10 +17,14 @@
 *
 */
 
-#include "physicsComponent.hpp"
+#pragma once
 
-physicsComponent::physicsComponent(Actor* actor, bool isActive) : Component(actor, isActive)
-{}
+#include "../engine/component.hpp"
 
-physicsComponent::~physicsComponent()
-{}
+class PhysicsComponent :
+	public Component
+{
+public:
+	PhysicsComponent(Actor* actor, bool isActive = true);
+	~PhysicsComponent();
+};
