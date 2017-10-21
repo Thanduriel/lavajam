@@ -26,8 +26,8 @@ class Component
 public:
     Component(Actor* actor, bool isActive = true);
     
-    const Actor* GetActor();
-    bool IsActive();
+    const Actor* GetActor() const;
+    bool IsActive() const;
     
     void SetActor(Actor* actor);
     void SetActive(bool isActive);

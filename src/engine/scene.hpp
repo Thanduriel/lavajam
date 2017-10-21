@@ -28,7 +28,7 @@
 #include <memory>
 
 typedef std::vector<std::unique_ptr<Actor>> Actors;
-typedef std::vector<std::unique_ptr<Component>> Components;
+typedef std::vector<Component*> Components;
 
 class Scene
 {

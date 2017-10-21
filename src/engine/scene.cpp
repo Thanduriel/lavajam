@@ -70,8 +70,7 @@ void Scene::SetNext(Scene* scene)
 
 void Scene::AddComponent(Component& component)
 {
-    std::unique_ptr<Component> component_ptr(&component);
-    this->components.push_back(std::move(component_ptr));
+    this->components.push_back(&component);
 }
 
 void Scene::Update(float deltaTime)
@@ -81,7 +80,7 @@ void Scene::Update(float deltaTime)
     auto cidx = std::remove_if(
         this->components.begin(),
         this->components.end(),
-        [](const std::unique_ptr<Component>& component)
+        [](const Component* component)
         {
             return component->GetActor()->GetDestroy();
         });
