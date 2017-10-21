@@ -1,5 +1,6 @@
 #include "graphic/device.hpp"
 #include "graphic/effect.hpp"
+#include "vertexbuffer.hpp"
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
@@ -53,6 +54,7 @@ namespace Graphic {
 	// var definitions
 	int Device::m_resolutionX;
 	int Device::m_resolutionY;
+	const Effect* Device::m_currentEffect;
 
 	GLFWwindow* Device::m_window;
 	VkInstance Device::m_instance;
@@ -71,7 +73,6 @@ namespace Graphic {
 	std::vector<VkImageView> Device::m_swapChainImageViews;
 
 	VkCommandPool Device::m_commandPool;
-	std::vector<VkCommandBuffer> Device::m_commandBuffers;
 
 	VkSemaphore Device::m_imageAvailableSemaphore;
 	VkSemaphore Device::m_renderFinishedSemaphore;
@@ -149,7 +150,7 @@ namespace Graphic {
 		vkDestroySemaphore(m_logicalDevice, m_renderFinishedSemaphore, nullptr);
 		vkDestroySemaphore(m_logicalDevice, m_imageAvailableSemaphore, nullptr);
 
-	//	vkDestroyCommandPool(m_logicalDevice, m_commandPool, nullptr);
+		vkDestroyCommandPool(m_logicalDevice, m_commandPool, nullptr);
 
 		for (auto& imageView : m_swapChainImageViews) {
 			vkDestroyImageView(m_logicalDevice, imageView, nullptr);
@@ -174,7 +175,8 @@ namespace Graphic {
 	// **************************************************************** //
 	void Device::SetEffect(const Effect& _effect)
 	{
-		CreateCommandBuffers(_effect);
+		m_currentEffect = &_effect;
+	//	CreateCommandBuffers(_effect);
 	}
 
 	// **************************************************************** //
@@ -192,7 +194,7 @@ namespace Graphic {
 		submitInfo.pWaitSemaphores = waitSemaphores;
 		submitInfo.pWaitDstStageMask = waitStages;
 		submitInfo.commandBufferCount = 1;
-		submitInfo.pCommandBuffers = &m_commandBuffers[imageIndex];
+		submitInfo.pCommandBuffers = &m_currentEffect->m_commandBuffers[imageIndex];
 
 		VkSemaphore signalSemaphores[] = { m_renderFinishedSemaphore };
 		submitInfo.signalSemaphoreCount = 1;
@@ -216,6 +218,21 @@ namespace Graphic {
 
 		vkQueueWaitIdle(m_presentQueue);
 
+	}
+
+	// **************************************************************** //
+	uint32_t Device::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
+	{
+		VkPhysicalDeviceMemoryProperties memProperties;
+		vkGetPhysicalDeviceMemoryProperties(m_physicalDevice, &memProperties);
+
+		for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++)
+		{
+			if (typeFilter & (1 << i) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties)
+				return i;
+		}
+
+		throw std::runtime_error("failed to find suitable memory type!");
 	}
 
 	// **************************************************************** //
@@ -577,52 +594,6 @@ namespace Graphic {
 
 		if (vkCreateCommandPool(m_logicalDevice, &poolInfo, nullptr, &m_commandPool) != VK_SUCCESS)
 			throw std::runtime_error("failed to create command pool!");
-	}
-
-	// **************************************************************** //
-	void Device::CreateCommandBuffers(const Effect& _effect)
-	{
-		m_commandBuffers.resize(m_swapChainImageViews.size());
-
-		VkCommandBufferAllocateInfo allocInfo = {};
-		allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-		allocInfo.commandPool = m_commandPool;
-		allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-		allocInfo.commandBufferCount = (uint32_t)m_commandBuffers.size();
-
-		if (vkAllocateCommandBuffers(m_logicalDevice, &allocInfo, m_commandBuffers.data()) != VK_SUCCESS)
-			throw std::runtime_error("failed to allocate command buffers!");
-
-		for (size_t i = 0; i < m_commandBuffers.size(); i++) 
-		{
-			VkCommandBufferBeginInfo beginInfo = {};
-			beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-			beginInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
-			beginInfo.pInheritanceInfo = nullptr; // Optional
-
-			vkBeginCommandBuffer(m_commandBuffers[i], &beginInfo);
-
-			VkRenderPassBeginInfo renderPassInfo = {};
-			renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-			renderPassInfo.renderPass = _effect.m_renderPass;
-			renderPassInfo.framebuffer = _effect.m_swapChainFramebuffers[i];
-
-			renderPassInfo.renderArea.offset = { 0, 0 };
-			renderPassInfo.renderArea.extent = m_swapChainExtent;
-
-			VkClearValue clearColor = { 0.0f, 0.0f, 0.0f, 1.0f };
-			renderPassInfo.clearValueCount = 1;
-			renderPassInfo.pClearValues = &clearColor;
-
-			vkCmdBeginRenderPass(m_commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
-
-			vkCmdBindPipeline(m_commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, _effect.m_graphicsPipeline);
-			vkCmdDraw(m_commandBuffers[i], 3, 1, 0, 0);
-			vkCmdEndRenderPass(m_commandBuffers[i]);
-
-			if (vkEndCommandBuffer(m_commandBuffers[i]) != VK_SUCCESS)
-				throw std::runtime_error("failed to record command buffer!");
-		}
 	}
 
 	// **************************************************************** //

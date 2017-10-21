@@ -8,6 +8,9 @@
 
 #include <iostream>
 
+//test
+#include "graphic/vertexbuffer.hpp"
+
 using namespace Graphic;
 
 Game::Game() : defaultScene(Camera(
@@ -29,9 +32,37 @@ Game::~Game()
 	Device::Exit();
 }
 
+struct Vertex
+{
+	glm::vec2 position;
+	glm::vec3 color;
+	float rotation;
+};
+
+const std::vector<Vertex> vertices = {
+	{ { 0.0f, -0.5f },{ 1.0f, 0.0f, 0.0f },0.f },
+	{ { 0.5f, 0.5f },{ 0.0f, 1.0f, 0.0f },0.f },
+	{ { -0.5f, 0.5f },{ 0.0f, 0.0f, 1.0f },0.f },
+
+	{ { 0.2f, -0.6f },{ 1.0f, 1.0f, 0.0f },0.f },
+	{ { 0.7f, 0.4f },{ 0.0f, 1.0f, 0.0f },0.f },
+	{ { -0.3f, 0.4f },{ 1.0f, 0.0f, 1.0f },0.f }
+};
+
 void Game::Run()
 {
-	Effect effect("shaders/vert.spv", "shaders/frag.spv");
+	VertexBuffer<Vertex> vertexBuffer({ VertexFormat::VEC2, VertexFormat::VEC3, VertexFormat::FLOAT });
+
+	using namespace glm;
+	vertexBuffer.Add(vertices[0]);
+	vertexBuffer.Add(vertices[1]);
+	vertexBuffer.Add(vertices[2]);
+
+	vertexBuffer.Add(vertices[3]);
+	vertexBuffer.Add(vertices[4]);
+	vertexBuffer.Add(vertices[5]);
+	vertexBuffer.Upload();
+	Effect effect("shaders/vert.spv", "shaders/frag.spv", vertexBuffer);
 	Device::SetEffect(effect);
     
     double lastTime = 0;

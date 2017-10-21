@@ -8,6 +8,7 @@
 namespace Graphic {
 
 	class Effect;
+	class BasicVertexBuffer;
 
 	class Device
 	{
@@ -26,6 +27,9 @@ namespace Graphic {
 
 		// draw current pipline
 		static void Draw();
+
+		// looks for a suitable memory type supported by the choosen physical device
+		static uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 	private:
 		static std::vector<const char*> GetRequiredExtensions();
 		static void CheckExtensions(unsigned _count = 0, const char** const  _required = nullptr);
@@ -36,7 +40,6 @@ namespace Graphic {
 		static void CreateSwapChain();
 		static void CreateImageViews();
 		static void CreateCommandPool();
-		static void CreateCommandBuffers(const Effect& _effect);
 		static void CreateSemaphores();
 
 		struct QueueFamilyIndices
@@ -71,6 +74,9 @@ namespace Graphic {
 		static int m_resolutionX;
 		static int m_resolutionY;
 
+		static const Effect* m_currentEffect;
+
+		// vulkan handles
 		static GLFWwindow* m_window;
 		static VkInstance m_instance;
 		static VkPhysicalDevice m_physicalDevice;
@@ -90,7 +96,6 @@ namespace Graphic {
 		static std::vector<VkImageView> m_swapChainImageViews;
 
 		static VkCommandPool m_commandPool;
-		static std::vector<VkCommandBuffer> m_commandBuffers;
 
 		static VkSemaphore m_imageAvailableSemaphore;
 		static VkSemaphore m_renderFinishedSemaphore;

@@ -1,11 +1,13 @@
 #include <fstream>
 #include <vector>
 
+#include "vertexbuffer.hpp"
 #include "graphic/device.hpp"
 #include "graphic/effect.hpp"
 
 namespace Graphic {
-	Effect::Effect(const std::string_view& _vertexShader, const std::string_view& _fragmentShader)
+	Effect::Effect(const std::string_view& _vertexShader, const std::string_view& _fragmentShader,
+		const BasicVertexBuffer& _buffer)
 		: m_vertexShader(LoadShader(_vertexShader)),
 		m_geometryShader(VK_NULL_HANDLE),
 		m_fragmentShader(LoadShader(_fragmentShader))
@@ -27,10 +29,10 @@ namespace Graphic {
 
 		VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
 		vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-		vertexInputInfo.vertexBindingDescriptionCount = 0;
-		vertexInputInfo.pVertexBindingDescriptions = nullptr; // Optional
-		vertexInputInfo.vertexAttributeDescriptionCount = 0;
-		vertexInputInfo.pVertexAttributeDescriptions = nullptr; // Optional
+		vertexInputInfo.vertexBindingDescriptionCount = 1;
+		vertexInputInfo.pVertexBindingDescriptions = &_buffer.m_bindingDescription;
+		vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(_buffer.m_vertexAttributes.size());
+		vertexInputInfo.pVertexAttributeDescriptions = _buffer.m_vertexAttributes.data(); // Optional
 
 		VkPipelineInputAssemblyStateCreateInfo inputAssembly = {};
 		inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
@@ -203,12 +205,15 @@ namespace Graphic {
 				throw std::runtime_error("failed to create framebuffer!");
 			}
 		}
+
+		// commands
+		CreateCommandBuffers(_buffer);
 	}
 
 	Effect::~Effect()
 	{
 		// clean up
-		vkDestroyCommandPool(Device::m_logicalDevice, Device::m_commandPool, nullptr);
+	//	vkDestroyCommandPool(Device::m_logicalDevice, Device::m_commandPool, nullptr);
 
 		for(auto& frameBuffer: m_swapChainFramebuffers)
 			vkDestroyFramebuffer(Device::GetVkDevice(), frameBuffer, nullptr);
@@ -243,5 +248,55 @@ namespace Graphic {
 			throw std::runtime_error("failed to create shader module!");
 
 		return shaderModule;
+	}
+
+	void Effect::CreateCommandBuffers(const BasicVertexBuffer& _vertexBuffer)
+	{
+		m_commandBuffers.resize(Device::m_swapChainImageViews.size());
+
+		VkCommandBufferAllocateInfo allocInfo = {};
+		allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+		allocInfo.commandPool = Device::m_commandPool;
+		allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+		allocInfo.commandBufferCount = (uint32_t)m_commandBuffers.size();
+
+		if (vkAllocateCommandBuffers(Device::m_logicalDevice, &allocInfo, m_commandBuffers.data()) != VK_SUCCESS)
+			throw std::runtime_error("failed to allocate command buffers!");
+
+		for (size_t i = 0; i < m_commandBuffers.size(); i++)
+		{
+			VkCommandBufferBeginInfo beginInfo = {};
+			beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+			beginInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
+			beginInfo.pInheritanceInfo = nullptr; // Optional
+
+			vkBeginCommandBuffer(m_commandBuffers[i], &beginInfo);
+
+			VkRenderPassBeginInfo renderPassInfo = {};
+			renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+			renderPassInfo.renderPass = m_renderPass;
+			renderPassInfo.framebuffer = m_swapChainFramebuffers[i];
+
+			renderPassInfo.renderArea.offset = { 0, 0 };
+			renderPassInfo.renderArea.extent = Device::m_swapChainExtent;
+
+			VkClearValue clearColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+			renderPassInfo.clearValueCount = 1;
+			renderPassInfo.pClearValues = &clearColor;
+
+			vkCmdBeginRenderPass(m_commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+			vkCmdBindPipeline(m_commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, m_graphicsPipeline);
+
+			VkBuffer vertexBuffers[] = { _vertexBuffer.m_vertexBuffer };
+			VkDeviceSize offsets[] = { 0 };
+			vkCmdBindVertexBuffers(m_commandBuffers[i], 0, 1, vertexBuffers, offsets);
+
+			vkCmdDraw(m_commandBuffers[i], 6, 1, 0, 0);
+			vkCmdEndRenderPass(m_commandBuffers[i]);
+
+			if (vkEndCommandBuffer(m_commandBuffers[i]) != VK_SUCCESS)
+				throw std::runtime_error("failed to record command buffer!");
+		}
 	}
 }
