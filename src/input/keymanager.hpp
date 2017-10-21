@@ -6,6 +6,12 @@ struct GLFWwindow;
 
 namespace Input {
 
+    enum class EKeyState {
+        RELEASE=0,
+        PRESS=1,
+        LONGPRESS=2
+    };
+
 class KeyManager
 {
 private:
@@ -17,11 +23,13 @@ private:
     static void cursor_enter_callback(GLFWwindow* window, int entered);    
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
     static std::unordered_map<int,int> m_pressedKeys;
+
     static int activeJoysticks[];
 public:
 	static void Init(GLFWwindow* win);
 
-    void pollEvents();
+    static void pollEvents();
+    static EKeyState getKeyStates(int key);
 
 };
 

@@ -7,6 +7,8 @@
 
 namespace Input {
 
+    
+
     std::unordered_map<int,int> KeyManager::m_pressedKeys;
     GLFWwindow* KeyManager::m_window;   
     KeyManager* KeyManager::m_instance;
@@ -33,7 +35,7 @@ namespace Input {
     void KeyManager::cursor_pos_callback(GLFWwindow* window, double xpos, double ypos)
     {
         #ifndef NDEBUG
-            std::cout << "Mouse X:" <<  xpos << " Y: " << ypos << std::endl;
+            //std::cout << "Mouse X:" <<  xpos << " Y: " << ypos << std::endl;
         #endif
     }    
     void KeyManager::cursor_enter_callback(GLFWwindow* window, int entered)
@@ -53,18 +55,21 @@ namespace Input {
     void KeyManager::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     {
         #ifndef NDEBUG
-            std::cout << "Mouseclick, Button: " << button << " Action: " << action << std::endl;
+            //std::cout << "Mouseclick, Button: " << button << " Action: " << action << std::endl;
         #endif
     }    
 
 
     void KeyManager::pollEvents(){
+        glfwPollEvents();        
         for(size_t i= 0; i<16; i++){
             activeJoysticks[i]=glfwJoystickPresent(i);            
-            if(GLFW_TRUE==activeJoysticks[i] ){
-                std::cout << "Found Joystick Nr. " << (i+1) << std::endl;
-            }
         }
     }
+
+    EKeyState KeyManager::getKeyStates(int key){
+        return EKeyState(m_pressedKeys[key]);
+    }
+    
 
 }

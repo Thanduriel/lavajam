@@ -6,6 +6,8 @@
 #include "actors/characteractor.hpp"
 #include "glm.hpp"
 
+#include <iostream>
+
 using namespace Graphic;
 
 Game::Game() : defaultScene(Camera(
@@ -41,6 +43,6 @@ void Game::Run()
         lastTime = currentTime;
         this->defaultScene.Update(deltaTime);
 		Device::Draw();
-		glfwPollEvents();
+		Input::KeyManager::pollEvents();
 	}
 }
