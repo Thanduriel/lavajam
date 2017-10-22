@@ -38,3 +38,8 @@ void ParticleActor::Register(Scene& scene)
 	scene.AddComponent(this->m_draw);
 	scene.AddComponent(m_particle);
 }
+
+DrawComponent* ParticleActor::GetDrawComponent()
+{
+	return &this->m_draw;
+}

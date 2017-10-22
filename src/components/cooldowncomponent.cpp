@@ -42,3 +42,8 @@ bool CooldownComponent::GetCooldown() const
 {
 	return this->m_cooldown <= 0;
 }
+
+float CooldownComponent::GetCurrentCooldown() const
+{
+	return this->m_cooldown;
+}

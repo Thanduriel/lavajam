@@ -39,6 +39,8 @@ public:
 
 	void Register(Scene& scene) override;
 
+	DrawComponent* GetDrawComponent();
+
 private:
 	DrawComponent m_draw;
 	ParticleComponent m_particle;

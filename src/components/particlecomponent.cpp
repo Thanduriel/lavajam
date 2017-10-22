@@ -18,6 +18,8 @@
 */
 
 #include "particlecomponent.hpp"
+#include "drawcomponent.hpp"
+#include "actors/particleactor.hpp"
 
 ParticleComponent::ParticleComponent(Actor* actor, float lifetime, bool isActive) :
 	CooldownComponent(actor, isActive)
@@ -32,4 +34,7 @@ void ParticleComponent::Process(float deltaTime)
 	{
 		GetActor()->Destroy();
 	}
+
+	auto color = static_cast<ParticleActor*>(this->GetActor())->GetDrawComponent()->GetColor();
+	static_cast<ParticleActor*>(this->GetActor())->GetDrawComponent()->GetColor() = glm::vec4(color.x, color.y, color.z, this->GetCurrentCooldown() > 10 ? 1 : this->GetCurrentCooldown() / 10.f);
 }

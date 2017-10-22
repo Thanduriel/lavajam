@@ -30,6 +30,8 @@ public:
 
 	bool GetCooldown() const;
 
+	float GetCurrentCooldown() const;
+
 	void SetCooldown(double time);
 
 private:
