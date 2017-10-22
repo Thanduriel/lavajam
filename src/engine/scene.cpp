@@ -76,17 +76,16 @@ void Scene::SetNext(Scene* scene)
     this->m_next = scene;
 }
 
-void Scene::AddComponent(Component& component)
-{
-    this->m_components.push_back(&component);
-}
-
 void Scene::AddComponent(PhysicsComponent& component)
 {
+	component.SetSpawnCallback([this](Actor* actor)
+	{
+		this->m_actorsQueue.push_back(actor);
+	});
     this->m_physicsComponents.push_back(&component);
 }
 
-void Scene::AddComponent(ControllerComponent& component)
+void Scene::AddComponent(Component& component)
 {
 	component.SetSpawnCallback([this](Actor* actor)
 	{

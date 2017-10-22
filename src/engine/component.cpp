@@ -20,7 +20,7 @@
 #include "engine/component.hpp"
 
 Component::Component(Actor* actor, bool isActive) :
-    m_actor(actor), m_isActive(isActive)
+    m_actor(actor), m_isActive(isActive), m_spawnCallback(nullptr)
 {}
 
 Actor* Component::GetActor() const
@@ -41,4 +41,9 @@ void Component::SetActor(Actor* actor)
 void Component::SetActive(bool isActive)
 {
     this->m_isActive = isActive;
+}
+
+void Component::SetSpawnCallback(std::function<void(Actor* bullet)> callback)
+{
+	this->m_spawnCallback = callback;
 }

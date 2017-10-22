@@ -20,6 +20,7 @@
 #pragma once
 
 #include "engine/actor.hpp"
+#include <functional>
 
 class Component
 {
@@ -34,10 +35,12 @@ public:
     void SetActive(bool isActive);
     
     virtual void Process(float deltaTime) = 0;
+	void SetSpawnCallback(std::function<void(Actor* bullet)> callback);
 
 private:
     bool m_isActive;
 protected:
     Actor* m_actor;
+	std::function<void(Actor* actor)> m_spawnCallback;
     
 };

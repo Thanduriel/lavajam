@@ -5,7 +5,7 @@
 #include "actors/characteractor.hpp"
 
 ControllerComponent::ControllerComponent(Actor* actor, std::vector <int> keyMapping, bool isActive):
-CooldownComponent(actor, isActive),m_keyMapping(keyMapping),m_spawnCallback(nullptr){};
+CooldownComponent(actor, isActive),m_keyMapping(keyMapping){};
 
 void ControllerComponent::Process(float deltaTime)
 {
@@ -54,9 +54,4 @@ void ControllerComponent::FireBullet(float _speed, glm::vec2 _position, float _r
 	const glm::vec2 velocity = glm::rotate(glm::vec2(0.f, _speed + glm::length(m_actor->GetVelocity())), m_actor->GetRotation() + _rot);
 	const auto bullet = new BulletActor(0.006f, brown, 0, m_actor->GetPosition() - normalize(velocity) / 15 + _position, rot, -velocity);
 	m_spawnCallback(bullet);
-}
-
-void ControllerComponent::SetSpawnCallback(std::function<void(Actor* bullet)> callback)
-{
-	this->m_spawnCallback = callback;
 }
