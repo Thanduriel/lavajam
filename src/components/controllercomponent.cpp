@@ -22,10 +22,9 @@ void ControllerComponent::Process(float deltaTime)
 		if (this->m_spawnCallback != nullptr && this->GetCooldown())
 		{
             this->SetCooldown(0.25f);
-			const glm::vec4 brown(141/255.f, 110/255.f, 99/255.f, 1);
-			const glm::vec2 velocity = glm::rotate(glm::vec2(0.f, 1.f + glm::length(m_actor->GetVelocity())), m_actor->GetRotation());
-			const auto bullet = new BulletActor(0.006f, brown, 0, m_actor->GetPosition() - normalize(velocity)/15, m_actor->GetRotation(), -velocity);
-			this->m_spawnCallback(bullet);
+			FireBullet(1.f, glm::vec2{}, 0.f);
+		//	FireBullet(1.f, glm::vec2{}, 0.2f); 
+		//	FireBullet(1.f, glm::vec2{}, -0.2f);
 		}
     }
 
@@ -43,6 +42,15 @@ void ControllerComponent::Process(float deltaTime)
 	}
 
 	this->m_particleCooldown -= deltaTime * length(this->GetActor()->GetVelocity());
+}
+
+void ControllerComponent::FireBullet(float _speed, glm::vec2 _position, float _rot)
+{
+	static const glm::vec4 brown(141 / 255.f, 110 / 255.f, 99 / 255.f, 1);
+	const float rot = m_actor->GetRotation() + _rot;
+	const glm::vec2 velocity = glm::rotate(glm::vec2(0.f, _speed + glm::length(m_actor->GetVelocity())), m_actor->GetRotation() + _rot);
+	const auto bullet = new BulletActor(0.006f, brown, 0, m_actor->GetPosition() - normalize(velocity) / 15 + _position, rot, -velocity);
+	m_spawnCallback(bullet);
 }
 
 void ControllerComponent::SetSpawnCallback(std::function<void(Actor* bullet)> callback)
