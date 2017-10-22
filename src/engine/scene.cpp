@@ -22,6 +22,7 @@
 #include "actors/characteractor.hpp"
 #include "components/drawcomponent.hpp"
 #include "actors/particleactor.hpp"
+#include "random.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -31,7 +32,9 @@ Graphic::VertexBuffer<Vertex, 65536>* VertexBuffer;
 Graphic::Effect* Effect;
 
 Scene::Scene(Camera camera, Scene* previous, Scene* next) :
-    m_camera(camera), m_previous(previous), m_next(next), m_gameEnded(false)
+    m_camera(camera), m_previous(previous), m_next(next), m_gameEnded(false),
+	m_eventTime(0.f),
+	m_currentSec(0.f)
 {
     this->m_teams = new std::unordered_map<uint32_t, std::pair<glm::vec4, Actor*>>();
 }
@@ -108,6 +111,7 @@ void Scene::AddComponent(Component& component)
 		this->m_actorsQueue.push_back(actor);
 	});
 	this->m_components.push_back(&component);
+	m_controllerComponents.push_back(&component);
 }
 
 void Scene::SpawnAi(Actor* targetActor, glm::vec4 color, uint32_t team)
@@ -131,6 +135,21 @@ void Scene::SpawnAi(Actor* targetActor, glm::vec4 color, uint32_t team)
 
 void Scene::Update(float deltaTime)
 {
+	m_currentSec += deltaTime;
+	m_eventTime += deltaTime;
+	static Generators::RandomGenerator rng(static_cast<uint32_t>(time(nullptr)));
+	if (m_currentSec > 1.f)
+	{
+		m_currentSec = 0.f;
+		if (rng.Uniform(0.f, m_eventTime + 25.f) < m_eventTime)
+		{
+			FireMode mode = (FireMode)rng.Uniform(0, static_cast<int32_t>(FireMode::COUNT)-1);
+			for (auto& controller : m_controllerComponents)
+				controller->SetFireMode(mode);
+			m_eventTime = 0.f;
+		}
+	}
+
     auto cidx = std::remove_if(
         this->m_components.begin(),
         this->m_components.end(),
@@ -278,7 +297,7 @@ void Scene::Initialize()
 		Graphic::VertexFormat::FLOAT
     });
     Effect = new Graphic::Effect("shaders/vert.spv", "shaders/frag.spv", *VertexBuffer, "shaders/geom.spv");
-
+	
     Graphic::Device::SetEffect(*Effect);
 }
 
@@ -293,7 +312,7 @@ float LeftBorder(const PhysicsComponent& _comp)
 	return _comp.GetActor()->GetPosition().x - _comp.GetSize();
 }
 
-void Scene::ResolveCollisionns(float deltaTime)
+void Scene::ResolveCollisions(float deltaTime)
 {
 	std::sort(m_physicsComponents.begin(), m_physicsComponents.end(), [](const auto& _lhs, const auto& _rhs)
 	{

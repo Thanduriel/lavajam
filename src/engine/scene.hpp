@@ -74,7 +74,10 @@ public:
     void Destroy();
     
 private:
-	void ResolveCollisionns(float _deltaTime);
+	void ResolveCollisions(float _deltaTime);
+
+	float m_currentSec;
+	float m_eventTime;
 
     Camera m_camera;
     Scene* m_previous;
@@ -82,6 +85,7 @@ private:
     Actors m_actors;
     Components m_components;
     PhysicsComponents m_physicsComponents;
+	std::vector<ControllerComponent*> m_controllerComponents;
 	std::vector<Actor*> m_actorsQueue;
     bool m_gameEnded;
     std::unordered_map<uint32_t, std::pair<glm::vec4, Actor*>>* m_teams;

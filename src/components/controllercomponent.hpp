@@ -27,6 +27,13 @@
 #include "cooldowncomponent.hpp"
 #include "engine/actor.hpp"
 
+enum struct FireMode{
+	Simple,
+	Double,
+	Spread,
+	COUNT
+};
+
 class ControllerComponent :
     public CooldownComponent
 {
@@ -35,8 +42,10 @@ public:
 
     void Process(float deltaTime) override;
 
+	void SetFireMode(FireMode _fireMode) { m_fireMode = _fireMode; }
 private:
-	void FireBullet(float _speed, glm::vec2 _position, float _rot);
+	void FireBullet(float _speed, glm::vec2 _offset, float _rot);
+	FireMode m_fireMode;
 
     std::vector <int> m_keyMapping;
 	float m_particleCooldown;
