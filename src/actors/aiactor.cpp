@@ -23,6 +23,7 @@
 
 AiActor::AiActor(
     Actor* target,
+    uint32_t team,
     float size,
     glm::vec4 color,
     size_t layer,
@@ -32,7 +33,7 @@ AiActor::AiActor(
 ) : Actor(position, rotation, velocity, ActorKind::Ai),
     m_physics(this, PhysicsShape::Triangle, size),
     m_draw(this, DrawShape::Triangle, size, color, layer),
-	m_ai(this, target)
+	m_ai(this, target, team)
 {}
 
 void AiActor::Register(Scene& scene)

@@ -63,7 +63,7 @@ public:
     void AddComponent(Component& component);
     void AddComponent(PhysicsComponent& component);
 	void AddComponent(ControllerComponent& component);
-	void SpawnAi(Actor* targetActor, glm::vec4 color);
+	void SpawnAi(Actor* targetActor, glm::vec4 color, uint32_t team);
 
 	void Update(float deltaTime);
     void Initialize();
@@ -79,4 +79,5 @@ private:
     Components m_components;
     PhysicsComponents m_physicsComponents;
 	std::vector<Actor*> m_actorsQueue;
+    bool m_gameEnded;
 };

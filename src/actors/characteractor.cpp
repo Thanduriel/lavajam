@@ -22,6 +22,7 @@
 #include "actors/characteractor.hpp"
 
 CharacterActor::CharacterActor(
+    uint32_t team,
 	float size,
 	glm::vec4 color,
 	size_t layer,
@@ -37,7 +38,8 @@ CharacterActor::CharacterActor(
 	ActorKind::Character
 ), m_physics(this, PhysicsShape::Triangle, size),
     m_draw(this, DrawShape::Triangle, size, color, layer),
-    m_controller(this, keymapping, isActive)
+    m_controller(this, keymapping, isActive),
+    m_team(team)
 {}
 
 void CharacterActor::Register(Scene& scene)
@@ -50,4 +52,14 @@ void CharacterActor::Register(Scene& scene)
 const DrawComponent& CharacterActor::GetDrawComponent() const
 {
     return this->m_draw;
+}
+
+uint32_t CharacterActor::GetTeam() const
+{
+    return this->m_team;
+}
+
+void CharacterActor::SetTeam(uint32_t team)
+{
+    this->m_team = team;
 }

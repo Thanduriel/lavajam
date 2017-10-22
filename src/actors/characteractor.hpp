@@ -30,6 +30,7 @@ class CharacterActor :
 {
 public:
     CharacterActor(
+        uint32_t team,
         float size,
         glm::vec4 color,
         size_t layer,
@@ -43,10 +44,13 @@ public:
     void Register(Scene& scene) override;
     
     const DrawComponent& GetDrawComponent() const;
+    uint32_t GetTeam() const;
+    void SetTeam(uint32_t team);
 
 private:
     PhysicsComponent m_physics;
     DrawComponent m_draw;
     ControllerComponent m_controller;
+    uint32_t m_team;
     
 };

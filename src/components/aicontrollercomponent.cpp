@@ -20,8 +20,8 @@
 #include "components/aicontrollercomponent.hpp"
 
 AiControllerComponent::AiControllerComponent(
-    Actor* actor, Actor* target, bool isActive
-) : CooldownComponent(actor, isActive), m_target(target)
+    Actor* actor, Actor* target, uint32_t team, bool isActive
+) : CooldownComponent(actor, isActive), m_target(target), m_team(team)
 {}
 
 void AiControllerComponent::Process(float deltaTime)
@@ -46,7 +46,17 @@ const Actor* AiControllerComponent::GetTarget() const
     return this->m_target;
 }
 
+uint32_t AiControllerComponent::GetTeam() const
+{
+    return this->m_team;
+}
+
 void AiControllerComponent::SetTarget(Actor* target)
 {
     this->m_target = target;
+}
+
+void AiControllerComponent::SetTeam(uint32_t team)
+{
+    this->m_team = team;
 }

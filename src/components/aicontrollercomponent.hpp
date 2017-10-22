@@ -26,14 +26,17 @@ class AiControllerComponent :
     public CooldownComponent
 {
 public:
-    AiControllerComponent(Actor* actor, Actor* target, bool isActive = true);
+    AiControllerComponent(Actor* actor, Actor* target, uint32_t team, bool isActive = true);
     
     void Process(float deltaTime) override;
     
     const Actor* GetTarget() const;
+    uint32_t GetTeam() const;
     
     void SetTarget(Actor* target);
+    void SetTeam(uint32_t team);
     
 private:
     Actor* m_target;
+    uint32_t m_team;
 };

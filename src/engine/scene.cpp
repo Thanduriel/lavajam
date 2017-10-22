@@ -21,16 +21,17 @@
 #include "actors/aiactor.hpp"
 #include "actors/characteractor.hpp"
 #include "components/drawcomponent.hpp"
+#include "actors/particleactor.hpp"
 
 #include <algorithm>
 #include <iostream>
-#include "actors/particleactor.hpp"
+#include <unordered_map>
 
 Graphic::VertexBuffer<Vertex, 65536>* VertexBuffer;
 Graphic::Effect* Effect;
 
 Scene::Scene(Camera camera, Scene* previous, Scene* next) :
-    m_camera(camera), m_previous(previous), m_next(next)
+    m_camera(camera), m_previous(previous), m_next(next), m_gameEnded(false)
 {}
 
 const Camera& Scene::GetCamera() const
@@ -94,7 +95,7 @@ void Scene::AddComponent(ControllerComponent& component)
 	this->m_components.push_back(&component);
 }
 
-void Scene::SpawnAi(Actor* targetActor, glm::vec4 color)
+void Scene::SpawnAi(Actor* targetActor, glm::vec4 color, uint32_t team)
 {
     float x = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
     float y = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
@@ -102,6 +103,7 @@ void Scene::SpawnAi(Actor* targetActor, glm::vec4 color)
 
     Actor* new_ai = new AiActor(
         targetActor,
+        team,
         0.01f,
         color,
         0,
@@ -113,7 +115,7 @@ void Scene::SpawnAi(Actor* targetActor, glm::vec4 color)
 }
 
 void Scene::Update(float deltaTime)
-{    
+{
     auto cidx = std::remove_if(
         this->m_components.begin(),
         this->m_components.end(),
@@ -143,9 +145,82 @@ void Scene::Update(float deltaTime)
     
     this->m_camera.Update();
     
-    for (const auto& actor: this->m_actors)
+    std::unordered_map<uint32_t, std::vector<Actor*>> teamCounter;
+    
+    for (const auto& actor : this->m_actors)
     {
         actor->Update(deltaTime);
+        
+        if (actor->GetKind() == ActorKind::Character)
+        {
+            auto char_actor = static_cast<CharacterActor*>(actor.get());
+            auto team = char_actor->GetTeam();
+            
+            if (teamCounter.count(team))
+            {
+                teamCounter[team].push_back(char_actor);
+            }
+            else
+            {
+                teamCounter.insert({team, {char_actor}});
+            }
+        }
+        else if (actor->GetKind() == ActorKind::Ai)
+        {
+            auto ai_actor = static_cast<AiActor*>(actor.get());
+            auto team = ai_actor->GetAiControllerComponent().GetTeam();
+            
+            if (teamCounter.count(team))
+            {
+                teamCounter[team].push_back(ai_actor);
+            }
+            else
+            {
+                teamCounter.insert({team, {ai_actor}});
+            }
+        }
+    }
+    
+    for (auto it : teamCounter)
+    {
+        if (it.second.size() > 300)
+        {
+            for (const auto& actor : it.second)
+            {
+                actor->Destroy();
+            }
+        }
+    }
+    
+    if (teamCounter.size() == 1 && !this->m_gameEnded)
+    {
+        // we don't know which team won but teamCounter only contains one item
+        // so we can iterate over it to access the first item of the map
+        for (auto it : teamCounter)
+        {
+            std::cout << "Player " << it.first << " won!" << std::endl;
+            
+            for (const auto& actor : it.second)
+            {
+                if (actor->GetKind() != ActorKind::Character)
+                {
+                    actor->Destroy();
+                }
+            }
+            
+            for (const auto& actor : this->m_actors)
+            {
+                if (actor->GetKind() == ActorKind::Bullet)
+                {
+                    actor->Destroy();
+                }
+            }
+        }
+        this->m_gameEnded = true;
+    }
+    else if (teamCounter.size() < 1)
+    {
+        this->m_gameEnded = true;
     }
     
     VertexBuffer->Clear();
@@ -220,7 +295,7 @@ void Scene::ResolveCollisionns(float deltaTime)
 					if (ai.GetTarget()->GetGUID() == my_actor->GetGUID() && ai.GetCooldown())
 					{
 						ai.SetCooldown(1.0);
-						SpawnAi(my_actor, ai_actor->GetDrawComponent().GetColor());
+						SpawnAi(my_actor, ai_actor->GetDrawComponent().GetColor(), ai.GetTeam());
 					}
 				}
 				else if (my_actor->GetKind() == ActorKind::Character &&
@@ -233,7 +308,7 @@ void Scene::ResolveCollisionns(float deltaTime)
 					if (cooldown.GetCooldown())
 					{
 						cooldown.SetCooldown(0.25f);
-						SpawnAi(my_actor, char_actor->GetDrawComponent().GetColor());
+						SpawnAi(my_actor, char_actor->GetDrawComponent().GetColor(), char_actor->GetTeam());
 					}
 				}
 			}

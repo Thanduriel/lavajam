@@ -30,6 +30,7 @@ class AiActor :
 public:
     AiActor(
         Actor* target,
+        uint32_t team,
         float size,
         glm::vec4 color,
         size_t layer,
