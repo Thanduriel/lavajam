@@ -26,10 +26,7 @@ BulletComponent::BulletComponent(Actor* actor, bool isActive) :
 
 void BulletComponent::Collided(const PhysicsComponent* component)
 {
-	if (this->m_collidedComponent == nullptr)
-		this->m_collidedComponent = component;
-	else if (this->m_collidedComponent != component)
-		this->GetActor()->Destroy();
+	this->IncrementBounceCount();	
 }
 
 void BulletComponent::Process(float deltaTime)

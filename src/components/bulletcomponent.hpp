@@ -31,6 +31,11 @@ public:
 
 	void Process(float deltaTime) override;
 
+	void IncrementBounceCount(){
+		bounceCount++;
+		if (bounceCount >1 ) this->GetActor()->Destroy();
+	};
 private:
 	const PhysicsComponent* m_collidedComponent;
+	int bounceCount =0;	
 };

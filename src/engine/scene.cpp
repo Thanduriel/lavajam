@@ -272,21 +272,25 @@ void Scene::ResolveCollisionns(float deltaTime)
 	{
 		return LeftBorder(*_lhs) < LeftBorder(*_rhs);
 	});
-
+    // collide every physics object
 	glm::vec2 own_velocity_delta{}, other_velocity_delta{};
 	for (auto it_me = this->m_physicsComponents.begin();it_me != this->m_physicsComponents.end(); it_me++)
 	{
+        // ... with every other physics object
 		auto my_actor = (*it_me)->GetActor();
 		for (auto it_other = it_me + 1; it_other != m_physicsComponents.end() && ((**it_me).GetActor()->GetPosition().x + (**it_me).GetSize() > LeftBorder(**it_other)); it_other++)
 		{
+             // if a collision is detected
 			auto other_actor = (*it_other)->GetActor();
 			if ((*it_me)->Collide(**it_other, own_velocity_delta, other_velocity_delta))
 			{
+                // move away from the other object
 				own_velocity_delta *= deltaTime * glm::length(my_actor->GetVelocity());
 				other_velocity_delta *= deltaTime * glm::length(my_actor->GetVelocity());
 				my_actor->AddVelocity(own_velocity_delta);
-				other_actor->AddVelocity(other_velocity_delta);
-
+                other_actor->AddVelocity(other_velocity_delta);
+                
+                // if hit by an enemy AI, spawn more AI
 				if (other_actor->GetKind() == ActorKind::Ai)
 				{
 					auto ai_actor = static_cast<AiActor*>(other_actor);
@@ -297,7 +301,8 @@ void Scene::ResolveCollisionns(float deltaTime)
 						ai.SetCooldown(1.0);
 						SpawnAi(my_actor, ai_actor->GetDrawComponent().GetColor(), ai.GetTeam());
 					}
-				}
+                }
+                // if hit by the enemy, spawn more AI
 				else if (my_actor->GetKind() == ActorKind::Character &&
 					other_actor->GetKind() == ActorKind::Bullet)
 				{
@@ -314,30 +319,40 @@ void Scene::ResolveCollisionns(float deltaTime)
 			}
 		}
 
+        // window boundary checking
 		auto me_pos = my_actor->GetPosition();
 		auto me_size = (*it_me)->GetSize();
 		auto velocity = my_actor->GetVelocity();
-		glm::vec2 border_vec = { 0,0 };
+        glm::vec2 border_vec = { 0,0 };
+        bool hitTheWall = false;        
 		if (me_pos.x - me_size < -1)
 		{
 			if (velocity.x < 0)
-				border_vec.x -= velocity.x * 2;
+                border_vec.x -= velocity.x * 2;
+                hitTheWall=true;
 		}
 		if (me_pos.x + me_size > 1)
 		{
 			if (velocity.x > 0)
-				border_vec.x -= velocity.x * 2;
+                border_vec.x -= velocity.x * 2;
+                hitTheWall=true;
 		}
 		if (me_pos.y - me_size < -1)
 		{
 			if (velocity.y < 0)
-				border_vec.y -= velocity.y * 2;
+                border_vec.y -= velocity.y * 2;
+                hitTheWall=true;
 		}
 		if (me_pos.y + me_size > 1)
 		{
 			if (velocity.y > 0)
-				border_vec.y -= velocity.y * 2;
-		}
+                border_vec.y -= velocity.y * 2;
+                hitTheWall=true;
+        }
+        if(hitTheWall && my_actor->GetKind()==ActorKind::Bullet){
+            static_cast<BulletActor*>(my_actor)->GetBulletComponent().IncrementBounceCount();
+        }
+            
 		/*
 		if (my_actor->GetKind() == ActorKind::Bullet && border_vec.x == 0 && border_vec.y == 0)
 		{
