@@ -29,12 +29,15 @@ void ControllerComponent::Process(float deltaTime)
 		}
     }
 
-	if (this->m_spawnCallback != nullptr)
+	if (this->m_spawnCallback != nullptr && this->m_particleCooldown <= 0)
 	{
+		this->m_particleCooldown = 0.1f;
 		auto actor = static_cast<CharacterActor*>(this->GetActor());
-		auto particle = new ParticleActor(0.0001f, actor->GetDrawComponent().GetColor(), 0, actor->GetPosition(), actor->GetRotation(), actor->GetVelocity(), 1);
+		auto particle = new ParticleActor(0.001f, actor->GetDrawComponent().GetColor(), 0, actor->GetPosition(), actor->GetRotation(), glm::vec2(0,0), 1);
 		this->m_spawnCallback(particle);
 	}
+
+	this->m_particleCooldown -= deltaTime;
 }
 
 void ControllerComponent::SetSpawnCallback(std::function<void(Actor* bullet)> callback)

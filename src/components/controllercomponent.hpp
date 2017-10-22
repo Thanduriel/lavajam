@@ -39,4 +39,5 @@ public:
 private:
     std::vector <int> m_keyMapping;
 	std::function<void(Actor* actor)> m_spawnCallback;
+	float m_particleCooldown;
 };
