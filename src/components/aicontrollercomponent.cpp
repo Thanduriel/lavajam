@@ -41,6 +41,11 @@ void AiControllerComponent::Process(float deltaTime)
     
     me->AddRotation(new_rot);
     me->SetVelocity(new_v);
+    
+    if (this->m_cooldown > 0)
+    {
+        this->m_cooldown -= deltaTime;
+    }
 }
 
 const Actor* AiControllerComponent::GetTarget() const
@@ -48,19 +53,17 @@ const Actor* AiControllerComponent::GetTarget() const
     return this->m_target;
 }
 
-bool AiControllerComponent::GetCooldown()
+bool AiControllerComponent::GetCooldown() const
 {
-    std::time_t current_time = std::time(0);
-    
-    if (current_time - this->m_cooldown > 1)
-    {
-        this->m_cooldown = current_time;
-        return true;
-    }
-    return false;
+    return this->m_cooldown <= 0;
 }
 
 void AiControllerComponent::SetTarget(Actor* target)
 {
     this->m_target = target;
+}
+
+void AiControllerComponent::SetCooldown(double time)
+{
+    this->m_cooldown = time;
 }

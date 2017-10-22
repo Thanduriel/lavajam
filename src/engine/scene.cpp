@@ -151,6 +151,7 @@ void Scene::Update(float deltaTime)
                                         
                     if (ai.GetTarget()->GetGUID() == my_actor->GetGUID() && ai.GetCooldown())
                     {
+                        ai.SetCooldown(1.0);
                         float x = std::rand() / (float) RAND_MAX * 2.0f - 1.0f;
                         float y = std::rand() / (float) RAND_MAX * 2.0f - 1.0f;
                         float r = std::rand() / (float) RAND_MAX * 2 * glm::pi<float>();
