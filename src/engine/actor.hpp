@@ -28,7 +28,8 @@ class Scene;
 enum class ActorKind {
     Ai,
     Character,
-	Bullet
+	Bullet,
+	Particle
 };
 
 class Actor

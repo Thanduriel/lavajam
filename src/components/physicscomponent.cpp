@@ -120,6 +120,7 @@ float PhysicsComponent::GetMass() const
 		case ActorKind::Ai: return 1.f;
 		case ActorKind::Character: return 1.5f;
 		case ActorKind::Bullet: return 0.02f;
+		case ActorKind::Particle: return 0.00000000001f;
 		default: ;
 	}
 }
