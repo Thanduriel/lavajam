@@ -91,7 +91,8 @@ void Actor::Destroy()
 void Actor::Update(float deltaTime)
 {
     this->m_position += this->m_velocity * deltaTime;
-    this->m_velocity -= this->m_velocity * 0.5 * deltaTime;
+	if (this->GetKind() != ActorKind::Bullet)
+		this->m_velocity -= this->m_velocity * 0.5 * deltaTime;
 }
 
 bool Actor::GetDestroy() const
