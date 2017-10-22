@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include "actors/particleactor.hpp"
 
 Graphic::VertexBuffer<Vertex, 65536>* VertexBuffer;
 Graphic::Effect* Effect;
@@ -86,9 +87,9 @@ void Scene::AddComponent(PhysicsComponent& component)
 
 void Scene::AddComponent(ControllerComponent& component)
 {
-	component.SetShootCallback([this](BulletActor* bullet)
+	component.SetSpawnCallback([this](Actor* actor)
 	{
-		this->m_actorsQueue.push_back(bullet);
+		this->m_actorsQueue.push_back(actor);
 	});
 	this->m_components.push_back(&component);
 }

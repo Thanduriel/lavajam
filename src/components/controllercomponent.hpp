@@ -19,25 +19,24 @@
 
 #pragma once
 
-#include "engine/actor.hpp"
-
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <functional>
 #include "actors/bulletactor.hpp"
 #include "cooldowncomponent.hpp"
+#include "engine/actor.hpp"
 
 class ControllerComponent :
     public CooldownComponent
 {
 public:
     ControllerComponent(Actor* actor, std::vector <int> keyMapping = { GLFW_KEY_W,GLFW_KEY_A,GLFW_KEY_S,GLFW_KEY_D,GLFW_KEY_SPACE }, bool isActive = true);
-	void SetShootCallback(std::function<void(BulletActor* bullet)> callback);
+	void SetSpawnCallback(std::function<void(Actor* bullet)> callback);
 
     void Process(float deltaTime) override;
 
 private:
     std::vector <int> m_keyMapping;
-	std::function<void(BulletActor* bullet)> m_shootCallback;
+	std::function<void(Actor* actor)> m_spawnCallback;
 };
