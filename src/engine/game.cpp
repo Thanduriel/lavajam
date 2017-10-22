@@ -25,7 +25,7 @@ Game::Game() : m_defaultScene(Camera(
 	Input::KeyManager::Init(Device::GetWindow());
     
 	std::vector <int> keyMapping1 = { GLFW_KEY_W, GLFW_KEY_A, GLFW_KEY_S, GLFW_KEY_D, GLFW_KEY_SPACE };
-	std::vector <int> keyMapping2 = { GLFW_KEY_UP, GLFW_KEY_LEFT, GLFW_KEY_DOWN, GLFW_KEY_RIGHT, GLFW_KEY_RIGHT_SHIFT };
+	std::vector <int> keyMapping2 = { GLFW_KEY_UP, GLFW_KEY_LEFT, GLFW_KEY_DOWN, GLFW_KEY_RIGHT, GLFW_KEY_ENTER };
 	glm::vec4 blue(0.129411765f, 0.588235294f, 0.952941176f, 1);
 	glm::vec4 lime(0.796078431f, 0.862745098f, 0.011764706f, 1);
 
@@ -39,7 +39,7 @@ void Game::SpawnTeam(const glm::vec4 color, std::vector <int> keyMapping)
 	Actor* character = new CharacterActor(0.02f, color, 0, glm::vec2(color.x, color.y), 0.0f, glm::vec2(0, 0.01f), keyMapping);
 	this->m_defaultScene.AddActor(*character);
 
-	const auto colorAi = glm::vec4(color.x/2.f, color.y/2.f, color.z/2.f, 1);
+	const auto colorAi = glm::vec4(color.x/1.333f, color.y/1.333f, color.z/1.333f, 1);
 	for (auto i = 0; i < 10; i++)
 	{
 		auto x = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;

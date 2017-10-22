@@ -33,4 +33,6 @@ void BulletComponent::Collided(const PhysicsComponent* component)
 }
 
 void BulletComponent::Process(float deltaTime)
-{}
+{
+    this->GetActor()->AddRotation(0.01f);
+}

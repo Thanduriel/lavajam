@@ -28,19 +28,35 @@ DrawComponent::DrawComponent(
     glm::vec4 color,
     size_t layer,
     bool isActive
-) : Component(actor, isActive), m_shape(shape), m_size(size), m_color(color), m_layer(layer)
+) : Component(actor, isActive), m_shape(shape), m_size(size), m_color(color), m_layer(layer), m_actual_size(0)
 {}
 
 void DrawComponent::Process(float deltaTime)
 {
-	Vertex v {
+    if (this->GetActor()->GetKind() == ActorKind::Bullet)
+    {
+        this->m_actual_size = this->m_size;
+    }
+    else
+    {
+        this->m_actual_size += (this->m_size - this->m_actual_size) * deltaTime * 3;
+    }
+    
+	Vertex v_outer {
         this->m_actor->GetPosition(),
         this->m_color,
         this->m_actor->GetRotation(),
-		m_size
+		m_actual_size
+    };
+    Vertex v_inner {
+        this->m_actor->GetPosition(),
+        this->m_color / 2.f,
+        this->m_actor->GetRotation(),
+        m_actual_size * 0.75f
     };
     
-	VertexBuffer->Add(v);
+	VertexBuffer->Add(v_outer);
+    VertexBuffer->Add(v_inner);
 }
 
 DrawShape DrawComponent::GetShape() const

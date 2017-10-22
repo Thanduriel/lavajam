@@ -48,6 +48,7 @@ public:
 private:
     DrawShape m_shape;
     float m_size;
+    float m_actual_size;
     glm::vec4 m_color;
     size_t m_layer;
 };
