@@ -21,6 +21,8 @@
 #include "actors/bulletactor.hpp"
 #include "actors/aiactor.hpp"
 
+#include <iostream>
+
 PhysicsComponent::PhysicsComponent(
     Actor* actor,
     PhysicsShape shape,
@@ -76,8 +78,8 @@ bool PhysicsComponent::Collide(const PhysicsComponent& component, glm::vec2& own
 					bullet_comp.Collided(other);
 					if (other->GetActor()->GetKind() == ActorKind::Ai)
 					{
-                        if (other->m_spawnCallback != nullptr)
-                        {
+                        //if (other->m_spawnCallback != nullptr)
+                        //{
                             auto ai_actor = static_cast<AiActor*>(other_actor);
                             auto my_team = ai_actor->GetAiControllerComponent().GetTeam();
                             
@@ -85,6 +87,8 @@ bool PhysicsComponent::Collide(const PhysicsComponent& component, glm::vec2& own
                             {
                                 if (it->first != my_team)
                                 {
+                                    std::cout << "Spawning AI for player " << it->first << std::endl;
+                                    
                                     float x = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
                                     float y = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
                                     float r = std::rand() / static_cast<float>(RAND_MAX) * 2 * glm::pi<float>();
@@ -103,7 +107,7 @@ bool PhysicsComponent::Collide(const PhysicsComponent& component, glm::vec2& own
                                     other->m_spawnCallback(new_ai);
                                 }
                             }
-                        }
+                        //}
                         // spawn AI for every other team
 						other->GetActor()->Destroy();
 					}
