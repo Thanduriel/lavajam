@@ -72,6 +72,10 @@ bool PhysicsComponent::Collide(PhysicsComponent& component, glm::vec2& ownVeloci
 				{
 					BulletActor* bullet = static_cast<BulletActor*>(actor);
 					bullet->GetBulletComponent().Collided(other);
+					if (other->GetActor()->GetKind() == ActorKind::Ai)
+					{
+						other->GetActor()->Destroy();
+					}
 				};
 
 				if (this->GetActor()->GetKind() == ActorKind::Bullet)
