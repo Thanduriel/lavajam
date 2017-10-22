@@ -32,9 +32,14 @@ void ControllerComponent::Process(float deltaTime)
 	if (this->m_spawnCallback != nullptr && this->m_particleCooldown <= 0)
 	{
 		this->m_particleCooldown = 0.1f;
-		auto actor = static_cast<CharacterActor*>(this->GetActor());
-		auto particle = new ParticleActor(0.001f, actor->GetDrawComponent().GetColor(), 0, actor->GetPosition(), actor->GetRotation(), glm::vec2(0,0), 1);
-		this->m_spawnCallback(particle);
+		for (auto i = 0; i < 100; i++) {
+			auto x = std::rand() / static_cast<float>(RAND_MAX) * 0.01f - 1.0f;
+			auto y = std::rand() / static_cast<float>(RAND_MAX) * 0.01f - 1.0f;
+			auto r = std::rand() / static_cast<float>(RAND_MAX) * 2 * glm::pi<float>();
+			auto actor = static_cast<CharacterActor*>(this->GetActor());
+			auto particle = new ParticleActor(0.001f, actor->GetDrawComponent().GetColor(), 0, actor->GetPosition() + glm::vec2(x, y), r, glm::vec2(0, 0), 1);
+			this->m_spawnCallback(particle);
+		}
 	}
 
 	this->m_particleCooldown -= deltaTime;
