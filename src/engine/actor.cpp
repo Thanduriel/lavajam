@@ -81,6 +81,10 @@ void Actor::SetVelocity(const glm::vec2 velocity)
 void Actor::AddVelocity(const glm::vec2 velocityDelta)
 {
     this->m_velocity += velocityDelta;
+	if (glm::length(this->m_velocity) > 1)
+	{
+		this->m_velocity = glm::normalize(this->m_velocity);
+	}
 }
 
 void Actor::Destroy()
