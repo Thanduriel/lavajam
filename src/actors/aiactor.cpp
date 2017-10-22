@@ -30,7 +30,7 @@ AiActor::AiActor(
     float rotation,
     glm::vec2 velocity
 ) : Actor(position, rotation, velocity, ActorKind::Ai),
-    m_physics(this, PhysicsShape::Triangle, size, ActorKind::Ai),
+    m_physics(this, PhysicsShape::Triangle, size),
     m_draw(this, DrawShape::Triangle, size, color, layer),
 	m_ai(this, target)
 {}

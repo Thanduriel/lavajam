@@ -144,7 +144,7 @@ void Scene::Update(float deltaTime)
                 
                 auto my_actor = (*it_me)->GetActor();
                 auto other_actor = (*it_other)->GetActor();
-                if ((*it_other)->GetKind() == ActorKind::Ai)
+                if ((*it_other)->GetActor()->GetKind() == ActorKind::Ai)
                 {
                     auto ai_actor = (AiActor*) other_actor;
                     auto& ai = ai_actor->GetAiControllerComponent();
