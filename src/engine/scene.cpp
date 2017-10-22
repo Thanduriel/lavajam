@@ -111,6 +111,15 @@ void Scene::AddComponent(Component& component)
 		this->m_actorsQueue.push_back(actor);
 	});
 	this->m_components.push_back(&component);
+}
+
+void Scene::AddComponent(ControllerComponent& component)
+{
+	component.SetSpawnCallback([this](Actor* actor)
+	{
+		this->m_actorsQueue.push_back(actor);
+	});
+	this->m_components.push_back(&component);
 	m_controllerComponents.push_back(&component);
 }
 
@@ -275,7 +284,7 @@ void Scene::Update(float deltaTime)
     
     if (!this->m_gameEnded)
     {
-        ResolveCollisionns(deltaTime);
+        ResolveCollisions(deltaTime);
     }
     
     VertexBuffer->Upload();

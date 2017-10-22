@@ -5,9 +5,7 @@
 #include "actors/characteractor.hpp"
 
 ControllerComponent::ControllerComponent(Actor* actor, std::vector <int> keyMapping, bool isActive)
-: CooldownComponent(actor, isActive),
-m_keyMapping(keyMapping),
-m_spawnCallback(nullptr),
+: CooldownComponent(actor, isActive), m_keyMapping(keyMapping),
 m_fireMode(FireMode::Simple)
 {};
 
@@ -25,21 +23,24 @@ void ControllerComponent::Process(float deltaTime)
         m_actor->AddRotation(rotate * 5);
         m_actor->AddVelocity(glm::rotate(glm::vec2(0, translate / 1.f), m_actor->GetRotation()));   
         if(Input::KeyManager::getKeyStates(m_keyMapping[4])!=Input::EKeyState::RELEASE) {
-            if (this->m_spawnCallback != nullptr && this->GetCooldown())
-
-			switch (m_fireMode)
+			if (this->m_spawnCallback != nullptr && this->GetCooldown())
 			{
-			case FireMode::Simple:
-				FireBullet(1.f, glm::vec2{}, 0.f);
-				break;
-			case FireMode::Double:
-				FireBullet(1.f, glm::vec2(0.02f,0.f), 0.f);
-				FireBullet(1.f, glm::vec2(-0.02f,0.f), 0.f); 
-				break;
-			case FireMode::Spread:
-				FireBullet(1.f, glm::vec2{}, 0.f);
-				FireBullet(1.f, glm::vec2{}, 0.2f); 
-				FireBullet(1.f, glm::vec2{}, -0.2f);
+
+				SetCooldown(0.25f);
+				switch (m_fireMode)
+				{
+				case FireMode::Simple:
+					FireBullet(1.f, glm::vec2{}, 0.f);
+					break;
+				case FireMode::Double:
+					FireBullet(1.f, glm::vec2(0.02f, 0.f), 0.f);
+					FireBullet(1.f, glm::vec2(-0.02f, 0.f), 0.f);
+					break;
+				case FireMode::Spread:
+					FireBullet(1.f, glm::vec2{}, 0.f);
+					FireBullet(1.f, glm::vec2{}, 0.2f);
+					FireBullet(1.f, glm::vec2{}, -0.2f);
+				}
 			}
 		}
     }
@@ -60,10 +61,6 @@ void ControllerComponent::Process(float deltaTime)
     this->m_particleCooldown -= deltaTime * length(this->GetActor()->GetVelocity());
 }
 
-void ControllerComponent::SetSpawnCallback(std::function<void(Actor* bullet)> callback)
-{
-	this->m_spawnCallback = callback;
-}
 
 void ControllerComponent::FireBullet(float _speed, glm::vec2 _offset, float _rot)
 {
