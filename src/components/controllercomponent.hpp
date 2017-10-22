@@ -36,8 +36,12 @@ public:
 	void SetShootCallback(std::function<void(BulletActor* bullet)> callback);
 
     void Process(float deltaTime) override;
+    
+    bool GetCooldown() const;
+    void SetCooldown(double time);
 
 private:
     std::vector <int> m_keyMapping;
 	std::function<void(BulletActor* bullet)> m_shootCallback;
+	double m_cooldown;
 };
