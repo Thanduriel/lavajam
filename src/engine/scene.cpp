@@ -19,6 +19,7 @@
 
 #include "engine/scene.hpp"
 #include "actors/aiactor.hpp"
+#include "actors/characteractor.hpp"
 #include "components/drawcomponent.hpp"
 
 #include <algorithm>
@@ -92,29 +93,22 @@ void Scene::AddComponent(ControllerComponent& component)
 	this->m_components.push_back(&component);
 }
 
-void Scene::SpawnAi(Actor* targetActor, Actor* aiActor)
+void Scene::SpawnAi(Actor* targetActor, glm::vec4 color)
 {
-	auto ai_actor = static_cast<AiActor*>(aiActor);
-	auto& ai = ai_actor->GetAiControllerComponent();
-                                        
-	if (ai.GetTarget()->GetGUID() == targetActor->GetGUID() && ai.GetCooldown())
-	{
-		ai.SetCooldown(1.0);
-		float x = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
-		float y = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
-		float r = std::rand() / static_cast<float>(RAND_MAX) * 2 * glm::pi<float>();
+    float x = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
+    float y = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
+    float r = std::rand() / static_cast<float>(RAND_MAX) * 2 * glm::pi<float>();
 
-		Actor* new_ai = new AiActor(
-			targetActor,
-			0.01f,
-			ai_actor->GetDrawComponent().GetColor(),
-			0,
-			glm::vec2(x, -y),
-			r,
-			glm::vec2(0, 0)
-		);
-		this->m_actorsQueue.push_back(new_ai);
-	}
+    Actor* new_ai = new AiActor(
+        targetActor,
+        0.01f,
+        color,
+        0,
+        glm::vec2(x, -y),
+        r,
+        glm::vec2(0, 0)
+    );
+    this->m_actorsQueue.push_back(new_ai);
 }
 
 void Scene::Update(float deltaTime)
@@ -171,7 +165,27 @@ void Scene::Update(float deltaTime)
                 
                 if (other_actor->GetKind() == ActorKind::Ai)
                 {
-                    SpawnAi(my_actor, other_actor);
+                    auto ai_actor = static_cast<AiActor*>(other_actor);
+                    auto& ai = ai_actor->GetAiControllerComponent();
+                                                        
+                    if (ai.GetTarget()->GetGUID() == my_actor->GetGUID() && ai.GetCooldown())
+                    {
+                        ai.SetCooldown(1.0);
+                        SpawnAi(my_actor, ai_actor->GetDrawComponent().GetColor());
+                    }
+                }
+                else if (my_actor->GetKind() == ActorKind::Character &&
+                    other_actor->GetKind() == ActorKind::Bullet)
+                {
+                    auto bullet_actor = static_cast<BulletActor*>(other_actor);
+                    auto char_actor = static_cast<CharacterActor*>(my_actor);
+                    auto& cooldown = bullet_actor->GetCooldownComponent();
+                    
+                    if (cooldown.GetCooldown())
+                    {
+                        cooldown.SetCooldown(0.25f);
+                        SpawnAi(my_actor, char_actor->GetDrawComponent().GetColor());
+                    }
                 }
             }
         }

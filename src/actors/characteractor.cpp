@@ -46,3 +46,8 @@ void CharacterActor::Register(Scene& scene)
     scene.AddComponent(this->m_draw);
     scene.AddComponent(this->m_controller);
 }
+
+const DrawComponent& CharacterActor::GetDrawComponent() const
+{
+    return this->m_draw;
+}

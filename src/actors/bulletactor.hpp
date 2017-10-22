@@ -23,6 +23,7 @@
 #include "components/physicscomponent.hpp"
 #include "components/drawcomponent.hpp"
 #include "components/bulletcomponent.hpp"
+#include "components/cooldowncomponent.hpp"
 
 class BulletActor :
     public Actor
@@ -40,9 +41,11 @@ public:
     void Register(Scene& scene) override;
 	BulletComponent& GetBulletComponent();
 	PhysicsComponent& GetPhysicsComponent();
+    CooldownComponent& GetCooldownComponent();
     
 private:
     PhysicsComponent m_physics;
     DrawComponent m_draw;
 	BulletComponent m_bullet;
+    CooldownComponent m_cooldown;
 };

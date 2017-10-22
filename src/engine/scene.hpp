@@ -63,7 +63,7 @@ public:
     void AddComponent(Component& component);
     void AddComponent(PhysicsComponent& component);
 	void AddComponent(ControllerComponent& component);
-	void SpawnAi(Actor* targetActor, Actor* aiActor);
+	void SpawnAi(Actor* targetActor, glm::vec4 color);
 
 	void Update(float deltaTime);
     void Initialize();

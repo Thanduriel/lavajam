@@ -41,9 +41,12 @@ public:
     );
     
     void Register(Scene& scene) override;
+    
+    const DrawComponent& GetDrawComponent() const;
 
 private:
     PhysicsComponent m_physics;
     DrawComponent m_draw;
     ControllerComponent m_controller;
+    
 };

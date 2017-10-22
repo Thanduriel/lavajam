@@ -31,7 +31,7 @@ BulletActor::BulletActor(
 ) : Actor(position, rotation, velocity, ActorKind::Bullet),
     m_physics(this, PhysicsShape::Triangle, size),
     m_draw(this, DrawShape::Triangle, size, color, layer),
-	m_bullet(this)
+	m_bullet(this), m_cooldown(this)
 {}
 
 void BulletActor::Register(Scene& scene)
@@ -49,4 +49,9 @@ BulletComponent& BulletActor::GetBulletComponent()
 PhysicsComponent& BulletActor::GetPhysicsComponent()
 {
 	return this->m_physics;
+}
+
+CooldownComponent& BulletActor::GetCooldownComponent()
+{
+    return this->m_cooldown;
 }
