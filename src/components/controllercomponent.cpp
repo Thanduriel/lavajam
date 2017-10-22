@@ -19,10 +19,10 @@ void ControllerComponent::Process(float deltaTime)
     if(Input::KeyManager::getKeyStates(m_keyMapping[4])!=Input::EKeyState::RELEASE) {
 		if (this->m_shootCallback != nullptr && this->GetCooldown())
 		{
-            this->SetCooldown(0.2f);
-			const glm::vec4 white(141/255.f, 110/255.f, 99/255.f, 1);
+            this->SetCooldown(0.5f);
+			const glm::vec4 brown(141/255.f, 110/255.f, 99/255.f, 1);
 			const glm::vec2 velocity = glm::rotate(glm::vec2(0.f, 1.f + glm::length(m_actor->GetVelocity())), m_actor->GetRotation());
-			const auto bullet = new BulletActor(0.01, white, 0, m_actor->GetPosition() - normalize(velocity)/15, m_actor->GetRotation(), -velocity);
+			const auto bullet = new BulletActor(0.01f, brown, 0, m_actor->GetPosition() - normalize(velocity)/15, m_actor->GetRotation(), -velocity);
 			this->m_shootCallback(bullet);
 		}
     }

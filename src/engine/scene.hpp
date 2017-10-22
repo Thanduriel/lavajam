@@ -63,8 +63,9 @@ public:
     void AddComponent(Component& component);
     void AddComponent(PhysicsComponent& component);
 	void AddComponent(ControllerComponent& component);
-    
-    void Update(float deltaTime);
+	void SpawnAi(Actor* targetActor, Actor* aiActor);
+
+	void Update(float deltaTime);
     void Initialize();
     void Destroy();
     

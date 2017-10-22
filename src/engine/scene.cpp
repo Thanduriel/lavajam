@@ -92,6 +92,31 @@ void Scene::AddComponent(ControllerComponent& component)
 	this->m_components.push_back(&component);
 }
 
+void Scene::SpawnAi(Actor* targetActor, Actor* aiActor)
+{
+	auto ai_actor = static_cast<AiActor*>(aiActor);
+	auto& ai = ai_actor->GetAiControllerComponent();
+                                        
+	if (ai.GetTarget()->GetGUID() == targetActor->GetGUID() && ai.GetCooldown())
+	{
+		ai.SetCooldown(1.0);
+		float x = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
+		float y = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
+		float r = std::rand() / static_cast<float>(RAND_MAX) * 2 * glm::pi<float>();
+
+		Actor* new_ai = new AiActor(
+			targetActor,
+			0.01f,
+			ai_actor->GetDrawComponent().GetColor(),
+			0,
+			glm::vec2(x, -y),
+			r,
+			glm::vec2(0, 0)
+		);
+		this->m_actorsQueue.push_back(new_ai);
+	}
+}
+
 void Scene::Update(float deltaTime)
 {    
     auto cidx = std::remove_if(
@@ -144,29 +169,9 @@ void Scene::Update(float deltaTime)
                 
                 auto my_actor = (*it_me)->GetActor();
                 auto other_actor = (*it_other)->GetActor();
-                if ((*it_other)->GetActor()->GetKind() == ActorKind::Ai)
+                if (other_actor->GetKind() == ActorKind::Ai)
                 {
-                    auto ai_actor = (AiActor*) other_actor;
-                    auto& ai = ai_actor->GetAiControllerComponent();
-                                        
-                    if (ai.GetTarget()->GetGUID() == my_actor->GetGUID() && ai.GetCooldown())
-                    {
-                        ai.SetCooldown(1.0);
-                        float x = std::rand() / (float) RAND_MAX * 2.0f - 1.0f;
-                        float y = std::rand() / (float) RAND_MAX * 2.0f - 1.0f;
-                        float r = std::rand() / (float) RAND_MAX * 2 * glm::pi<float>();
-
-                        Actor* new_ai = new AiActor(
-                            my_actor,
-                            0.01f,
-                            ai_actor->GetDrawComponent().GetColor(),
-                            0,
-                            glm::vec2(x, -y),
-                            r,
-                            glm::vec2(0, 0)
-                        );
-                        this->m_actorsQueue.push_back(new_ai);
-                    }
+                    SpawnAi(my_actor, other_actor);
                 }
             }
         }
