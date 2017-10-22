@@ -41,7 +41,7 @@ void AiControllerComponent::Process(float deltaTime)
     me->SetVelocity(new_v);
 }
 
-const Actor* AiControllerComponent::GetTarget() const
+Actor* AiControllerComponent::GetTarget()
 {
     return this->m_target;
 }

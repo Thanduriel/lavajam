@@ -19,8 +19,12 @@
 
 #pragma once
 
+#include "glm.hpp"
 #include "engine/actor.hpp"
 #include "engine/component.hpp"
+
+#include <unordered_map>
+#include <utility>
 
 enum class PhysicsShape {
     Triangle,
@@ -42,8 +46,10 @@ public:
 
     void SetShape(PhysicsShape shape);
     void SetSize(float size);
+    void SetTeams(std::unordered_map<uint32_t, std::pair<glm::vec4, Actor*>>* teams);
     
 private:
     PhysicsShape m_shape;
     float m_size;
+    std::unordered_map<uint32_t, std::pair<glm::vec4, Actor*>>* m_teams;
 };

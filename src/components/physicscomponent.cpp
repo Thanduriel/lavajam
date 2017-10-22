@@ -19,6 +19,7 @@
 
 #include "components/physicscomponent.hpp"
 #include "actors/bulletactor.hpp"
+#include "actors/aiactor.hpp"
 
 PhysicsComponent::PhysicsComponent(
     Actor* actor,
@@ -68,23 +69,53 @@ bool PhysicsComponent::Collide(const PhysicsComponent& component, glm::vec2& own
 				ownVelocityDelta /= ratio;
 				otherVelocityDelta *= ratio;
 
-				auto registerCollision = [](Actor* actor, const PhysicsComponent* other)
+				auto registerCollision = [](Actor* actor, Actor* other_actor, const PhysicsComponent* other)
 				{
 					BulletActor* bullet = static_cast<BulletActor*>(actor);
-					bullet->GetBulletComponent().Collided(other);
+                    auto& bullet_comp = bullet->GetBulletComponent();
+					bullet_comp.Collided(other);
 					if (other->GetActor()->GetKind() == ActorKind::Ai)
 					{
+                        if (other->m_spawnCallback != nullptr)
+                        {
+                            auto ai_actor = static_cast<AiActor*>(other_actor);
+                            auto my_team = ai_actor->GetAiControllerComponent().GetTeam();
+                            
+                            for (auto it = other->m_teams->begin(); it != other->m_teams->end(); it++)
+                            {
+                                if (it->first != my_team)
+                                {
+                                    float x = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
+                                    float y = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
+                                    float r = std::rand() / static_cast<float>(RAND_MAX) * 2 * glm::pi<float>();
+
+                                    Actor* new_ai = new AiActor(
+                                        it->second.second,
+                                        it->first,
+                                        0.01f,
+                                        it->second.first,
+                                        0,
+                                        glm::vec2(x, -y),
+                                        r,
+                                        glm::vec2(0, 0)
+                                    );
+                                    
+                                    other->m_spawnCallback(new_ai);
+                                }
+                            }
+                        }
+                        // spawn AI for every other team
 						other->GetActor()->Destroy();
 					}
 				};
 
 				if (this->GetActor()->GetKind() == ActorKind::Bullet)
 				{
-					registerCollision(this->GetActor(), &component);
+					registerCollision(this->GetActor(), component.GetActor(), &component);
 				}
 				else if (component.GetActor()->GetKind() == ActorKind::Bullet)
 				{
-					registerCollision(component.GetActor(), this);
+					registerCollision(component.GetActor(), this->GetActor(), this);
 				}
 
                 return true;
@@ -134,4 +165,9 @@ void PhysicsComponent::SetShape(PhysicsShape shape)
 void PhysicsComponent::SetSize(float size)
 {
     this->m_size = size * 1.5f;
+}
+
+void PhysicsComponent::SetTeams(std::unordered_map<uint32_t, std::pair<glm::vec4, Actor*>>* teams)
+{
+    this->m_teams = teams;
 }

@@ -24,12 +24,15 @@
 #include "engine/component.hpp"
 #include "engine/scene.hpp"
 #include "components/physicscomponent.hpp"
+#include "components/controllercomponent.hpp"
 #include "graphic/vertexbuffer.hpp"
 #include "graphic/effect.hpp"
+#include "actors/aiactor.hpp"
 
 #include <vector>
 #include <memory>
-#include "components/controllercomponent.hpp"
+#include <unordered_map>
+#include <utility>
 
 typedef std::vector<std::unique_ptr<Actor>> Actors;
 typedef std::vector<Component*> Components;
@@ -50,6 +53,7 @@ class Scene
 {
 public:
     Scene(Camera camera, Scene* previous = nullptr, Scene* next = nullptr);
+    ~Scene();
     
     const Camera& GetCamera() const;
     const Scene* GetPrevious() const;
@@ -57,6 +61,7 @@ public:
     const Actors& GetActors() const;
     
     void AddActor(Actor& actor);
+    void AddActor(AiActor& actor);
     void SetCamera(Camera camera);
     void SetPrevious(Scene* scene);
     void SetNext(Scene* scene);
@@ -79,4 +84,5 @@ private:
     PhysicsComponents m_physicsComponents;
 	std::vector<Actor*> m_actorsQueue;
     bool m_gameEnded;
+    std::unordered_map<uint32_t, std::pair<glm::vec4, Actor*>>* m_teams;
 };

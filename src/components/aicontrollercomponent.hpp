@@ -30,7 +30,7 @@ public:
     
     void Process(float deltaTime) override;
     
-    const Actor* GetTarget() const;
+    Actor* GetTarget();
     uint32_t GetTeam() const;
     
     void SetTarget(Actor* target);

@@ -43,6 +43,7 @@ public:
     
     AiControllerComponent& GetAiControllerComponent();
     const DrawComponent& GetDrawComponent() const;
+    PhysicsComponent& GetPhysicsComponent();
     
 private:
     PhysicsComponent m_physics;

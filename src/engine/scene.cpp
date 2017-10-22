@@ -32,7 +32,14 @@ Graphic::Effect* Effect;
 
 Scene::Scene(Camera camera, Scene* previous, Scene* next) :
     m_camera(camera), m_previous(previous), m_next(next), m_gameEnded(false)
-{}
+{
+    this->m_teams = new std::unordered_map<uint32_t, std::pair<glm::vec4, Actor*>>();
+}
+
+Scene::~Scene()
+{
+    delete this->m_teams;
+}
 
 const Camera& Scene::GetCamera() const
 {
@@ -61,6 +68,14 @@ void Scene::AddActor(Actor& actor)
     actor.Register(*this);
 }
 
+void Scene::AddActor(AiActor& actor)
+{
+    this->m_teams->insert({actor.GetAiControllerComponent().GetTeam(), std::pair<glm::vec4, Actor*>(actor.GetDrawComponent().GetColor(), actor.GetAiControllerComponent().GetTarget())});
+    std::unique_ptr<Actor> actor_ptr(&actor);
+    this->m_actors.push_back(std::move(actor_ptr));
+    actor.Register(*this);
+}
+
 void Scene::SetCamera(Camera camera)
 {
     this->m_camera = camera;
@@ -78,6 +93,7 @@ void Scene::SetNext(Scene* scene)
 
 void Scene::AddComponent(PhysicsComponent& component)
 {
+    component.SetTeams(this->m_teams);
 	component.SetSpawnCallback([this](Actor* actor)
 	{
 		this->m_actorsQueue.push_back(actor);

@@ -52,3 +52,8 @@ const DrawComponent& AiActor::GetDrawComponent() const
 {
     return this->m_draw;
 }
+
+PhysicsComponent& AiActor::GetPhysicsComponent()
+{
+    return this->m_physics;
+}
