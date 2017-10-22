@@ -38,7 +38,7 @@ void PhysicsComponent::Process(float deltaTime)
     // nothing to do here
 }
 
-bool PhysicsComponent::Collide(PhysicsComponent& component, glm::vec2& ownVelocityDelta, glm::vec2& otherVelocityDelta) const
+bool PhysicsComponent::Collide(const PhysicsComponent& component, glm::vec2 ownVelocityDelta, glm::vec2 otherVelocityDelta) const
 {
     switch(this->m_shape)
     {
@@ -53,7 +53,7 @@ bool PhysicsComponent::Collide(PhysicsComponent& component, glm::vec2& ownVeloci
 	        const glm::vec2 center = component.GetActor()->GetPosition();
 	        const glm::vec2 my_center = this->m_actor->GetPosition();
 
-	        const bool collides = glm::distance(center, my_center) <= this->m_size * 1.5f + component.GetSize() * 1.5f;
+	        const bool collides = glm::distance2(center, my_center) <= this->m_size * m_size * 1.5f + component.GetSize()*component.GetSize() * 1.5f;
             if (collides)
             {
 				ownVelocityDelta = { 0,0 };

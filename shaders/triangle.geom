@@ -6,12 +6,12 @@ layout(points) in;
 layout(triangle_strip, max_vertices = 3) out;
 
 layout(location = 0) in vec4 vs_Position[];
-layout(location = 1) in vec3 vs_Color[];
+layout(location = 1) in vec4 vs_Color[];
 layout(location = 2) in float vs_Rotation[];
 layout(location = 3) in float vs_Size[];
 
 //out vec2 gs_texCoord;
-layout(location = 0) out vec3 gs_color;
+layout(location = 0) out vec4 gs_color;
 
 const float c_fAspect = 16.0 / 9.0;
 

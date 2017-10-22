@@ -25,7 +25,7 @@
 #include <algorithm>
 #include <iostream>
 
-Graphic::VertexBuffer<Vertex>* VertexBuffer;
+Graphic::VertexBuffer<Vertex, 65536>* VertexBuffer;
 Graphic::Effect* Effect;
 
 Scene::Scene(Camera camera, Scene* previous, Scene* next) :
@@ -189,7 +189,7 @@ void Scene::Update(float deltaTime)
                 }
             }
         }
-
+		 
 		auto me_pos = my_actor->GetPosition();
 		auto me_size = (*it_me)->GetSize();
 		auto velocity = my_actor->GetVelocity();
@@ -241,9 +241,9 @@ void Scene::Update(float deltaTime)
 
 void Scene::Initialize()
 {
-    VertexBuffer = new Graphic::VertexBuffer<Vertex>({
+    VertexBuffer = new Graphic::VertexBuffer<Vertex, 65536>({
         Graphic::VertexFormat::VEC2,
-        Graphic::VertexFormat::VEC3,
+        Graphic::VertexFormat::VEC4,
         Graphic::VertexFormat::FLOAT,
 		Graphic::VertexFormat::FLOAT
     });

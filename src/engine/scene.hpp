@@ -38,12 +38,12 @@ typedef std::vector<PhysicsComponent*> PhysicsComponents;
 struct Vertex
 {
 	glm::vec2 position;
-	glm::vec3 color;
+	glm::vec4 color;
 	float rotation;
 	float size;
 };
 
-extern Graphic::VertexBuffer<Vertex>* VertexBuffer;
+extern Graphic::VertexBuffer<Vertex, 65536>* VertexBuffer;
 extern Graphic::Effect* Effect;
 
 class Scene
