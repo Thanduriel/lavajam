@@ -70,6 +70,8 @@ public:
     void Destroy();
     
 private:
+	void ResolveCollisionns(float _deltaTime);
+
     Camera m_camera;
     Scene* m_previous;
     Scene* m_next;

@@ -25,7 +25,7 @@ PhysicsComponent::PhysicsComponent(
     PhysicsShape shape,
     float size,
     bool isActive
-) : Component(actor, isActive), m_shape(shape), m_size(size)
+) : Component(actor, isActive), m_shape(shape), m_size(size* 1.5f)
 {}
 
 float sign (glm::vec2 p1, glm::vec2 p2, glm::vec2 p3)
@@ -53,7 +53,7 @@ bool PhysicsComponent::Collide(const PhysicsComponent& component, glm::vec2 ownV
 	        const glm::vec2 center = component.GetActor()->GetPosition();
 	        const glm::vec2 my_center = this->m_actor->GetPosition();
 
-	        const bool collides = glm::distance2(center, my_center) <= this->m_size * m_size * 1.5f + component.GetSize()*component.GetSize() * 1.5f;
+	        const bool collides = glm::distance2(center, my_center) <= m_size * m_size + component.GetSize()*component.GetSize();
             if (collides)
             {
 				ownVelocityDelta = { 0,0 };
@@ -132,5 +132,5 @@ void PhysicsComponent::SetShape(PhysicsShape shape)
 
 void PhysicsComponent::SetSize(float size)
 {
-    this->m_size = size;
+    this->m_size = size * 1.5f;
 }
