@@ -37,6 +37,8 @@ public:
     void Process(float deltaTime) override;
 
 private:
+	void FireBullet(float _speed, glm::vec2 _position, float _rot);
+
     std::vector <int> m_keyMapping;
 	std::function<void(Actor* actor)> m_spawnCallback;
 	float m_particleCooldown;

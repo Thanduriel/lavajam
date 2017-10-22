@@ -38,7 +38,7 @@ void PhysicsComponent::Process(float deltaTime)
     // nothing to do here
 }
 
-bool PhysicsComponent::Collide(const PhysicsComponent& component, glm::vec2 ownVelocityDelta, glm::vec2 otherVelocityDelta) const
+bool PhysicsComponent::Collide(const PhysicsComponent& component, glm::vec2& ownVelocityDelta, glm::vec2& otherVelocityDelta) const
 {
     switch(this->m_shape)
     {

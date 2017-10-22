@@ -34,7 +34,7 @@ public:
     
     void Process(float deltaTime) override;
     
-    bool Collide(const PhysicsComponent& component, glm::vec2 ownVelocityDelta, glm::vec2 otherVelocityDelta) const;
+    bool Collide(const PhysicsComponent& component, glm::vec2& ownVelocityDelta, glm::vec2& otherVelocityDelta) const;
     
     PhysicsShape GetShape() const;
     float GetSize() const;
