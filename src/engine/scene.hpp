@@ -75,4 +75,5 @@ private:
     Actors m_actors;
     Components m_components;
     PhysicsComponents m_physicsComponents;
+	std::vector<Actor*> m_actorsQueue;
 };

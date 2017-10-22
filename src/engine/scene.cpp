@@ -87,17 +87,13 @@ void Scene::AddComponent(ControllerComponent& component)
 {
 	component.SetShootCallback([this](BulletActor* bullet)
 	{
-		this->AddActor(*bullet);
+		this->m_actorsQueue.push_back(bullet);
 	});
 	this->m_components.push_back(&component);
 }
 
 void Scene::Update(float deltaTime)
-{
-    //std::cout << "Updating scene [delta-time: " << deltaTime << "]" << std::endl;
-    
-    std::vector<Actor*> newActors;
-    
+{    
     auto cidx = std::remove_if(
         this->m_components.begin(),
         this->m_components.end(),
@@ -168,7 +164,7 @@ void Scene::Update(float deltaTime)
                             r,
                             glm::vec2(0, 0)
                         );
-                        newActors.push_back(new_ai);
+                        this->m_actorsQueue.push_back(new_ai);
                     }
                 }
             }
@@ -191,10 +187,11 @@ void Scene::Update(float deltaTime)
     VertexBuffer->Upload();
     Graphic::Device::Draw(*VertexBuffer);
     
-    for (auto const& actor : newActors)
+    for (auto const& actor : this->m_actorsQueue)
     {
         this->AddActor(*actor);
     }
+	this->m_actorsQueue.clear();
 }
 
 void Scene::Initialize()
