@@ -83,6 +83,15 @@ void Scene::AddComponent(PhysicsComponent& component)
     this->m_physicsComponents.push_back(&component);
 }
 
+void Scene::AddComponent(ControllerComponent& component)
+{
+	component.SetShootCallback([this](BulletActor* bullet)
+	{
+		this->AddActor(*bullet);
+	});
+	this->m_components.push_back(&component);
+}
+
 void Scene::Update(float deltaTime)
 {
     //std::cout << "Updating scene [delta-time: " << deltaTime << "]" << std::endl;
@@ -178,7 +187,7 @@ void Scene::Update(float deltaTime)
     {
         component->Process(deltaTime);
     }
-    
+	    
     VertexBuffer->Upload();
     Graphic::Device::Draw(*VertexBuffer);
     

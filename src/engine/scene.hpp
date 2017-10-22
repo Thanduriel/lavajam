@@ -29,6 +29,7 @@
 
 #include <vector>
 #include <memory>
+#include "components/controllercomponent.hpp"
 
 typedef std::vector<std::unique_ptr<Actor>> Actors;
 typedef std::vector<Component*> Components;
@@ -61,6 +62,7 @@ public:
     void SetNext(Scene* scene);
     void AddComponent(Component& component);
     void AddComponent(PhysicsComponent& component);
+	void AddComponent(ControllerComponent& component);
     
     void Update(float deltaTime);
     void Initialize();
