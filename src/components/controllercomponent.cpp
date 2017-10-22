@@ -3,10 +3,11 @@
 #include "glm.hpp"
 
 ControllerComponent::ControllerComponent(Actor* actor, bool isActive, std::vector <int> keyMapping):
-Component(actor, isActive),m_keyMapping(keyMapping),m_shootCallback(nullptr){};
+CooldownComponent(actor, isActive),m_keyMapping(keyMapping),m_shootCallback(nullptr){};
 
 void ControllerComponent::Process(float deltaTime)
 {
+	CooldownComponent::Process(deltaTime);
     float translate = 0;
     float rotate = 0;
     if(Input::KeyManager::getKeyStates(m_keyMapping[0])!=Input::EKeyState::RELEASE) translate-=deltaTime;
@@ -25,24 +26,9 @@ void ControllerComponent::Process(float deltaTime)
 			this->m_shootCallback(bullet);
 		}
     }
-    
-    if (this->m_cooldown > 0)
-    {
-        this->m_cooldown -= deltaTime;
-    }
 }
 
 void ControllerComponent::SetShootCallback(std::function<void(BulletActor* bullet)> callback)
 {
 	this->m_shootCallback = callback;
-}
-
-bool ControllerComponent::GetCooldown() const
-{
-    return this->m_cooldown <= 0;
-}
-
-void ControllerComponent::SetCooldown(double time)
-{
-    this->m_cooldown = time;
 }

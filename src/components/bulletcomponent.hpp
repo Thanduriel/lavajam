@@ -18,9 +18,14 @@
  */
 
 #pragma once
+#include "engine/component.hpp"
+#include "cooldowncomponent.hpp"
 
-class BulletComponent
+class BulletComponent :
+	public CooldownComponent
 {
 public:
-    BulletComponent();
+    BulletComponent(Actor* actor, bool isActive = true);
+
+	void Process(float deltaTime) override;
 };

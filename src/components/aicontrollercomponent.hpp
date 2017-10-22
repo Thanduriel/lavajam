@@ -20,10 +20,10 @@
 #pragma once
 
 #include "engine/actor.hpp"
-#include "engine/component.hpp"
+#include "cooldowncomponent.hpp"
 
 class AiControllerComponent :
-    public Component
+    public CooldownComponent
 {
 public:
     AiControllerComponent(Actor* actor, Actor* target, bool isActive = true);
@@ -31,12 +31,9 @@ public:
     void Process(float deltaTime) override;
     
     const Actor* GetTarget() const;
-    bool GetCooldown() const;
     
     void SetTarget(Actor* target);
-    void SetCooldown(double time);
     
 private:
     Actor* m_target;
-    double m_cooldown;
 };

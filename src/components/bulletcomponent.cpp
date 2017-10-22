@@ -19,7 +19,13 @@
 
 #include "components/bulletcomponent.hpp"
 
-BulletComponent::BulletComponent()
+BulletComponent::BulletComponent(Actor* actor, bool isActive) :
+	CooldownComponent(actor, isActive)
 {
 
+}
+
+void BulletComponent::Process(float deltaTime)
+{
+	CooldownComponent::Process(deltaTime);
 }
