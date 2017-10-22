@@ -158,17 +158,17 @@ void Scene::Update(float deltaTime)
     glm::vec2 own_velocity_delta, other_velocity_delta;
     for (auto it_me = this->m_physicsComponents.begin(); it_me != this->m_physicsComponents.end(); it_me++)
     {
+		auto my_actor = (*it_me)->GetActor();
         for (auto it_other = it_me + 1; it_other != this->m_physicsComponents.end(); it_other++)
         {
+			auto other_actor = (*it_other)->GetActor();
             if ((*it_me)->Collide(**it_other, own_velocity_delta, other_velocity_delta))
             {
-				own_velocity_delta *= deltaTime * glm::length((*it_me)->GetActor()->GetVelocity());
-				other_velocity_delta *= deltaTime * glm::length((*it_me)->GetActor()->GetVelocity());
-                (*it_me)->GetActor()->AddVelocity(own_velocity_delta);
-                (*it_other)->GetActor()->AddVelocity(other_velocity_delta);
+				own_velocity_delta *= deltaTime * glm::length(my_actor->GetVelocity());
+				other_velocity_delta *= deltaTime * glm::length(my_actor->GetVelocity());
+                my_actor->AddVelocity(own_velocity_delta);
+                other_actor->AddVelocity(other_velocity_delta);
                 
-                auto my_actor = (*it_me)->GetActor();
-                auto other_actor = (*it_other)->GetActor();
                 if (other_actor->GetKind() == ActorKind::Ai)
                 {
                     SpawnAi(my_actor, other_actor);
@@ -176,9 +176,9 @@ void Scene::Update(float deltaTime)
             }
         }
 
-		auto me_pos = (*it_me)->GetActor()->GetPosition();
+		auto me_pos = my_actor->GetPosition();
 		auto me_size = (*it_me)->GetSize();
-		auto velocity = (*it_me)->GetActor()->GetVelocity();
+		auto velocity = my_actor->GetVelocity();
 		glm::vec2 border_vec = {0,0};
 		if (me_pos.x - me_size < -1)
 		{
@@ -200,8 +200,14 @@ void Scene::Update(float deltaTime)
 			if (velocity.y > 0)
 				border_vec.y -= velocity.y * 2;
 		}
-
-		(*it_me)->GetActor()->AddVelocity(border_vec);
+		/*
+		if (my_actor->GetKind() == ActorKind::Bullet && border_vec.x == 0 && border_vec.y == 0)
+		{
+			BulletActor* bullet = static_cast<BulletActor*>(my_actor);
+			bullet->GetBulletComponent().Collided(&bullet->GetPhysicsComponent());
+		}
+		*/
+		my_actor->AddVelocity(border_vec);
     }
     
     for (auto const& component : this->m_components)

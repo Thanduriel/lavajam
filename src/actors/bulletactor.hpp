@@ -39,9 +39,10 @@ public:
     
     void Register(Scene& scene) override;
 	BulletComponent& GetBulletComponent();
+	PhysicsComponent& GetPhysicsComponent();
     
 private:
     PhysicsComponent m_physics;
     DrawComponent m_draw;
-	BulletComponent m_bulletComponent;
+	BulletComponent m_bullet;
 };

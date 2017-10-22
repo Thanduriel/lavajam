@@ -35,7 +35,9 @@ public:
         size_t layer,
         glm::vec2 position,
         float rotation,
-        glm::vec2 velocity
+        glm::vec2 velocity,
+		std::vector <int> keymapping,
+		bool isActive = true
     );
     
     void Register(Scene& scene) override;

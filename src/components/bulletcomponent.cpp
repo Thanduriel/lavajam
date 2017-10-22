@@ -18,6 +18,7 @@
  */
 
 #include "components/bulletcomponent.hpp"
+#include "actors/bulletactor.hpp"
 
 BulletComponent::BulletComponent(Actor* actor, bool isActive) :
 	Component(actor, isActive), m_collidedComponent(nullptr)

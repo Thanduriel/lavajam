@@ -12,4 +12,5 @@ public:
 
 private:
     Scene m_defaultScene;
+	void SpawnTeam(const glm::vec4 color, std::vector <int> keyMapping);
 };

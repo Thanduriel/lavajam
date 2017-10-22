@@ -31,17 +31,22 @@ BulletActor::BulletActor(
 ) : Actor(position, rotation, velocity, ActorKind::Bullet),
     m_physics(this, PhysicsShape::Triangle, size),
     m_draw(this, DrawShape::Triangle, size, color, layer),
-	m_bulletComponent(this)
+	m_bullet(this)
 {}
 
 void BulletActor::Register(Scene& scene)
 {
     scene.AddComponent(this->m_physics);
     scene.AddComponent(this->m_draw);
-	scene.AddComponent(this->m_bulletComponent);
+	scene.AddComponent(this->m_bullet);
 }
 
 BulletComponent& BulletActor::GetBulletComponent()
 {
-	return this->m_bulletComponent;
+	return this->m_bullet;
+}
+
+PhysicsComponent& BulletActor::GetPhysicsComponent()
+{
+	return this->m_physics;
 }

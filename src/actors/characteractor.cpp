@@ -22,12 +22,14 @@
 #include "actors/characteractor.hpp"
 
 CharacterActor::CharacterActor(
-    float size,
-    glm::vec4 color,
-    size_t layer,
-    glm::vec2 position,
-    float rotation,
-    glm::vec2 velocity
+	float size,
+	glm::vec4 color,
+	size_t layer,
+	glm::vec2 position,
+	float rotation,
+	glm::vec2 velocity,
+	std::vector <int> keymapping,
+	bool isActive
 ) : Actor(
     position,
     rotation,
@@ -35,7 +37,7 @@ CharacterActor::CharacterActor(
 	ActorKind::Character
 ), m_physics(this, PhysicsShape::Triangle, size),
     m_draw(this, DrawShape::Triangle, size, color, layer),
-    m_controller(this)
+    m_controller(this, keymapping, isActive)
 {}
 
 void CharacterActor::Register(Scene& scene)

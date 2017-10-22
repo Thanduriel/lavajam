@@ -32,7 +32,7 @@ class ControllerComponent :
     public CooldownComponent
 {
 public:
-    ControllerComponent(Actor* actor,bool isActive = true, std::vector <int> keyMapping = {GLFW_KEY_W,GLFW_KEY_A,GLFW_KEY_S,GLFW_KEY_D,GLFW_KEY_SPACE});
+    ControllerComponent(Actor* actor, std::vector <int> keyMapping = { GLFW_KEY_W,GLFW_KEY_A,GLFW_KEY_S,GLFW_KEY_D,GLFW_KEY_SPACE }, bool isActive = true);
 	void SetShootCallback(std::function<void(BulletActor* bullet)> callback);
 
     void Process(float deltaTime) override;
