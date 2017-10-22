@@ -206,6 +206,15 @@ void Scene::Update(float deltaTime)
                 {
                     actor->Destroy();
                 }
+                else
+                {
+                    auto char_actor = static_cast<CharacterActor*>(actor);
+                    char_actor->SetVelocity(glm::vec2(0, 0));
+                    char_actor->SetPosition(glm::vec2(0, 0));
+                    char_actor->GetDrawComponent().SetSize(0.333f);
+                    char_actor->GetPhysicsComponent().SetSize(0.333f);
+                    char_actor->SetWin();
+                }
             }
             
             for (const auto& actor : this->m_actors)
@@ -229,9 +238,12 @@ void Scene::Update(float deltaTime)
     {
         component->Process(deltaTime);
     }
-	    
-	ResolveCollisionns(deltaTime);
-
+    
+    if (!this->m_gameEnded)
+    {
+        ResolveCollisionns(deltaTime);
+    }
+    
     VertexBuffer->Upload();
     Graphic::Device::Draw(*VertexBuffer);
     

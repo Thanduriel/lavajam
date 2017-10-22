@@ -60,7 +60,10 @@ glm::vec2 Actor::GetVelocity() const
 
 void Actor::SetPosition(const glm::vec2 position)
 {
-    this->m_position = position;
+    if (!this->m_win)
+    {
+        this->m_position = position;
+    }
 }
 
 void Actor::SetRotation(const float rotation)
@@ -75,16 +78,22 @@ void Actor::AddRotation(const float rotationDelta)
 
 void Actor::SetVelocity(const glm::vec2 velocity)
 {
-    this->m_velocity = velocity;
+    if (!this->m_win)
+    {
+        this->m_velocity = velocity;
+    }
 }
 
 void Actor::AddVelocity(const glm::vec2 velocityDelta)
 {
-    this->m_velocity += velocityDelta;
-	if (glm::length(this->m_velocity) > 1)
-	{
-		this->m_velocity = glm::normalize(this->m_velocity);
-	}
+    if (!this->m_win)
+    {
+        this->m_velocity += velocityDelta;
+        if (glm::length(this->m_velocity) > 1)
+        {
+            this->m_velocity = glm::normalize(this->m_velocity);
+        }
+    }
 }
 
 void Actor::Destroy()
@@ -112,4 +121,14 @@ void Actor::SetKind(ActorKind kind)
 ActorKind Actor::GetKind() const
 {
 	return this->m_kind;
+}
+
+void Actor::SetWin()
+{
+    this->m_win = true;
+}
+
+bool Actor::GetWin() const
+{
+    return this->m_win;
 }

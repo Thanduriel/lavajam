@@ -49,9 +49,14 @@ void CharacterActor::Register(Scene& scene)
     scene.AddComponent(this->m_controller);
 }
 
-const DrawComponent& CharacterActor::GetDrawComponent() const
+DrawComponent& CharacterActor::GetDrawComponent()
 {
     return this->m_draw;
+}
+
+PhysicsComponent& CharacterActor::GetPhysicsComponent()
+{
+    return this->m_physics;
 }
 
 uint32_t CharacterActor::GetTeam() const
@@ -63,3 +68,4 @@ void CharacterActor::SetTeam(uint32_t team)
 {
     this->m_team = team;
 }
+

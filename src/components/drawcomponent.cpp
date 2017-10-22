@@ -33,6 +33,11 @@ DrawComponent::DrawComponent(
 
 void DrawComponent::Process(float deltaTime)
 {
+    if (this->GetActor()->GetWin())
+    {
+        this->GetActor()->AddRotation(0.001f);
+    }
+    
     if (this->GetActor()->GetKind() == ActorKind::Bullet)
     {
         this->m_actual_size = this->m_size;
@@ -42,17 +47,25 @@ void DrawComponent::Process(float deltaTime)
         this->m_actual_size += (this->m_size - this->m_actual_size) * deltaTime * 3;
     }
     
+    float size;
+    glm::vec2 pos;
+    float rot;
+    
+    size = this->m_actual_size;
+    pos = this->m_actor->GetPosition();
+    rot = this->m_actor->GetRotation();
+    
 	Vertex v_outer {
-        this->m_actor->GetPosition(),
+        pos,
         this->m_color,
-        this->m_actor->GetRotation(),
-		m_actual_size
+        rot,
+		size
     };
     Vertex v_inner {
-        this->m_actor->GetPosition(),
+        pos,
         this->m_color / 2.f,
-        this->m_actor->GetRotation(),
-        m_actual_size * 0.75f
+        rot,
+        size * 0.75f
     };
     
 	VertexBuffer->Add(v_outer);
@@ -98,3 +111,4 @@ void DrawComponent::SetLayer(size_t layer)
 {
     this->m_layer = layer;
 }
+

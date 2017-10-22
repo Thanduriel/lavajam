@@ -9,23 +9,26 @@ CooldownComponent(actor, isActive),m_keyMapping(keyMapping),m_spawnCallback(null
 
 void ControllerComponent::Process(float deltaTime)
 {
-	CooldownComponent::Process(deltaTime);
-    float translate = 0;
-    float rotate = 0;
-    if(Input::KeyManager::getKeyStates(m_keyMapping[0])!=Input::EKeyState::RELEASE) translate-=deltaTime;
-    if(Input::KeyManager::getKeyStates(m_keyMapping[2])!=Input::EKeyState::RELEASE) translate+=deltaTime;
-    if(Input::KeyManager::getKeyStates(m_keyMapping[1])!=Input::EKeyState::RELEASE) rotate-=deltaTime;
-    if(Input::KeyManager::getKeyStates(m_keyMapping[3])!=Input::EKeyState::RELEASE) rotate+=deltaTime;
-    m_actor->AddRotation(rotate * 5);
-    m_actor->AddVelocity(glm::rotate(glm::vec2(0, translate / 1.f), m_actor->GetRotation()));   
-    if(Input::KeyManager::getKeyStates(m_keyMapping[4])!=Input::EKeyState::RELEASE) {
-		if (this->m_spawnCallback != nullptr && this->GetCooldown())
-		{
-            this->SetCooldown(0.25f);
-			FireBullet(1.f, glm::vec2{}, 0.f);
-		//	FireBullet(1.f, glm::vec2{}, 0.2f); 
-		//	FireBullet(1.f, glm::vec2{}, -0.2f);
-		}
+    if (!this->GetActor()->GetWin())
+    {
+        CooldownComponent::Process(deltaTime);
+        float translate = 0;
+        float rotate = 0;
+        if(Input::KeyManager::getKeyStates(m_keyMapping[0])!=Input::EKeyState::RELEASE) translate-=deltaTime;
+        if(Input::KeyManager::getKeyStates(m_keyMapping[2])!=Input::EKeyState::RELEASE) translate+=deltaTime;
+        if(Input::KeyManager::getKeyStates(m_keyMapping[1])!=Input::EKeyState::RELEASE) rotate-=deltaTime;
+        if(Input::KeyManager::getKeyStates(m_keyMapping[3])!=Input::EKeyState::RELEASE) rotate+=deltaTime;
+        m_actor->AddRotation(rotate * 5);
+        m_actor->AddVelocity(glm::rotate(glm::vec2(0, translate / 1.f), m_actor->GetRotation()));   
+        if(Input::KeyManager::getKeyStates(m_keyMapping[4])!=Input::EKeyState::RELEASE) {
+            if (this->m_spawnCallback != nullptr && this->GetCooldown())
+            {
+                this->SetCooldown(0.25f);
+                FireBullet(1.f, glm::vec2{}, 0.f);
+            //	FireBullet(1.f, glm::vec2{}, 0.2f); 
+            //	FireBullet(1.f, glm::vec2{}, -0.2f);
+            }
+        }
     }
 
 	if (this->m_spawnCallback != nullptr && this->m_particleCooldown <= 0)
@@ -41,7 +44,7 @@ void ControllerComponent::Process(float deltaTime)
 		}
 	}
 
-	this->m_particleCooldown -= deltaTime * length(this->GetActor()->GetVelocity());
+    this->m_particleCooldown -= deltaTime * length(this->GetActor()->GetVelocity());
 }
 
 void ControllerComponent::FireBullet(float _speed, glm::vec2 _position, float _rot)

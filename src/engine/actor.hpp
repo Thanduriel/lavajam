@@ -56,6 +56,8 @@ public:
     void AddRotation(const float rotationDelta);
     void SetVelocity(const glm::vec2 velocity);
     void AddVelocity(const glm::vec2 velocityDelta);
+    void SetWin();
+    bool GetWin() const;
     
     void Destroy();
     void Update(float deltaTime);
@@ -69,4 +71,5 @@ private:
     glm::vec2 m_velocity;
     bool m_destroy;
 	ActorKind m_kind;
+    bool m_win;
 };

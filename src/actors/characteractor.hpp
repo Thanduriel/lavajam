@@ -43,7 +43,8 @@ public:
     
     void Register(Scene& scene) override;
     
-    const DrawComponent& GetDrawComponent() const;
+    DrawComponent& GetDrawComponent();
+    PhysicsComponent& GetPhysicsComponent();
     uint32_t GetTeam() const;
     void SetTeam(uint32_t team);
 
@@ -52,5 +53,4 @@ private:
     DrawComponent m_draw;
     ControllerComponent m_controller;
     uint32_t m_team;
-    
 };
