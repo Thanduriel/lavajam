@@ -46,7 +46,7 @@ void Game::SpawnTeam(uint32_t team, const glm::vec4 color, std::vector <int> key
 		auto y = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
 		auto r = std::rand() / static_cast<float>(RAND_MAX) * 2 * glm::pi<float>();
 
-		Actor* ai = new AiActor(character, team, 0.01f, colorAi, 0, glm::vec2(x, -y), r, glm::vec2(0, 0.01f));
+		AiActor* ai = new AiActor(character, team, 0.01f, colorAi, 0, glm::vec2(x, -y), r, glm::vec2(0, 0.01f));
 		this->m_defaultScene.AddActor(*ai);
 	}
 }

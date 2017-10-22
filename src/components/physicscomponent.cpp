@@ -82,18 +82,15 @@ bool PhysicsComponent::Collide(const PhysicsComponent& component, glm::vec2& own
                         //{
                             auto ai_actor = static_cast<AiActor*>(other_actor);
                             auto my_team = ai_actor->GetAiControllerComponent().GetTeam();
-                            
                             for (auto it = other->m_teams->begin(); it != other->m_teams->end(); it++)
                             {
                                 if (it->first != my_team)
                                 {
-                                    std::cout << "Spawning AI for player " << it->first << std::endl;
-                                    
                                     float x = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
                                     float y = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
                                     float r = std::rand() / static_cast<float>(RAND_MAX) * 2 * glm::pi<float>();
 
-                                    Actor* new_ai = new AiActor(
+                                    AiActor* new_ai = new AiActor(
                                         it->second.second,
                                         it->first,
                                         0.01f,

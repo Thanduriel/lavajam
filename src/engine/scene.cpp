@@ -116,7 +116,7 @@ void Scene::SpawnAi(Actor* targetActor, glm::vec4 color, uint32_t team)
     float y = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
     float r = std::rand() / static_cast<float>(RAND_MAX) * 2 * glm::pi<float>();
 
-    Actor* new_ai = new AiActor(
+    AiActor* new_ai = new AiActor(
         targetActor,
         team,
         0.01f,
