@@ -153,8 +153,8 @@ void Scene::Update(float deltaTime)
         
         if (actor->GetKind() == ActorKind::Character)
         {
-            auto char_actor = static_cast<CharacterActor*>(actor.get());
-            auto team = char_actor->GetTeam();
+            CharacterActor* char_actor = static_cast<CharacterActor*>(actor.get());
+            uint32_t team = char_actor->GetTeam();
             
             if (teamCounter.count(team))
             {
@@ -167,8 +167,8 @@ void Scene::Update(float deltaTime)
         }
         else if (actor->GetKind() == ActorKind::Ai)
         {
-            auto ai_actor = static_cast<AiActor*>(actor.get());
-            auto team = ai_actor->GetAiControllerComponent().GetTeam();
+            AiActor* ai_actor = static_cast<AiActor*>(actor.get());
+            uint32_t team = ai_actor->GetAiControllerComponent().GetTeam();
             
             if (teamCounter.count(team))
             {
@@ -277,11 +277,11 @@ void Scene::ResolveCollisionns(float deltaTime)
 	for (auto it_me = this->m_physicsComponents.begin();it_me != this->m_physicsComponents.end(); it_me++)
 	{
         // ... with every other physics object
-		auto my_actor = (*it_me)->GetActor();
+		Actor* my_actor = (*it_me)->GetActor();
 		for (auto it_other = it_me + 1; it_other != m_physicsComponents.end() && ((**it_me).GetActor()->GetPosition().x + (**it_me).GetSize() > LeftBorder(**it_other)); it_other++)
 		{
              // if a collision is detected
-			auto other_actor = (*it_other)->GetActor();
+			Actor* other_actor = (*it_other)->GetActor();
 			if ((*it_me)->Collide(**it_other, own_velocity_delta, other_velocity_delta))
 			{
                 // move away from the other object
@@ -306,9 +306,9 @@ void Scene::ResolveCollisionns(float deltaTime)
 				else if (my_actor->GetKind() == ActorKind::Character &&
 					other_actor->GetKind() == ActorKind::Bullet)
 				{
-					auto bullet_actor = static_cast<BulletActor*>(other_actor);
-					auto char_actor = static_cast<CharacterActor*>(my_actor);
-					auto& cooldown = bullet_actor->GetCooldownComponent();
+					BulletActor* bullet_actor = static_cast<BulletActor*>(other_actor);
+					CharacterActor* char_actor = static_cast<CharacterActor*>(my_actor);
+					CooldownComponent cooldown = bullet_actor->GetCooldownComponent();
 
 					if (cooldown.GetCooldown())
 					{
@@ -320,9 +320,9 @@ void Scene::ResolveCollisionns(float deltaTime)
 		}
 
         // window boundary checking
-		auto me_pos = my_actor->GetPosition();
-		auto me_size = (*it_me)->GetSize();
-		auto velocity = my_actor->GetVelocity();
+		glm::vec2 me_pos = my_actor->GetPosition();
+		float me_size = (*it_me)->GetSize();
+		glm::vec2 velocity = my_actor->GetVelocity();
         glm::vec2 border_vec = { 0,0 };
         bool hitTheWall = false;        
 		if (me_pos.x - me_size < -1)
