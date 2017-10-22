@@ -20,12 +20,16 @@
 #include "components/bulletcomponent.hpp"
 
 BulletComponent::BulletComponent(Actor* actor, bool isActive) :
-	CooldownComponent(actor, isActive)
-{
+	Component(actor, isActive), m_collidedComponent(nullptr)
+{}
 
+void BulletComponent::Collided(const PhysicsComponent* component)
+{
+	if (this->m_collidedComponent == nullptr)
+		this->m_collidedComponent = component;
+	else if (this->m_collidedComponent != component)
+		this->GetActor()->Destroy();
 }
 
 void BulletComponent::Process(float deltaTime)
-{
-	CooldownComponent::Process(deltaTime);
-}
+{}

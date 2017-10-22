@@ -19,13 +19,18 @@
 
 #pragma once
 #include "engine/component.hpp"
-#include "cooldowncomponent.hpp"
+#include "physicscomponent.hpp"
 
 class BulletComponent :
-	public CooldownComponent
+	public Component
 {
 public:
     BulletComponent(Actor* actor, bool isActive = true);
 
+	void Collided(const PhysicsComponent* component);
+
 	void Process(float deltaTime) override;
+
+private:
+	const PhysicsComponent* m_collidedComponent;
 };

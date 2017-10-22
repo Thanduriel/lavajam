@@ -18,6 +18,7 @@
 */
 
 #include "components/physicscomponent.hpp"
+#include "actors/bulletactor.hpp"
 
 PhysicsComponent::PhysicsComponent(
     Actor* actor,
@@ -66,6 +67,21 @@ bool PhysicsComponent::Collide(PhysicsComponent& component, glm::vec2& ownVeloci
 	            const float ratio = this->GetMass() / component.GetMass();
 				ownVelocityDelta /= ratio;
 				otherVelocityDelta *= ratio;
+
+				auto registerCollision = [](Actor* actor, const PhysicsComponent* other)
+				{
+					BulletActor* bullet = static_cast<BulletActor*>(actor);
+					bullet->GetBulletComponent().Collided(other);
+				};
+
+				if (this->GetActor()->GetKind() == ActorKind::Bullet)
+				{
+					registerCollision(this->GetActor(), &component);
+				}
+				else if (component.GetActor()->GetKind() == ActorKind::Bullet)
+				{
+					registerCollision(component.GetActor(), this);
+				}
 
                 return true;
             }

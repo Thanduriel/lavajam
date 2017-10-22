@@ -40,3 +40,8 @@ void BulletActor::Register(Scene& scene)
     scene.AddComponent(this->m_draw);
 	scene.AddComponent(this->m_bulletComponent);
 }
+
+BulletComponent& BulletActor::GetBulletComponent()
+{
+	return this->m_bulletComponent;
+}

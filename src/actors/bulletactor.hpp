@@ -38,6 +38,7 @@ public:
     );
     
     void Register(Scene& scene) override;
+	BulletComponent& GetBulletComponent();
     
 private:
     PhysicsComponent m_physics;
