@@ -41,6 +41,9 @@ public:
     
     void Register(Scene& scene) override;
     
+    AiControllerComponent& GetAiControllerComponent();
+    const DrawComponent& GetDrawComponent() const;
+    
 private:
     PhysicsComponent m_physics;
     DrawComponent m_draw;

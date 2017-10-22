@@ -18,7 +18,7 @@ namespace Input {
     {
         m_pressedKeys.insert_or_assign(key,action);
         #ifndef NDEBUG
-            std::cout << "keycode:" <<  key << " " << action << std::endl;
+            //std::cout << "keycode:" <<  key << " " << action << std::endl;
         #endif
     }
 
@@ -44,11 +44,11 @@ namespace Input {
         
             if (entered)
             {
-                std::cout << "Hey hey! Welcome cursor!" << std::endl;
+                //std::cout << "Hey hey! Welcome cursor!" << std::endl;
             }
             else
             {
-                std::cout << "Oh noes! Lonely yet again!" << std::endl;
+                //std::cout << "Oh noes! Lonely yet again!" << std::endl;
             }
         #endif
     }

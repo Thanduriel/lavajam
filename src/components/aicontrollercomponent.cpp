@@ -20,9 +20,11 @@
 #include "glm.hpp"
 #include "components/aicontrollercomponent.hpp"
 
+#include <ctime>
+
 AiControllerComponent::AiControllerComponent(
     Actor* actor, Actor* target, bool isActive
-) : Component(actor, isActive), m_target(target)
+) : Component(actor, isActive), m_target(target), m_cooldown(0)
 {}
 
 void AiControllerComponent::Process(float deltaTime)
@@ -44,6 +46,18 @@ void AiControllerComponent::Process(float deltaTime)
 const Actor* AiControllerComponent::GetTarget() const
 {
     return this->m_target;
+}
+
+bool AiControllerComponent::GetCooldown()
+{
+    std::time_t current_time = std::time(0);
+    
+    if (current_time - this->m_cooldown > 1)
+    {
+        this->m_cooldown = current_time;
+        return true;
+    }
+    return false;
 }
 
 void AiControllerComponent::SetTarget(Actor* target)

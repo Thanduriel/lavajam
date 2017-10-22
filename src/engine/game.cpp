@@ -12,9 +12,6 @@
 #include <cstdlib>
 #include <ctime>
 
-//test
-#include "graphic/vertexbuffer.hpp"
-
 using namespace Graphic;
 
 Game::Game() : m_defaultScene(Camera(

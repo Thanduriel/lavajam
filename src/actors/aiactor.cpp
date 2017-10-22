@@ -41,3 +41,13 @@ void AiActor::Register(Scene& scene)
     scene.AddComponent(this->m_draw);
     scene.AddComponent(this->m_ai);
 }
+
+AiControllerComponent& AiActor::GetAiControllerComponent()
+{
+    return this->m_ai;
+}
+
+const DrawComponent& AiActor::GetDrawComponent() const
+{
+    return this->m_draw;
+}

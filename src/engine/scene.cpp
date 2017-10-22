@@ -18,6 +18,7 @@
  */
 
 #include "engine/scene.hpp"
+#include "actors/aiactor.hpp"
 #include "components/drawcomponent.hpp"
 
 #include <algorithm>
@@ -86,6 +87,8 @@ void Scene::Update(float deltaTime)
 {
     //std::cout << "Updating scene [delta-time: " << deltaTime << "]" << std::endl;
     
+    std::vector<Actor*> newActors;
+    
     auto cidx = std::remove_if(
         this->m_components.begin(),
         this->m_components.end(),
@@ -133,6 +136,32 @@ void Scene::Update(float deltaTime)
 				other_velocity_delta *= deltaTime * glm::length((*it_me)->GetActor()->GetVelocity());
                 (*it_me)->GetActor()->AddVelocity(own_velocity_delta);
                 (*it_other)->GetActor()->AddVelocity(other_velocity_delta);
+                
+                auto my_actor = (*it_me)->GetActor();
+                auto other_actor = (*it_other)->GetActor();
+                if ((*it_other)->GetKind() == ActorKind::Ai)
+                {
+                    auto ai_actor = (AiActor*) other_actor;
+                    auto& ai = ai_actor->GetAiControllerComponent();
+                                        
+                    if (ai.GetTarget()->GetGUID() == my_actor->GetGUID() && ai.GetCooldown())
+                    {
+                        float x = std::rand() / (float) RAND_MAX * 2.0f - 1.0f;
+                        float y = std::rand() / (float) RAND_MAX * 2.0f - 1.0f;
+                        float r = std::rand() / (float) RAND_MAX * 2 * glm::pi<float>();
+
+                        Actor* new_ai = new AiActor(
+                            my_actor,
+                            0.01f,
+                            ai_actor->GetDrawComponent().GetColor(),
+                            0,
+                            glm::vec2(x, -y),
+                            r,
+                            glm::vec2(0, 0)
+                        );
+                        newActors.push_back(new_ai);
+                    }
+                }
             }
         }
 
@@ -152,6 +181,11 @@ void Scene::Update(float deltaTime)
     
     VertexBuffer->Upload();
     Graphic::Device::Draw(*VertexBuffer);
+    
+    for (auto const& actor : newActors)
+    {
+        this->AddActor(*actor);
+    }
 }
 
 void Scene::Initialize()

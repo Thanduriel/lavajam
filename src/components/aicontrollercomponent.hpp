@@ -21,6 +21,7 @@
 
 #include "engine/actor.hpp"
 #include "engine/component.hpp"
+#include <ctime>
 
 class AiControllerComponent :
     public Component
@@ -31,8 +32,11 @@ public:
     void Process(float deltaTime) override;
     
     const Actor* GetTarget() const;
+    bool GetCooldown();
+    
     void SetTarget(Actor* target);
     
 private:
     Actor* m_target;
+    std::time_t m_cooldown;
 };
