@@ -1,7 +1,5 @@
 #include "engine/game.hpp"
 
-#include <iostream>
-
 int main() 
 {
 	Game game;

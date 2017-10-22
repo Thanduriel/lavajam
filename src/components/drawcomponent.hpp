@@ -22,7 +22,6 @@
 #include "engine/actor.hpp"
 #include "engine/component.hpp"
 #include "graphic/vertexbuffer.hpp"
-#include "graphic/effect.hpp"
 
 enum class DrawShape {
     Triangle,

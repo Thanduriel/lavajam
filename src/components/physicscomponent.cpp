@@ -17,18 +17,14 @@
 *
 */
 
-#include "glm.hpp"
 #include "components/physicscomponent.hpp"
-
-#include <cassert>
 
 PhysicsComponent::PhysicsComponent(
     Actor* actor,
     PhysicsShape shape,
     float size,
-    ActorKind kind,
     bool isActive
-) : Component(actor, isActive), m_shape(shape), m_size(size), m_kind(kind)
+) : Component(actor, isActive), m_shape(shape), m_size(size)
 {}
 
 float sign (glm::vec2 p1, glm::vec2 p2, glm::vec2 p3)
@@ -97,14 +93,9 @@ float PhysicsComponent::GetSize() const
     return this->m_size;
 }
 
-ActorKind PhysicsComponent::GetKind() const
-{
-    return this->m_kind;
-}
-
 float PhysicsComponent::GetMass() const
 {
-	switch (this->m_kind) 
+	switch (this->GetActor()->GetKind()) 
 	{ 
 		case ActorKind::Ai: return 1.f;
 		case ActorKind::Character: return 1.5f;
@@ -122,9 +113,4 @@ void PhysicsComponent::SetShape(PhysicsShape shape)
 void PhysicsComponent::SetSize(float size)
 {
     this->m_size = size;
-}
-
-void PhysicsComponent::SetKind(ActorKind kind)
-{
-    this->m_kind = kind;
 }

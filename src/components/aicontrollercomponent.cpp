@@ -17,10 +17,7 @@
  * 
  */
 
-#include "glm.hpp"
 #include "components/aicontrollercomponent.hpp"
-
-#include <ctime>
 
 AiControllerComponent::AiControllerComponent(
     Actor* actor, Actor* target, bool isActive

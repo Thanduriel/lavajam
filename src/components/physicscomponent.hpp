@@ -19,7 +19,6 @@
 
 #pragma once
 
-#include "glm.hpp"
 #include "engine/actor.hpp"
 #include "engine/component.hpp"
 
@@ -31,7 +30,7 @@ class PhysicsComponent :
 	public Component
 {
 public:
-	PhysicsComponent(Actor* actor, PhysicsShape shape, float size, ActorKind kind, bool isActive = true);
+	PhysicsComponent(Actor* actor, PhysicsShape shape, float size, bool isActive = true);
     
     void Process(float deltaTime) override;
     
@@ -39,15 +38,12 @@ public:
     
     PhysicsShape GetShape() const;
     float GetSize() const;
-    ActorKind GetKind() const;
 	float GetMass() const;
 
     void SetShape(PhysicsShape shape);
     void SetSize(float size);
-    void SetKind(ActorKind kind);
     
 private:
     PhysicsShape m_shape;
     float m_size;
-    ActorKind m_kind;
 };

@@ -37,7 +37,8 @@ public:
     Actor(
         glm::vec2 position,
         float rotation,
-        glm::vec2 velocity
+        glm::vec2 velocity,
+		ActorKind kind
     );
     Actor(const Actor& other);
     
@@ -46,7 +47,9 @@ public:
     float GetRotation() const;
     glm::vec2 GetVelocity() const;
     bool GetDestroy() const;
-    
+	ActorKind GetKind() const;
+
+	void SetKind(ActorKind kind);
     void SetPosition(const glm::vec2 position);
     void SetRotation(const float rotation);
     void AddRotation(const float rotationDelta);
@@ -64,4 +67,5 @@ private:
     float m_rotation;
     glm::vec2 m_velocity;
     bool m_destroy;
+	ActorKind m_kind;
 };

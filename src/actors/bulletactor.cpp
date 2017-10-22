@@ -28,13 +28,15 @@ BulletActor::BulletActor(
     glm::vec2 position,
     float rotation,
     glm::vec2 velocity
-) : Actor(position, rotation, velocity),
-    m_physics(this, PhysicsShape::Triangle, size, ActorKind::Bullet),
-    m_draw(this, DrawShape::Triangle, size, color, layer)
+) : Actor(position, rotation, velocity, ActorKind::Bullet),
+    m_physics(this, PhysicsShape::Triangle, size),
+    m_draw(this, DrawShape::Triangle, size, color, layer),
+	m_bulletComponent(this)
 {}
 
 void BulletActor::Register(Scene& scene)
 {
     scene.AddComponent(this->m_physics);
     scene.AddComponent(this->m_draw);
+	scene.AddComponent(this->m_bulletComponent);
 }

@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include "glm.hpp"
 #include "engine/actor.hpp"
 #include "components/physicscomponent.hpp"
 #include "components/drawcomponent.hpp"
+#include "components/bulletcomponent.hpp"
 
 class BulletActor :
     public Actor
@@ -42,4 +42,5 @@ public:
 private:
     PhysicsComponent m_physics;
     DrawComponent m_draw;
+	BulletComponent m_bulletComponent;
 };

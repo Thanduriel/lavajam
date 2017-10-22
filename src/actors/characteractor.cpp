@@ -31,8 +31,9 @@ CharacterActor::CharacterActor(
 ) : Actor(
     position,
     rotation,
-    velocity
-), m_physics(this, PhysicsShape::Triangle, size, ActorKind::Character),
+    velocity,
+	ActorKind::Character
+), m_physics(this, PhysicsShape::Triangle, size),
     m_draw(this, DrawShape::Triangle, size, color, layer),
     m_controller(this)
 {}

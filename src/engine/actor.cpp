@@ -20,13 +20,12 @@
 #include "engine/actor.hpp"
 #include "glm.hpp"
 
-#include <iostream>
-
 Actor::Actor(
     glm::vec2 position,
     float rotation,
-    glm::vec2 velocity
-) : m_position(position), m_rotation(rotation), m_velocity(velocity), m_destroy(false)
+    glm::vec2 velocity,
+	ActorKind kind
+) : m_position(position), m_rotation(rotation), m_velocity(velocity), m_destroy(false), m_kind(kind)
 {
     // generate guid
     this->m_guid = (guid_t) this;
@@ -98,4 +97,14 @@ void Actor::Update(float deltaTime)
 bool Actor::GetDestroy() const
 {
     return this->m_destroy;
+}
+
+void Actor::SetKind(ActorKind kind)
+{
+	this->m_kind = kind;
+}
+
+ActorKind Actor::GetKind() const
+{
+	return this->m_kind;
 }
