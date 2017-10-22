@@ -37,7 +37,7 @@ void ControllerComponent::Process(float deltaTime)
 			auto x = (std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f) * actor->GetDrawComponent().GetSize();
 			auto y = (std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f) * actor->GetDrawComponent().GetSize();
 			auto r = std::rand() / static_cast<float>(RAND_MAX) * 2 * glm::pi<float>();
-			auto particle = new ParticleActor(0.001f, actor->GetDrawComponent().GetColor(), 0, actor->GetPosition() + glm::vec2(x, y), r, glm::vec2(0, 0), 1-length(actor->GetVelocity()/2.f));
+			auto particle = new ParticleActor(0.001f, actor->GetDrawComponent().GetColor(), 0, actor->GetPosition() + glm::vec2(x, y), r, glm::vec2(y, x), 1-length(actor->GetVelocity()/2.f));
 			this->m_spawnCallback(particle);
 		}
 	}
