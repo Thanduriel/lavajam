@@ -172,10 +172,29 @@ void Scene::Update(float deltaTime)
         }
 
 		auto me_pos = (*it_me)->GetActor()->GetPosition();
-        auto me_size = (*it_me)->GetSize() * 1.5f;
+		auto me_size = (*it_me)->GetSize();
+		auto velocity = (*it_me)->GetActor()->GetVelocity();
 		glm::vec2 border_vec = {0,0};
-		if (me_pos.x - me_size < -1 || me_pos.x + me_size > 1) border_vec.x -= (*it_me)->GetActor()->GetVelocity().x * 2;
-		if (me_pos.y - me_size < -1 || me_pos.y + me_size > 1) border_vec.y -= (*it_me)->GetActor()->GetVelocity().y * 2;
+		if (me_pos.x - me_size < -1)
+		{
+			if (velocity.x < 0)
+				border_vec.x -= velocity.x * 2;
+		}
+		if (me_pos.x + me_size > 1)
+		{
+			if (velocity.x > 0)
+				border_vec.x -= velocity.x * 2;
+		}
+		if (me_pos.y - me_size < -1)
+		{
+			if (velocity.y < 0)
+				border_vec.y -= velocity.y * 2;
+		}
+		if (me_pos.y + me_size > 1)
+		{
+			if (velocity.y > 0)
+				border_vec.y -= velocity.y * 2;
+		}
 
 		(*it_me)->GetActor()->AddVelocity(border_vec);
     }
