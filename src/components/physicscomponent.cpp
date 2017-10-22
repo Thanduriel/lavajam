@@ -56,7 +56,7 @@ bool PhysicsComponent::Collide(PhysicsComponent& component, glm::vec2& ownVeloci
 	        const glm::vec2 center = component.GetActor()->GetPosition();
 	        const glm::vec2 my_center = this->m_actor->GetPosition();
 
-	        const bool collides = glm::distance(center, my_center) <= this->m_size + component.GetSize();
+	        const bool collides = glm::distance(center, my_center) <= this->m_size * 1.5f + component.GetSize() * 1.5f;
             if (collides)
             {
 				ownVelocityDelta = { 0,0 };

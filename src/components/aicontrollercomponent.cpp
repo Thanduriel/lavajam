@@ -33,7 +33,7 @@ void AiControllerComponent::Process(float deltaTime)
     auto me = this->m_actor;
     auto target_pos = target->GetPosition();
     auto my_pos = me->GetPosition();
-    auto dir = glm::normalize(target_pos - my_pos) * deltaTime / 5.0f;
+    auto dir = glm::normalize(target_pos - my_pos) * deltaTime / 2.0f;
     auto new_v = me->GetVelocity() + dir;
     auto angle = glm::orientedAngle(glm::vec2(0, -1), glm::normalize(new_v));
     auto old_rot = me->GetRotation();
