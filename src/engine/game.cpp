@@ -36,7 +36,7 @@ Game::Game() : m_defaultScene(Camera(
 
 void Game::SpawnTeam(const glm::vec4 color, std::vector <int> keyMapping)
 {
-	Actor* character = new CharacterActor(0.02f, color, 0, glm::vec2(color.x, color.y), 0.0f, glm::vec2(0, 0), keyMapping);
+	Actor* character = new CharacterActor(0.02f, color, 0, glm::vec2(color.x, color.y), 0.0f, glm::vec2(0, 0.01f), keyMapping);
 	this->m_defaultScene.AddActor(*character);
 
 	const auto colorAi = glm::vec4(color.x/2.f, color.y/2.f, color.z/2.f, 1);
@@ -46,7 +46,7 @@ void Game::SpawnTeam(const glm::vec4 color, std::vector <int> keyMapping)
 		auto y = std::rand() / static_cast<float>(RAND_MAX) * 2.0f - 1.0f;
 		auto r = std::rand() / static_cast<float>(RAND_MAX) * 2 * glm::pi<float>();
 
-		Actor* ai = new AiActor(character, 0.01f, colorAi, 0, glm::vec2(x, -y), r, glm::vec2(0, 0));
+		Actor* ai = new AiActor(character, 0.01f, colorAi, 0, glm::vec2(x, -y), r, glm::vec2(0, 0.01f));
 		this->m_defaultScene.AddActor(*ai);
 	}
 }
