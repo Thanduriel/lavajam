@@ -64,9 +64,10 @@ void ControllerComponent::Process(float deltaTime)
 
 void ControllerComponent::FireBullet(float _speed, glm::vec2 _offset, float _rot)
 {
+	static const glm::vec4 white(1, 1, 1, 1);
 	static const glm::vec4 brown(141 / 255.f, 110 / 255.f, 99 / 255.f, 1);
 	const float rot = m_actor->GetRotation() + _rot;
 	const glm::vec2 velocity = glm::rotate(glm::vec2(0.f, _speed + glm::length(m_actor->GetVelocity())), m_actor->GetRotation() + _rot);
-	const auto bullet = new BulletActor(0.006f, brown, 0, m_actor->GetPosition() - normalize(velocity) / 15 + glm::rotate(_offset, rot), rot, -velocity);
+	const auto bullet = new BulletActor(0.006f, white, 0, m_actor->GetPosition() - normalize(velocity) / 15 + glm::rotate(_offset, rot), rot, -velocity);
 	m_spawnCallback(bullet);
 }
