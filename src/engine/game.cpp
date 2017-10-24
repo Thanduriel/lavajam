@@ -24,10 +24,10 @@ Game::Game() : m_defaultScene(Camera(
 	Device::Init(1366, 768);
 	Input::KeyManager::Init(Device::GetWindow());
     
-	std::vector <int> keyMapping1 = { GLFW_KEY_W, GLFW_KEY_A, GLFW_KEY_S, GLFW_KEY_D, GLFW_KEY_SPACE };
-	std::vector <int> keyMapping2 = { GLFW_KEY_UP, GLFW_KEY_LEFT, GLFW_KEY_DOWN, GLFW_KEY_RIGHT, GLFW_KEY_ENTER };
-	glm::vec4 blue(0.129411765f, 0.588235294f, 0.952941176f, 1);
-	glm::vec4 lime(0.796078431f, 0.862745098f, 0.011764706f, 1);
+	const std::vector <int> keyMapping1 = { GLFW_KEY_W, GLFW_KEY_A, GLFW_KEY_S, GLFW_KEY_D, GLFW_KEY_SPACE };
+	const std::vector <int> keyMapping2 = { GLFW_KEY_UP, GLFW_KEY_LEFT, GLFW_KEY_DOWN, GLFW_KEY_RIGHT, GLFW_KEY_ENTER };
+	const glm::vec4 blue(0.129411765f, 0.588235294f, 0.952941176f, 1);
+	const glm::vec4 lime(0.796078431f, 0.862745098f, 0.011764706f, 1);
 
 	std:srand(std::time(0));
 	SpawnTeam(1, blue, keyMapping1);
@@ -64,15 +64,12 @@ void Game::Run()
     
     double lastTime = 0;
 
-	while (!glfwWindowShouldClose(Graphic::Device::GetWindow())) 
+	while (!glfwWindowShouldClose(Graphic::Device::GetWindow()) && Input::KeyManager::getKeyStates(GLFW_KEY_ESCAPE) != Input::EKeyState::PRESS) 
 	{
         double currentTime = glfwGetTime();
         float deltaTime = (float) (currentTime - lastTime);
         lastTime = currentTime;
         this->m_defaultScene.Update(deltaTime);
-
-		static float shift = 0.f;
-		shift += deltaTime * 0.2f;
         
 		Input::KeyManager::pollEvents();
 	}

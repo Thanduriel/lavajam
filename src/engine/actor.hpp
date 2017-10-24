@@ -41,7 +41,8 @@ public:
         glm::vec2 velocity,
 		ActorKind kind
     );
-    Actor(const Actor& other);
+
+	virtual ~Actor() {}
     
     guid_t GetGUID() const;
     glm::vec2 GetPosition() const;

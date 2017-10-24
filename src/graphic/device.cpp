@@ -157,8 +157,8 @@ namespace Graphic {
 		}
 
 		vkDestroySwapchainKHR(m_logicalDevice, m_swapChain, nullptr);
-		DestroyDebugReportCallbackEXT(m_instance, m_callback, nullptr);
 		vkDestroyDevice(m_logicalDevice, nullptr);
+		DestroyDebugReportCallbackEXT(m_instance, m_callback, nullptr);
 		vkDestroyInstance(m_instance, nullptr);
 
 		glfwDestroyWindow(m_window);
@@ -219,7 +219,6 @@ namespace Graphic {
 		vkQueuePresentKHR(m_presentQueue, &presentInfo);
 
 		vkQueueWaitIdle(m_presentQueue);
-
 	}
 
 	// **************************************************************** //

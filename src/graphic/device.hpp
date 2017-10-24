@@ -28,7 +28,7 @@ namespace Graphic {
 		// draw current pipline
 		static void Draw(const BasicVertexBuffer& _vertexBuffer);
 
-		// looks for a suitable memory type supported by the choosen physical device
+		// looks for a suitable memory type supported by the chosen physical device
 		static uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 	private:
 		static std::vector<const char*> GetRequiredExtensions();

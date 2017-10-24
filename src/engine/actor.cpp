@@ -25,17 +25,14 @@ Actor::Actor(
     float rotation,
     glm::vec2 velocity,
 	ActorKind kind
-) : m_position(position), m_rotation(rotation), m_velocity(velocity), m_destroy(false), m_kind(kind), m_win(false)
+) : m_position(position), 
+m_rotation(rotation), 
+m_velocity(velocity), 
+m_destroy(false), 
+m_kind(kind), m_win(false)
 {
     // generate guid
     this->m_guid = (guid_t) this;
-}
-
-Actor::Actor(const Actor& other)
-{
-    this->m_position = other.m_position;
-    this->m_rotation = other.m_rotation;
-    this->m_velocity = other.m_velocity;
 }
 
 guid_t Actor::GetGUID() const

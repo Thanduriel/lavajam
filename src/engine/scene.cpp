@@ -115,11 +115,7 @@ void Scene::AddComponent(Component& component)
 
 void Scene::AddComponent(ControllerComponent& component)
 {
-	component.SetSpawnCallback([this](Actor* actor)
-	{
-		this->m_actorsQueue.push_back(actor);
-	});
-	this->m_components.push_back(&component);
+	AddComponent(static_cast<Component&>(component));
 	m_controllerComponents.push_back(&component);
 }
 
@@ -142,6 +138,17 @@ void Scene::SpawnAi(Actor* targetActor, glm::vec4 color, uint32_t team)
     this->m_actorsQueue.push_back(new_ai);
 }
 
+template<typename T>
+void RemoveDestroyed(T& _container)
+{
+	auto ind = std::remove_if(_container.begin(),_container.end(),
+		[](const Component* component)
+	{
+		return component->GetActor()->GetDestroy();
+	});
+	_container.erase(ind, _container.end());
+}
+
 void Scene::Update(float deltaTime)
 {
 	m_currentSec += deltaTime;
@@ -159,23 +166,9 @@ void Scene::Update(float deltaTime)
 		}
 	}
 
-    auto cidx = std::remove_if(
-        this->m_components.begin(),
-        this->m_components.end(),
-        [](const Component* component)
-        {
-            return component->GetActor()->GetDestroy();
-        });
-    this->m_components.erase(cidx, this->m_components.end());
-    
-    auto cpidx = std::remove_if(
-        this->m_physicsComponents.begin(),
-        this->m_physicsComponents.end(),
-        [](const PhysicsComponent* component)
-        {
-            return component->GetActor()->GetDestroy();
-        });
-    this->m_physicsComponents.erase(cpidx, this->m_physicsComponents.end());
+	RemoveDestroyed(m_components);
+	RemoveDestroyed(m_physicsComponents);
+	RemoveDestroyed(m_controllerComponents);
     
     auto idx = std::remove_if(
         this->m_actors.begin(),
